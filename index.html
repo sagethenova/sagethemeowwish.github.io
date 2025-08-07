@@ -125,23 +125,13 @@
       font-size: 1rem;
     }
 
-    /* Mute Button */
-    #muteBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: rgba(255, 255, 255, 0.15);
-      border: none;
-      border-radius: 25px;
-      padding: 10px 20px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 1001;
-      transition: background-color 0.3s;
-    }
-    #muteBtn:hover {
-      background-color: rgba(255, 255, 255, 0.35);
+    /* Audio Player styling */
+    #bgMusic {
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      outline: none;
     }
 
     /* Responsive */
@@ -162,12 +152,6 @@
         font-size: 1.2rem;
         margin: 1rem 0;
       }
-      #muteBtn {
-        bottom: 15px;
-        right: 15px;
-        padding: 8px 15px;
-        font-size: 0.9rem;
-      }
     }
   </style>
 </head>
@@ -187,8 +171,8 @@
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
-  <!-- Background music stream -->
-  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" loop></audio>
+  <!-- Background music stream with controls -->
+  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop muted></audio>
 
   <!-- Main Content -->
   <div class="content" id="mainContent" style="display:none;">
@@ -203,9 +187,6 @@
 
     <p>you are Fluffy balls 🐾</p>
   </div>
-
-  <!-- Mute/Unmute Button -->
-  <button id="muteBtn" aria-label="Toggle background music">Unmute Music</button>
 
   <!-- Scripts -->
   <script>
@@ -227,28 +208,16 @@
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
     const bgMusic = document.getElementById("bgMusic");
-    const muteBtn = document.getElementById("muteBtn");
 
     let soundsEnabled = false;
-    let musicMuted = true;
 
-    // Start background music muted (to avoid autoplay block)
-    bgMusic.volume = 0.15;
-    bgMusic.muted = true;
-
-    // Toggle mute button text and mute/unmute music
-    function toggleMusic() {
-      musicMuted = !musicMuted;
-      bgMusic.muted = musicMuted;
-      muteBtn.textContent = musicMuted ? "Unmute Music" : "Mute Music";
-    }
-    muteBtn.addEventListener("click", toggleMusic);
-
-    // Unlock sounds + show main content on overlay click
     overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
         clickSound.play().catch(() => {});
+        // Unmute and play background music after interaction
+        bgMusic.muted = false;
+        bgMusic.play().catch(() => {});
         soundsEnabled = true;
       }
       overlay.classList.add("hidden");
