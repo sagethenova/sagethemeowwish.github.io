@@ -9,23 +9,71 @@
       margin: 0;
       padding: 0;
       background-image: url('background.png');
-      background-size: cover;        /* Makes the image cover the whole screen */
-      background-repeat: no-repeat;  /* Prevents repeating */
-      background-position: center;   /* Centers the image */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
       height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.6); /* dark transparent background */
+      padding: 2rem;
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    a {
+      color: #66ccff;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0.5rem 0;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      margin: 0.5rem 0;
+    }
+
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      a {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-<h1>sagethenova home</h1>
-
-<p><a href="https://x.com/sagethenova">x</a></p>
-<p><a href="https://bsky.app/profile/sagethenova.bsky.social"> Bluesky</a></p>
-<p><a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac">VR Chat</a></p>
-<p><a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq">spotify</a></p>
-<p><a href="https://woof.tech/@sagethenova">Fediverse</a></p>
-
-
-<p>you are Fluffy balls</p>
+  <div class="container">
+    <h1>sagethenova home</h1>
+    <p><a href="https://x.com/sagethenova">X (Twitter)</a></p>
+    <p><a href="https://bsky.app/profile/sagethenova.bsky.social">Bluesky</a></p>
+    <p><a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac">VRChat</a></p>
+    <p><a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq">Spotify</a></p>
+    <p><a href="https://woof.tech/@sagethenova">Fediverse</a></p>
+    <p>You are Fluffy balls</p>
+  </div>
 </body>
 </html>
