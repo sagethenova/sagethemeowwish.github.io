@@ -125,13 +125,24 @@
       font-size: 1rem;
     }
 
-    /* Audio Player styling */
-    #bgMusic {
-      margin-top: 1rem;
-      width: 100%;
-      max-width: 400px;
+    /* Audio Player fixed at bottom center */
+    #audioContainer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 12px;
       border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      display: none; /* hidden initially */
+    }
+    #audioContainer audio {
+      width: 300px;
+      max-width: 90vw;
       outline: none;
+      border-radius: 8px;
     }
 
     /* Responsive */
@@ -171,16 +182,18 @@
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
-  <!-- Background music stream with controls -->
-  <audio
-    id="bgMusic"
-    title="Archers Of Agincourt - I'll Raise The Sun (You Raise The Moon)"
-    src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3"
-    preload="auto"
-    controls
-    loop
-    muted
-  ></audio>
+  <!-- Audio player container (hidden at first) -->
+  <div id="audioContainer">
+    <audio
+      id="bgMusic"
+      title="Archers Of Agincourt - I'll Raise The Sun (You Raise The Moon)"
+      src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3"
+      preload="auto"
+      controls
+      loop
+      muted
+    ></audio>
+  </div>
 
   <!-- Main Content -->
   <div class="content" id="mainContent" style="display:none;">
@@ -196,7 +209,6 @@
     <p>you are Fluffy balls 🐾</p>
   </div>
 
-  <!-- Scripts -->
   <script>
     // Floating Hearts
     const heartContainer = document.getElementById("hearts");
@@ -216,14 +228,19 @@
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
     const bgMusic = document.getElementById("bgMusic");
+    const audioContainer = document.getElementById("audioContainer");
 
     let soundsEnabled = false;
+
+    window.addEventListener("load", () => {
+      // Set volume to 5% on load
+      bgMusic.volume = 0.05;
+    });
 
     overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
         clickSound.play().catch(() => {});
-        // Unmute and play background music after interaction
         bgMusic.muted = false;
         bgMusic.play().catch(() => {});
         soundsEnabled = true;
@@ -232,6 +249,7 @@
       setTimeout(() => {
         overlay.style.display = "none";
         mainContent.style.display = "block";
+        audioContainer.style.display = "block"; // Show audio player
       }, 700);
     });
 
