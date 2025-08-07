@@ -98,6 +98,7 @@
       text-decoration: none;
       margin: 0.5rem 0;
       transition: color 0.3s ease;
+      cursor: pointer;
     }
 
     .content a:hover {
@@ -107,14 +108,6 @@
     .content p {
       margin-top: 1.5rem;
       font-size: 1rem;
-    }
-
-    /* Visitor counter styling */
-    #visitorCountContainer {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      color: #ffb6c1;
-      font-weight: bold;
     }
 
     /* Mobile */
@@ -128,10 +121,6 @@
       }
 
       .content a {
-        font-size: 1rem;
-      }
-
-      #visitorCountContainer {
         font-size: 1rem;
       }
     }
@@ -153,14 +142,13 @@
     <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
 
     <p>you are Fluffy balls 🐾</p>
-
-    <!-- Visitor counter -->
-    <div id="visitorCountContainer">
-      Visitors: <span id="visitorCount">loading...</span>
-    </div>
   </div>
 
-  <!-- Heart Animation & Visitor Counter Script -->
+  <!-- Audio elements for hover and click sounds -->
+  <audio id="hoverSound" src="hover.MP3" preload="auto"></audio>
+  <audio id="clickSound" src="click.MP3" preload="auto"></audio>
+
+  <!-- Heart Animation & Sound Effects Script -->
   <script>
     // Create floating hearts
     const heartContainer = document.getElementById("hearts");
@@ -175,15 +163,21 @@
       heartContainer.appendChild(heart);
     }
 
-    // Fetch visitor count from countapi.xyz
-    fetch('https://api.countapi.xyz/hit/sagethenova-com/visits')
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('visitorCount').textContent = data.value;
-      })
-      .catch(() => {
-        document.getElementById('visitorCount').textContent = 'N/A';
+    // Sound effect elements
+    const hoverSound = document.getElementById('hoverSound');
+    const clickSound = document.getElementById('clickSound');
+
+    // Add sound effects to all links in the .content div
+    document.querySelectorAll('.content a').forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        hoverSound.currentTime = 0;
+        hoverSound.play();
       });
+      link.addEventListener('click', () => {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      });
+    });
   </script>
 </body>
 </html>
