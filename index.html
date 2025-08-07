@@ -21,6 +21,19 @@
       color: #fff;
     }
 
+    /* Google Translate container */
+    #google_translate_element {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+      background: rgba(0,0,0,0.6);
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
     /* Floating Hearts */
     .hearts {
       position: fixed;
@@ -257,6 +270,9 @@
 </head>
 <body>
 
+  <!-- Google Translate -->
+  <div id="google_translate_element"></div>
+
   <!-- Floating Hearts -->
   <div class="hearts" id="hearts"></div>
 
@@ -310,15 +326,16 @@
     </ul>
     <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
     <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
-    <p>I'm autistic and I constantly rock to self-regulate — it's not sexual or meant to make anyone uncomfortable.</p>
-    <p>I am 27 years old and multi-species.</p>
-    <p>I love thunderstorms, NSFW content, computers and technology, and spooky goth and ghost stuff.</p>
     <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
-    <h3>Contact Me</h3>
-    <p>Discord: <strong>sagethenova</strong></p>
-    <p>Steam Friend Code: <strong>988123941</strong></p>
-    <p>Xbox Account: <strong>sagethecat</strong></p>
-
+    <p>I'm autistic and I constantly rock to self-regulate; it's not sexual or meant to make anyone uncomfortable.</p>
+    <p>I am 27 years old and married to OlegFluffyFox. I am multi-species.</p>
+    <p>I love thunderstorms, NSFW content, computers, technology, and spooky goth and ghost stuff.</p>
+    <p>Contact me:</p>
+    <ul>
+      <li>Discord: sagethenova</li>
+      <li>Steam Friend Code: 988123941</li>
+      <li>Xbox: sagethecat</li>
+    </ul>
     <button id="backBtn">← Back</button>
   </div>
 
@@ -333,6 +350,14 @@
 
   <!-- Scripts -->
   <script>
+    // Google Translate
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE},
+        'google_translate_element'
+      );
+    }
+
     // Floating Hearts
     const heartContainer = document.getElementById("hearts");
     for (let i = 0; i < 30; i++) {
@@ -403,7 +428,11 @@
       audioContainer.style.bottom = "10px";
       audioContainer.style.display = "flex";
     });
+
   </script>
+
+  <!-- Google Translate Script -->
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
