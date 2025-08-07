@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sagethenova</title>
   <style>
-    /* Background */
     body {
       margin: 0;
       padding: 0;
@@ -19,9 +18,9 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      position: relative;
     }
 
-    /* Main content container */
     .container {
       background-color: rgba(0, 0, 0, 0.6);
       padding: 2rem;
@@ -55,7 +54,7 @@
       margin: 0.5rem 0;
     }
 
-    /* Heart animation container */
+    /* Floating hearts */
     .hearts {
       position: fixed;
       top: 0;
@@ -108,6 +107,31 @@
       }
     }
 
+    /* Walking cats */
+    .cat-walk {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 50px;
+      overflow: hidden;
+      z-index: 3;
+    }
+
+    .cat {
+      position: absolute;
+      font-size: 30px;
+      animation: walk 20s linear infinite;
+    }
+
+    @keyframes walk {
+      0% {
+        left: -50px;
+      }
+      100% {
+        left: 100vw;
+      }
+    }
+
     @media screen and (max-width: 600px) {
       h1 {
         font-size: 1.5rem;
@@ -124,8 +148,8 @@
   </style>
 </head>
 <body>
+  <!-- Floating hearts -->
   <div class="hearts">
-    <!-- Generate multiple hearts at random positions -->
     <script>
       for (let i = 0; i < 30; i++) {
         const heart = document.createElement("div");
@@ -139,6 +163,7 @@
     </script>
   </div>
 
+  <!-- Main content -->
   <div class="container">
     <h1>sagethenova home</h1>
     <p><a href="https://x.com/sagethenova">X (Twitter)</a></p>
@@ -147,6 +172,23 @@
     <p><a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq">Spotify</a></p>
     <p><a href="https://woof.tech/@sagethenova">Fediverse</a></p>
     <p>You are Fluffy balls</p>
+  </div>
+
+  <!-- Walking cats -->
+  <div class="cat-walk" id="catWalk">
+    <script>
+      const catWalk = document.getElementById("catWalk");
+      const emojis = ["🐈", "🐱", "😺", "🐾"];
+      for (let i = 0; i < 10; i++) {
+        const cat = document.createElement("div");
+        cat.className = "cat";
+        cat.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        cat.style.top = Math.random() * 20 + "px";
+        cat.style.left = (-100 * i) + "px";
+        cat.style.animationDelay = i * 2 + "s";
+        catWalk.appendChild(cat);
+      }
+    </script>
   </div>
 </body>
 </html>
