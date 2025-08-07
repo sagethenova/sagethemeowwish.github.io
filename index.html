@@ -32,8 +32,6 @@
 
     .heart {
       position: absolute;
-      width: 20px;
-      height: 20px;
       background-color: pink;
       transform: rotate(45deg);
       opacity: 0.7;
@@ -44,8 +42,6 @@
     .heart::after {
       content: '';
       position: absolute;
-      width: 20px;
-      height: 20px;
       background-color: pink;
       border-radius: 50%;
     }
@@ -93,7 +89,8 @@
       color: #ff99cc;
       font-weight: bold;
       text-decoration: none;
-      margin: 0.5rem 0;
+      margin: 1rem 0; /* adds spacing between links */
+      font-size: 1.4rem; /* makes links bigger */
       transition: color 0.3s ease;
     }
 
@@ -102,7 +99,7 @@
     }
 
     .content p {
-      margin-top: 1.5rem;
+      margin-top: 2rem;
       font-size: 1rem;
     }
 
@@ -116,7 +113,8 @@
       }
 
       .content a {
-        font-size: 1rem;
+        font-size: 1.2rem;
+        margin: 0.8rem 0;
       }
     }
   </style>
