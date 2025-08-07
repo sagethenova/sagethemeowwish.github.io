@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sagethenova</title>
   <style>
-    /* Base Reset & Background */
     body {
       margin: 0;
       padding: 0;
@@ -20,7 +19,6 @@
       position: relative;
     }
 
-    /* Floating Hearts Container */
     .hearts {
       position: fixed;
       top: 0;
@@ -73,7 +71,6 @@
       }
     }
 
-    /* Main Container */
     .content {
       background-color: rgba(0, 0, 0, 0.6);
       padding: 2rem;
@@ -98,7 +95,6 @@
       text-decoration: none;
       margin: 0.5rem 0;
       transition: color 0.3s ease;
-      cursor: pointer;
     }
 
     .content a:hover {
@@ -110,7 +106,6 @@
       font-size: 1rem;
     }
 
-    /* Mobile */
     @media (max-width: 600px) {
       .content h1 {
         font-size: 1.6rem;
@@ -131,26 +126,26 @@
   <!-- Floating Hearts -->
   <div class="hearts" id="hearts"></div>
 
+  <!-- Sound Effects -->
+  <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+
   <!-- Main Content -->
   <div class="content">
     <h1>Welcome to sagethenova.com</h1>
 
-    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
-    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
-    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
+    <a href="https://x.com/sagethenova" target="_blank">X (Twitter)</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank">Bluesky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank">VRChat</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank">Spotify</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank">Fediverse</a>
 
     <p>you are Fluffy balls 🐾</p>
   </div>
 
-  <!-- Audio elements for hover and click sounds -->
-  <audio id="hoverSound" src="hover.MP3" preload="auto"></audio>
-  <audio id="clickSound" src="click.MP3" preload="auto"></audio>
-
-  <!-- Heart Animation & Sound Effects Script -->
+  <!-- Scripts -->
   <script>
-    // Create floating hearts
+    // Floating hearts animation
     const heartContainer = document.getElementById("hearts");
     for (let i = 0; i < 30; i++) {
       const heart = document.createElement("div");
@@ -163,17 +158,16 @@
       heartContainer.appendChild(heart);
     }
 
-    // Sound effect elements
-    const hoverSound = document.getElementById('hoverSound');
-    const clickSound = document.getElementById('clickSound');
+    // Sound effects
+    const hoverSound = document.getElementById("hoverSound");
+    const clickSound = document.getElementById("clickSound");
 
-    // Add sound effects to all links in the .content div
-    document.querySelectorAll('.content a').forEach(link => {
-      link.addEventListener('mouseenter', () => {
+    document.querySelectorAll("a").forEach(link => {
+      link.addEventListener("mouseover", () => {
         hoverSound.currentTime = 0;
         hoverSound.play();
       });
-      link.addEventListener('click', () => {
+      link.addEventListener("click", () => {
         clickSound.currentTime = 0;
         clickSound.play();
       });
