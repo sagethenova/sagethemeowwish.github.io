@@ -352,10 +352,11 @@
   <script>
     // Google Translate
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement(
-        {pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE},
-        'google_translate_element'
-      );
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'ru,es,fr,de,it,zh-CN,en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
     }
 
     // Floating Hearts
