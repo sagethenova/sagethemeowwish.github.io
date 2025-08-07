@@ -2,66 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Web Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>sagethenova</title>
   <style>
+    /* Reset & Background */
     body {
       margin: 0;
       padding: 0;
-      background-image: url('background.png');
+      background: url('background.png') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      font-family: sans-serif;
-      color: white;
-      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      color: #fff;
+    }
+
+    /* Floating Hearts */
+    .hearts {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .heart {
+      position: absolute;
+      background-color: pink;
+      transform: rotate(45deg);
+      opacity: 0.7;
+      animation: floatUp 6s linear infinite;
+    }
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      background-color: pink;
+      border-radius: 50%;
+    }
+    .heart::before {
+      width: 20px; height: 20px;
+      top: -10px; left: 0;
+    }
+    .heart::after {
+      width: 20px; height: 20px;
+      left: -10px; top: 0;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
     }
 
     /* Welcome Overlay */
-    .overlay {
+    #overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.85);
-      color: white;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.7s ease;
+      color: #fff;
+      text-align: center;
+      padding: 0 1rem;
     }
-
-    .overlay.hidden {
+    #overlay.hidden {
       opacity: 0;
       pointer-events: none;
     }
+    #overlay h1 {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+    }
+    #overlay p {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
 
-    /* Main Content */
+    /* Main Content Box */
     .content {
-      margin-top: 100px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+      position: relative;
+      z-index: 2;
+      max-width: 90%;
+      text-align: center;
     }
-
-    a {
+    .content h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+    .content a {
       display: block;
-      margin: 30px 0;
-      font-size: 28px;
-      color: white;
+      color: #ff99cc;
+      font-weight: bold;
       text-decoration: none;
-      transition: transform 0.2s;
+      margin: 1.2rem 0;
+      font-size: 1.4rem;
+      transition: color 0.3s ease;
+    }
+    .content a:hover {
+      color: #ff66aa;
+    }
+    .content p {
+      margin-top: 1.5rem;
+      font-size: 1rem;
     }
 
-    a:hover {
-      transform: scale(1.05);
+    /* Responsive */
+    @media (max-width: 600px) {
+      #overlay h1 {
+        font-size: 1.8rem;
+      }
+      #overlay p {
+        font-size: 1rem;
+      }
+      .content h1 {
+        font-size: 1.6rem;
+      }
+      .content {
+        padding: 1.2rem;
+      }
+      .content a {
+        font-size: 1.2rem;
+        margin: 1rem 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Welcome Popup -->
-  <div class="overlay" id="welcomeOverlay">
+  <!-- Floating Hearts -->
+  <div class="hearts" id="hearts"></div>
+
+  <!-- Welcome Overlay -->
+  <div id="overlay">
     <h1>Welcome to my web page</h1>
     <p>I made this so you can find me more easily.</p>
-    <p><strong>Click the page to continue.</strong></p>
+    <p><strong>Click anywhere to continue.</strong></p>
   </div>
 
   <!-- Sound Effects -->
@@ -69,48 +163,67 @@
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
   <!-- Main Content -->
-  <div class="content">
-    <h2>My Links</h2>
-    <a href="https://example.com/link1" target="_blank">Link 1</a>
-    <a href="https://example.com/link2" target="_blank">Link 2</a>
-    <a href="https://example.com/link3" target="_blank">Link 3</a>
+  <div class="content" id="mainContent" style="display:none;">
+    <h1>Welcome to sagethenova.com</h1>
+
+    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
+
+    <p>you are Fluffy balls 🐾</p>
   </div>
 
-  <!-- Script for Interaction and Sound -->
+  <!-- Scripts -->
   <script>
+    const heartContainer = document.getElementById("hearts");
+    for (let i = 0; i < 30; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+      heart.style.opacity = 0.3 + Math.random() * 0.7;
+      const size = 10 + Math.random() * 15;
+      heart.style.width = heart.style.height = size + "px";
+      heartContainer.appendChild(heart);
+    }
+
+    const overlay = document.getElementById("overlay");
+    const mainContent = document.getElementById("mainContent");
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
-    const overlay = document.getElementById("welcomeOverlay");
 
     let soundsEnabled = false;
 
-    function enableSite() {
+    overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
         clickSound.play().catch(() => {});
         soundsEnabled = true;
       }
       overlay.classList.add("hidden");
-    }
+      setTimeout(() => {
+        overlay.style.display = "none";
+        mainContent.style.display = "block";
+      }, 700);
+    });
 
-    // Click anywhere on overlay to continue
-    overlay.addEventListener("click", enableSite);
-
-    // Add sound effects to links
-    document.querySelectorAll("a").forEach(link => {
+    document.querySelectorAll(".content a").forEach(link => {
       link.addEventListener("mouseover", () => {
         if (soundsEnabled) {
           hoverSound.currentTime = 0;
-          hoverSound.play();
+          hoverSound.play().catch(() => {});
         }
       });
       link.addEventListener("click", () => {
         if (soundsEnabled) {
           clickSound.currentTime = 0;
-          clickSound.play();
+          clickSound.play().catch(() => {});
         }
       });
     });
   </script>
+
 </body>
 </html>
