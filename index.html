@@ -3,29 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>sagethenova</title>
+  <title>Sagethenova's Page</title>
   <style>
-    /* Reset & Background */
     body {
       margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
       background: url('background.png') no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      color: white;
       text-align: center;
+      overflow-x: hidden;
     }
 
     /* Floating Hearts */
     .hearts {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
@@ -47,12 +41,16 @@
       border-radius: 50%;
     }
     .heart::before {
-      width: 20px; height: 20px;
-      top: -10px; left: 0;
+      width: 20px;
+      height: 20px;
+      top: -10px;
+      left: 0;
     }
     .heart::after {
-      width: 20px; height: 20px;
-      left: -10px; top: 0;
+      width: 20px;
+      height: 20px;
+      left: -10px;
+      top: 0;
     }
     @keyframes floatUp {
       0% {
@@ -65,7 +63,7 @@
       }
     }
 
-    /* Overlay */
+    /* Welcome Overlay */
     #overlay {
       position: fixed;
       top: 0; left: 0;
@@ -75,13 +73,11 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 10000;
+      z-index: 9999;
       transition: opacity 0.7s ease;
       color: #fff;
-      padding: 1rem;
-      cursor: pointer;
-      user-select: none;
       text-align: center;
+      padding: 0 1rem;
     }
     #overlay.hidden {
       opacity: 0;
@@ -96,113 +92,97 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Main Content & About Page */
-    #mainContent, #aboutPage {
-      display: none;
-      max-width: 90vw;
-      margin: 0 auto;
+    /* Main Content Box */
+    .content {
+      background-color: rgba(0, 0, 0, 0.6);
       padding: 2rem;
-      background: rgba(0, 0, 0, 0.6);
       border-radius: 15px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
       position: relative;
-      z-index: 10;
-      color: #fff;
+      z-index: 2;
+      max-width: 90%;
+      text-align: center;
+      margin: 80px auto 120px auto;
     }
-
-    /* Show the main content by default after overlay closes */
-    #mainContent.active, #aboutPage.active {
-      display: block;
+    .content h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
     }
-
-    /* Link Buttons with bubble effect */
-    .link-button {
+    .content a {
       display: block;
-      width: 250px;
-      margin: 20px auto;
-      padding: 15px;
-      font-size: 1.3rem;
-      color: #fff;
-      background: rgba(255, 105, 180, 0.6);
-      border: 2px solid #ff69b4;
-      border-radius: 30px;
-      cursor: pointer;
+      color: #ff99cc;
+      font-weight: bold;
       text-decoration: none;
-      box-shadow: 0 0 15px #ff69b4;
-      transition: background 0.3s ease, transform 0.3s ease;
-      user-select: none;
+      margin: 1.2rem 0;
+      font-size: 1.4rem;
+      transition: color 0.3s ease;
     }
-    .link-button:hover {
-      background: rgba(255, 105, 180, 0.85);
-      transform: scale(1.1);
-      box-shadow: 0 0 25px #ff1493;
+    .content a:hover {
+      color: #ff66aa;
+    }
+    .content p {
+      margin-top: 1.5rem;
+      font-size: 1rem;
+    }
+
+    /* About page adjustments */
+    #aboutPage ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto 1rem auto;
+      max-width: 320px;
+      text-align: left;
+    }
+    #aboutPage ul li {
+      margin-bottom: 6px;
+    }
+    #aboutPage {
+      display: none;
+      background-color: rgba(0,0,0,0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+      max-width: 90%;
+      margin: 80px auto 120px auto;
+      text-align: left;
+      color: #fff;
+      position: relative;
+      z-index: 2;
     }
 
     /* Navigation Buttons */
     .nav-button {
       position: fixed;
-      bottom: 20px;
-      padding: 12px 25px;
-      background-color: rgba(30, 30, 30, 0.8);
-      color: white;
-      border-radius: 15px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      user-select: none;
-      box-shadow: 0 0 15px #ff69b4;
-      border: 2px solid #ff69b4;
-      transition: background 0.3s ease, transform 0.3s ease;
-      z-index: 10001;
-    }
-    .nav-button:hover {
-      background-color: rgba(255, 105, 180, 0.85);
-      transform: scale(1.05);
-      box-shadow: 0 0 25px #ff1493;
-    }
-    .nav-button.back-button {
-      left: 20px;
-      right: auto;
-    }
-    .nav-button.next-button {
+      bottom: 70px;
       right: 20px;
-      left: auto;
+      padding: 12px 20px;
+      background-color: #222;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      z-index: 10000;
+      border: none;
+    }
+    .back-button {
+      right: auto;
+      left: 20px;
     }
 
-    /* About Me content styling */
-    #aboutPage ul {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-      text-align: left;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #aboutPage ul li {
-      margin: 0.4rem 0;
-      font-size: 1.1rem;
-    }
-    #aboutPage p {
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0.8rem auto;
-    }
-
-    /* Audio player fixed bottom center */
+    /* Audio Player Container */
     #audioContainer {
       position: fixed;
       bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 9999;
-      display: none;
-      user-select: none;
+      z-index: 10000;
+      display: block;
     }
     #bgMusic {
       width: 320px;
-      border-radius: 12px;
+      max-width: 90vw;
+      border-radius: 10px;
       outline: none;
-      filter: drop-shadow(0 0 5px #ff69b4);
     }
 
     /* Responsive */
@@ -213,20 +193,21 @@
       #overlay p {
         font-size: 1rem;
       }
-      .link-button {
-        width: 90%;
-        font-size: 1.1rem;
+      .content h1 {
+        font-size: 1.6rem;
       }
-      #aboutPage ul li {
-        font-size: 1rem;
+      .content a {
+        font-size: 1.2rem;
       }
-      #aboutPage p {
-        font-size: 1rem;
-        max-width: 90vw;
+      .nav-button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
       }
       #bgMusic {
         width: 90vw;
-        max-width: 320px;
+      }
+      #aboutPage ul {
+        max-width: 100%;
       }
     }
   </style>
@@ -236,27 +217,30 @@
   <!-- Floating Hearts -->
   <div class="hearts" id="hearts"></div>
 
-  <!-- Overlay -->
-  <div id="overlay" title="Click to continue">
+  <!-- Welcome Overlay -->
+  <div id="overlay">
     <h1>Welcome to my web page</h1>
     <p>I made this so you can find me more easily.</p>
     <p><strong>Click anywhere to continue.</strong></p>
   </div>
 
   <!-- Main Content -->
-  <div id="mainContent" class="active">
+  <div class="content" id="mainContent" style="display:none;">
     <h1>Welcome to sagethenova.com</h1>
-    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer" class="link-button">X (Twitter)</a>
-    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer" class="link-button">Bluesky</a>
-    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer" class="link-button">VRChat</a>
-    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer" class="link-button">Spotify</a>
-    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer" class="link-button">Fediverse</a>
-    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer" class="link-button">YouTube</a>
+
+    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
+    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
+
     <p>you are Fluffy balls 🐾</p>
-    <button class="nav-button next-button" id="nextPageBtn" aria-label="Go to About Me page">Next Page →</button>
+
+    <button class="nav-button" id="nextPageBtn">Next Page →</button>
   </div>
 
-  <!-- About Me Page -->
+  <!-- About Page -->
   <div id="aboutPage">
     <h2>About Me</h2>
     <p>I have Xbox Game Pass and I play Steam games.</p>
@@ -284,12 +268,16 @@
     <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
     <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
     <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
-    <button class="nav-button back-button" id="backBtn" aria-label="Back to main page">← Back</button>
+
+    <button class="nav-button back-button" id="backBtn">← Back</button>
   </div>
 
   <!-- Audio Player -->
   <div id="audioContainer">
-    <audio id="bgMusic" src="http://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop muted></audio>
+    <audio id="bgMusic" controls loop volume="0.05" muted>
+      <source src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
   </div>
 
   <!-- Sound Effects -->
@@ -310,7 +298,6 @@
       heartContainer.appendChild(heart);
     }
 
-    // Elements
     const overlay = document.getElementById("overlay");
     const mainContent = document.getElementById("mainContent");
     const aboutPage = document.getElementById("aboutPage");
@@ -321,26 +308,26 @@
 
     let soundsEnabled = false;
 
-    // Overlay click - show main content & play sounds/music
+    // Overlay click to start interaction and sounds
     overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
         clickSound.play().catch(() => {});
-        bgMusic.volume = 0.05;
         bgMusic.muted = false;
+        bgMusic.volume = 0.05;
         bgMusic.play().catch(() => {});
         soundsEnabled = true;
       }
       overlay.classList.add("hidden");
       setTimeout(() => {
         overlay.style.display = "none";
-        mainContent.classList.add("active");
+        mainContent.style.display = "block";
         audioContainer.style.display = "block";
       }, 700);
     });
 
-    // Hover and click sounds for all links/buttons
-    document.querySelectorAll(".link-button, .nav-button").forEach(el => {
+    // Hover and click sounds on links and buttons
+    document.querySelectorAll(".content a, .nav-button").forEach(el => {
       el.addEventListener("mouseover", () => {
         if (soundsEnabled) {
           hoverSound.currentTime = 0;
@@ -355,17 +342,20 @@
       });
     });
 
-    // Navigation buttons
+    // Next Page button click
     document.getElementById("nextPageBtn").addEventListener("click", () => {
       clickSound.play().catch(() => {});
-      mainContent.classList.remove("active");
-      aboutPage.classList.add("active");
+      mainContent.style.display = "none";
+      aboutPage.style.display = "block";
+      audioContainer.style.display = "none";  // Hide music on about page
     });
 
+    // Back button click
     document.getElementById("backBtn").addEventListener("click", () => {
       clickSound.play().catch(() => {});
-      aboutPage.classList.remove("active");
-      mainContent.classList.add("active");
+      aboutPage.style.display = "none";
+      mainContent.style.display = "block";
+      audioContainer.style.display = "block";  // Show music on main page
     });
   </script>
 </body>
