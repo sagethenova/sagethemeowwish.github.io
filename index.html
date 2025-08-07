@@ -107,31 +107,6 @@
       }
     }
 
-    /* Walking cats */
-    .cat-walk {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      height: 50px;
-      overflow: hidden;
-      z-index: 3;
-    }
-
-    .cat {
-      position: absolute;
-      font-size: 30px;
-      animation: walk 20s linear infinite;
-    }
-
-    @keyframes walk {
-      0% {
-        left: -50px;
-      }
-      100% {
-        left: 100vw;
-      }
-    }
-
     @media screen and (max-width: 600px) {
       h1 {
         font-size: 1.5rem;
@@ -145,50 +120,4 @@
         font-size: 1rem;
       }
     }
-  </style>
-</head>
-<body>
-  <!-- Floating hearts -->
-  <div class="hearts">
-    <script>
-      for (let i = 0; i < 30; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = 4 + Math.random() * 3 + "s";
-        heart.style.opacity = 0.3 + Math.random() * 0.7;
-        heart.style.width = heart.style.height = 10 + Math.random() * 15 + "px";
-        document.body.querySelector(".hearts").appendChild(heart);
-      }
-    </script>
-  </div>
-
-  <!-- Main content -->
-  <div class="container">
-    <h1>sagethenova home</h1>
-    <p><a href="https://x.com/sagethenova">X (Twitter)</a></p>
-    <p><a href="https://bsky.app/profile/sagethenova.bsky.social">Bluesky</a></p>
-    <p><a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac">VRChat</a></p>
-    <p><a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq">Spotify</a></p>
-    <p><a href="https://woof.tech/@sagethenova">Fediverse</a></p>
-    <p>You are Fluffy balls</p>
-  </div>
-
-  <!-- Walking cats -->
-  <div class="cat-walk" id="catWalk">
-    <script>
-      const catWalk = document.getElementById("catWalk");
-      const emojis = ["🐈", "🐱", "😺", "🐾"];
-      for (let i = 0; i < 10; i++) {
-        const cat = document.createElement("div");
-        cat.className = "cat";
-        cat.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        cat.style.top = Math.random() * 20 + "px";
-        cat.style.left = (-100 * i) + "px";
-        cat.style.animationDelay = i * 2 + "s";
-        catWalk.appendChild(cat);
-      }
-    </script>
-  </div>
-</body>
-</html>
+  </sty
