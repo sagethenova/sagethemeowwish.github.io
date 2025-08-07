@@ -13,12 +13,13 @@
       background-size: cover;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
       position: relative;
       color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
     /* Floating Hearts */
@@ -64,7 +65,7 @@
       }
     }
 
-    /* Welcome Overlay */
+    /* Overlay */
     #overlay {
       position: fixed;
       top: 0; left: 0;
@@ -74,11 +75,13 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      z-index: 10000;
       transition: opacity 0.7s ease;
       color: #fff;
+      padding: 1rem;
+      cursor: pointer;
+      user-select: none;
       text-align: center;
-      padding: 0 1rem;
     }
     #overlay.hidden {
       opacity: 0;
@@ -93,56 +96,113 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Main Content Box */
-    .content {
-      background-color: rgba(0, 0, 0, 0.6);
+    /* Main Content & About Page */
+    #mainContent, #aboutPage {
+      display: none;
+      max-width: 90vw;
+      margin: 0 auto;
       padding: 2rem;
+      background: rgba(0, 0, 0, 0.6);
       border-radius: 15px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
       position: relative;
-      z-index: 2;
-      max-width: 90%;
-      text-align: center;
-    }
-    .content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-    .content a {
-      display: block;
-      color: #ff99cc;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 1.2rem 0;
-      font-size: 1.4rem;
-      transition: color 0.3s ease;
-    }
-    .content a:hover {
-      color: #ff66aa;
-    }
-    .content p {
-      margin-top: 1.5rem;
-      font-size: 1rem;
+      z-index: 10;
+      color: #fff;
     }
 
-    /* Audio Player fixed at bottom center */
+    /* Show the main content by default after overlay closes */
+    #mainContent.active, #aboutPage.active {
+      display: block;
+    }
+
+    /* Link Buttons with bubble effect */
+    .link-button {
+      display: block;
+      width: 250px;
+      margin: 20px auto;
+      padding: 15px;
+      font-size: 1.3rem;
+      color: #fff;
+      background: rgba(255, 105, 180, 0.6);
+      border: 2px solid #ff69b4;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 15px #ff69b4;
+      transition: background 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+    .link-button:hover {
+      background: rgba(255, 105, 180, 0.85);
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #ff1493;
+    }
+
+    /* Navigation Buttons */
+    .nav-button {
+      position: fixed;
+      bottom: 20px;
+      padding: 12px 25px;
+      background-color: rgba(30, 30, 30, 0.8);
+      color: white;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      user-select: none;
+      box-shadow: 0 0 15px #ff69b4;
+      border: 2px solid #ff69b4;
+      transition: background 0.3s ease, transform 0.3s ease;
+      z-index: 10001;
+    }
+    .nav-button:hover {
+      background-color: rgba(255, 105, 180, 0.85);
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #ff1493;
+    }
+    .nav-button.back-button {
+      left: 20px;
+      right: auto;
+    }
+    .nav-button.next-button {
+      right: 20px;
+      left: auto;
+    }
+
+    /* About Me content styling */
+    #aboutPage ul {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+      text-align: left;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #aboutPage ul li {
+      margin: 0.4rem 0;
+      font-size: 1.1rem;
+    }
+    #aboutPage p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0.8rem auto;
+    }
+
+    /* Audio player fixed bottom center */
     #audioContainer {
       position: fixed;
       bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10000;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 6px 12px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.7);
-      display: none; /* hidden initially */
+      z-index: 9999;
+      display: none;
+      user-select: none;
     }
-    #audioContainer audio {
-      width: 300px;
-      max-width: 90vw;
+    #bgMusic {
+      width: 320px;
+      border-radius: 12px;
       outline: none;
-      border-radius: 8px;
+      filter: drop-shadow(0 0 5px #ff69b4);
     }
 
     /* Responsive */
@@ -153,15 +213,20 @@
       #overlay p {
         font-size: 1rem;
       }
-      .content h1 {
-        font-size: 1.6rem;
+      .link-button {
+        width: 90%;
+        font-size: 1.1rem;
       }
-      .content {
-        padding: 1.2rem;
+      #aboutPage ul li {
+        font-size: 1rem;
       }
-      .content a {
-        font-size: 1.2rem;
-        margin: 1rem 0;
+      #aboutPage p {
+        font-size: 1rem;
+        max-width: 90vw;
+      }
+      #bgMusic {
+        width: 90vw;
+        max-width: 320px;
       }
     }
   </style>
@@ -171,43 +236,65 @@
   <!-- Floating Hearts -->
   <div class="hearts" id="hearts"></div>
 
-  <!-- Welcome Overlay -->
-  <div id="overlay">
+  <!-- Overlay -->
+  <div id="overlay" title="Click to continue">
     <h1>Welcome to my web page</h1>
     <p>I made this so you can find me more easily.</p>
     <p><strong>Click anywhere to continue.</strong></p>
   </div>
 
+  <!-- Main Content -->
+  <div id="mainContent" class="active">
+    <h1>Welcome to sagethenova.com</h1>
+    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer" class="link-button">X (Twitter)</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer" class="link-button">Bluesky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer" class="link-button">VRChat</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer" class="link-button">Spotify</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer" class="link-button">Fediverse</a>
+    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer" class="link-button">YouTube</a>
+    <p>you are Fluffy balls 🐾</p>
+    <button class="nav-button next-button" id="nextPageBtn" aria-label="Go to About Me page">Next Page →</button>
+  </div>
+
+  <!-- About Me Page -->
+  <div id="aboutPage">
+    <h2>About Me</h2>
+    <p>I have Xbox Game Pass and I play Steam games.</p>
+    <p>My favorite Steam games are:</p>
+    <ul>
+      <li>VR Chat</li>
+      <li>Call of Duty: Cold War</li>
+      <li>POW World</li>
+      <li>Terraria</li>
+      <li>Wild Assault</li>
+      <li>Atlas</li>
+      <li>Forewarned</li>
+      <li>Call of Duty: Black Ops 3</li>
+      <li>Cattails</li>
+      <li>Gunfire Reborn</li>
+      <li>Devour</li>
+      <li>Lethal Company</li>
+      <li>Star Trek Bridge Crew</li>
+      <li>Ironwolf VR</li>
+      <li>Portal to Indigo Park</li>
+      <li>War Trigger 1, 2, 3</li>
+      <li>7 Days to Die (my most favorite)</li>
+      <li>Resonate</li>
+    </ul>
+    <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
+    <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
+    <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
+    <button class="nav-button back-button" id="backBtn" aria-label="Back to main page">← Back</button>
+  </div>
+
+  <!-- Audio Player -->
+  <div id="audioContainer">
+    <audio id="bgMusic" src="http://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop muted></audio>
+  </div>
+
   <!-- Sound Effects -->
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
-
-  <!-- Audio player container (hidden at first) -->
-  <div id="audioContainer">
-    <audio
-      id="bgMusic"
-      title="Archers Of Agincourt - I'll Raise The Sun (You Raise The Moon)"
-      src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3"
-      preload="auto"
-      controls
-      loop
-      muted
-    ></audio>
-  </div>
-
-  <!-- Main Content -->
-  <div class="content" id="mainContent" style="display:none;">
-    <h1>Welcome to sagethenova.com</h1>
-
-    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
-    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
-    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
-    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
-
-    <p>website made by sagethenova .2025. 🐾</p>
-  </div>
 
   <script>
     // Floating Hearts
@@ -223,24 +310,23 @@
       heartContainer.appendChild(heart);
     }
 
+    // Elements
     const overlay = document.getElementById("overlay");
     const mainContent = document.getElementById("mainContent");
+    const aboutPage = document.getElementById("aboutPage");
+    const bgMusic = document.getElementById("bgMusic");
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
-    const bgMusic = document.getElementById("bgMusic");
     const audioContainer = document.getElementById("audioContainer");
 
     let soundsEnabled = false;
 
-    window.addEventListener("load", () => {
-      // Set volume to 5% on load
-      bgMusic.volume = 0.05;
-    });
-
+    // Overlay click - show main content & play sounds/music
     overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
         clickSound.play().catch(() => {});
+        bgMusic.volume = 0.05;
         bgMusic.muted = false;
         bgMusic.play().catch(() => {});
         soundsEnabled = true;
@@ -248,27 +334,39 @@
       overlay.classList.add("hidden");
       setTimeout(() => {
         overlay.style.display = "none";
-        mainContent.style.display = "block";
-        audioContainer.style.display = "block"; // Show audio player
+        mainContent.classList.add("active");
+        audioContainer.style.display = "block";
       }, 700);
     });
 
-    // Hover and click sounds on links
-    document.querySelectorAll(".content a").forEach(link => {
-      link.addEventListener("mouseover", () => {
+    // Hover and click sounds for all links/buttons
+    document.querySelectorAll(".link-button, .nav-button").forEach(el => {
+      el.addEventListener("mouseover", () => {
         if (soundsEnabled) {
           hoverSound.currentTime = 0;
           hoverSound.play().catch(() => {});
         }
       });
-      link.addEventListener("click", () => {
+      el.addEventListener("click", () => {
         if (soundsEnabled) {
           clickSound.currentTime = 0;
           clickSound.play().catch(() => {});
         }
       });
     });
-  </script>
 
+    // Navigation buttons
+    document.getElementById("nextPageBtn").addEventListener("click", () => {
+      clickSound.play().catch(() => {});
+      mainContent.classList.remove("active");
+      aboutPage.classList.add("active");
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      clickSound.play().catch(() => {});
+      aboutPage.classList.remove("active");
+      mainContent.classList.add("active");
+    });
+  </script>
 </body>
 </html>
