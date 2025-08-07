@@ -125,6 +125,25 @@
       font-size: 1rem;
     }
 
+    /* Mute Button */
+    #muteBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+      transition: background-color 0.3s;
+    }
+    #muteBtn:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+
     /* Responsive */
     @media (max-width: 600px) {
       #overlay h1 {
@@ -142,6 +161,12 @@
       .content a {
         font-size: 1.2rem;
         margin: 1rem 0;
+      }
+      #muteBtn {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 15px;
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -162,6 +187,9 @@
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
+  <!-- Background music stream -->
+  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" loop></audio>
+
   <!-- Main Content -->
   <div class="content" id="mainContent" style="display:none;">
     <h1>Welcome to sagethenova.com</h1>
@@ -171,12 +199,17 @@
     <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
     <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
     <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
+    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
 
     <p>you are Fluffy balls 🐾</p>
   </div>
 
+  <!-- Mute/Unmute Button -->
+  <button id="muteBtn" aria-label="Toggle background music">Unmute Music</button>
+
   <!-- Scripts -->
   <script>
+    // Floating Hearts
     const heartContainer = document.getElementById("hearts");
     for (let i = 0; i < 30; i++) {
       const heart = document.createElement("div");
@@ -193,9 +226,25 @@
     const mainContent = document.getElementById("mainContent");
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
+    const bgMusic = document.getElementById("bgMusic");
+    const muteBtn = document.getElementById("muteBtn");
 
     let soundsEnabled = false;
+    let musicMuted = true;
 
+    // Start background music muted (to avoid autoplay block)
+    bgMusic.volume = 0.15;
+    bgMusic.muted = true;
+
+    // Toggle mute button text and mute/unmute music
+    function toggleMusic() {
+      musicMuted = !musicMuted;
+      bgMusic.muted = musicMuted;
+      muteBtn.textContent = musicMuted ? "Unmute Music" : "Mute Music";
+    }
+    muteBtn.addEventListener("click", toggleMusic);
+
+    // Unlock sounds + show main content on overlay click
     overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
@@ -209,6 +258,7 @@
       }, 700);
     });
 
+    // Hover and click sounds on links
     document.querySelectorAll(".content a").forEach(link => {
       link.addEventListener("mouseover", () => {
         if (soundsEnabled) {
