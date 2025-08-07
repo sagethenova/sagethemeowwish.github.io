@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>sagethenova</title>
   <style>
+    /* Background */
     body {
       margin: 0;
       padding: 0;
@@ -17,16 +18,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
+    /* Main content container */
     .container {
-      background-color: rgba(0, 0, 0, 0.6); /* dark transparent background */
+      background-color: rgba(0, 0, 0, 0.6);
       padding: 2rem;
       border-radius: 12px;
       color: white;
       text-align: center;
       max-width: 90%;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      z-index: 2;
+      position: relative;
     }
 
     h1 {
@@ -35,7 +40,7 @@
     }
 
     a {
-      color: #66ccff;
+      color: #ff99cc;
       text-decoration: none;
       display: inline-block;
       margin: 0.5rem 0;
@@ -48,6 +53,59 @@
 
     p {
       margin: 0.5rem 0;
+    }
+
+    /* Heart animation container */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(45deg);
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
     }
 
     @media screen and (max-width: 600px) {
@@ -66,6 +124,21 @@
   </style>
 </head>
 <body>
+  <div class="hearts">
+    <!-- Generate multiple hearts at random positions -->
+    <script>
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+        heart.style.opacity = 0.3 + Math.random() * 0.7;
+        heart.style.width = heart.style.height = 10 + Math.random() * 15 + "px";
+        document.body.querySelector(".hearts").appendChild(heart);
+      }
+    </script>
+  </div>
+
   <div class="container">
     <h1>sagethenova home</h1>
     <p><a href="https://x.com/sagethenova">X (Twitter)</a></p>
