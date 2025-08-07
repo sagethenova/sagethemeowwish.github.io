@@ -109,6 +109,14 @@
       font-size: 1rem;
     }
 
+    /* Visitor counter styling */
+    #visitorCountContainer {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #ffb6c1;
+      font-weight: bold;
+    }
+
     /* Mobile */
     @media (max-width: 600px) {
       .content h1 {
@@ -120,6 +128,10 @@
       }
 
       .content a {
+        font-size: 1rem;
+      }
+
+      #visitorCountContainer {
         font-size: 1rem;
       }
     }
@@ -134,17 +146,23 @@
   <div class="content">
     <h1>Welcome to sagethenova.com</h1>
 
-    <a href="https://x.com/sagethenova" target="_blank">X (Twitter)</a>
-    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank">Bluesky</a>
-    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank">VRChat</a>
-    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank">Spotify</a>
-    <a href="https://woof.tech/@sagethenova" target="_blank">Fediverse</a>
+    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
 
     <p>you are Fluffy balls 🐾</p>
+
+    <!-- Visitor counter -->
+    <div id="visitorCountContainer">
+      Visitors: <span id="visitorCount">loading...</span>
+    </div>
   </div>
 
-  <!-- Heart Animation Script -->
+  <!-- Heart Animation & Visitor Counter Script -->
   <script>
+    // Create floating hearts
     const heartContainer = document.getElementById("hearts");
     for (let i = 0; i < 30; i++) {
       const heart = document.createElement("div");
@@ -156,6 +174,16 @@
       heart.style.width = heart.style.height = size + "px";
       heartContainer.appendChild(heart);
     }
+
+    // Fetch visitor count from countapi.xyz
+    fetch('https://api.countapi.xyz/hit/sagethenova-com/visits')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('visitorCount').textContent = data.value;
+      })
+      .catch(() => {
+        document.getElementById('visitorCount').textContent = 'N/A';
+      });
   </script>
 </body>
 </html>
