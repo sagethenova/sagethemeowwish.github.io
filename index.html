@@ -3,23 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sagethenova's Page</title>
+  <title>sagethenova</title>
   <style>
+    /* Reset & Background */
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 0;
       background: url('background.png') no-repeat center center fixed;
       background-size: cover;
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      color: #fff;
     }
 
     /* Floating Hearts */
     .hearts {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
@@ -41,16 +46,12 @@
       border-radius: 50%;
     }
     .heart::before {
-      width: 20px;
-      height: 20px;
-      top: -10px;
-      left: 0;
+      width: 20px; height: 20px;
+      top: -10px; left: 0;
     }
     .heart::after {
-      width: 20px;
-      height: 20px;
-      left: -10px;
-      top: 0;
+      width: 20px; height: 20px;
+      left: -10px; top: 0;
     }
     @keyframes floatUp {
       0% {
@@ -102,87 +103,132 @@
       z-index: 2;
       max-width: 90%;
       text-align: center;
-      margin: 80px auto 120px auto;
     }
     .content h1 {
       font-size: 2.2rem;
       margin-bottom: 1rem;
     }
     .content a {
+      position: relative;
       display: block;
-      color: #ff99cc;
+      color: #bb99ff;
       font-weight: bold;
       text-decoration: none;
-      margin: 1.2rem 0;
-      font-size: 1.4rem;
+      margin: 1.5rem 0;
+      font-size: 1.5rem;
       transition: color 0.3s ease;
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+      background: rgba(128, 0, 255, 0.3);
+      box-shadow:
+        0 0 8px rgba(128, 0, 255, 0.6),
+        0 0 20px rgba(128, 0, 255, 0.3);
+      cursor: pointer;
     }
     .content a:hover {
-      color: #ff66aa;
+      color: #ddbbff;
+      background: rgba(180, 80, 255, 0.5);
+      box-shadow:
+        0 0 12px rgba(180, 80, 255, 0.8),
+        0 0 30px rgba(180, 80, 255, 0.5);
     }
     .content p {
       margin-top: 1.5rem;
       font-size: 1rem;
     }
 
-    /* About page adjustments */
-    #aboutPage ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto 1rem auto;
-      max-width: 320px;
-      text-align: left;
-    }
-    #aboutPage ul li {
-      margin-bottom: 6px;
-    }
+    /* About Page */
     #aboutPage {
       display: none;
-      background-color: rgba(0,0,0,0.6);
+      background-color: rgba(0, 0, 0, 0.6);
       padding: 2rem;
       border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.7);
-      max-width: 90%;
-      margin: 80px auto 120px auto;
-      text-align: left;
-      color: #fff;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
       position: relative;
       z-index: 2;
+      max-width: 90%;
+      color: #ddd;
+      text-align: left;
+      overflow-y: auto;
+      max-height: 80vh;
+      margin: auto;
     }
-
-    /* Navigation Buttons */
-    .nav-button {
-      position: fixed;
-      bottom: 70px;
-      right: 20px;
-      padding: 12px 20px;
-      background-color: #222;
-      color: white;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      z-index: 10000;
+    #aboutPage h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #bb99ff;
+    }
+    #aboutPage ul {
+      list-style: none;
+      padding-left: 0;
+      columns: 2;
+      column-gap: 2rem;
+      font-size: 1.1rem;
+    }
+    #aboutPage ul li {
+      margin-bottom: 0.7rem;
+      padding-left: 1rem;
+      position: relative;
+    }
+    #aboutPage ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #bb99ff;
+      font-weight: bold;
+    }
+    #aboutPage p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+      color: #ccc;
+    }
+    #aboutPage button {
+      margin-top: 1rem;
+      display: block;
+      background: #bb99ff;
       border: none;
+      color: #222;
+      font-weight: bold;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow:
+        0 0 10px rgba(187, 153, 255, 0.8);
+      transition: background 0.3s ease;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .back-button {
-      right: auto;
-      left: 20px;
+    #aboutPage button:hover {
+      background: #ddbbff;
+      box-shadow:
+        0 0 15px rgba(221, 187, 255, 1);
     }
 
-    /* Audio Player Container */
+    /* Audio Player styling */
     #audioContainer {
       position: fixed;
       bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10000;
-      display: block;
+      z-index: 9999;
+      width: 350px;
+      max-width: 90vw;
+      background: rgba(0,0,0,0.4);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(128, 0, 255, 0.7);
+      padding: 0.4rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #bgMusic {
-      width: 320px;
-      max-width: 90vw;
-      border-radius: 10px;
+      width: 100%;
       outline: none;
+      border-radius: 10px;
+      filter: drop-shadow(0 0 4px rgba(128, 0, 255, 0.7));
     }
 
     /* Responsive */
@@ -197,17 +243,14 @@
         font-size: 1.6rem;
       }
       .content a {
-        font-size: 1.2rem;
-      }
-      .nav-button {
-        padding: 10px 16px;
-        font-size: 0.9rem;
-      }
-      #bgMusic {
-        width: 90vw;
+        font-size: 1.3rem;
+        margin: 1rem 0;
       }
       #aboutPage ul {
-        max-width: 100%;
+        columns: 1;
+      }
+      #audioContainer {
+        width: 90vw;
       }
     }
   </style>
@@ -237,7 +280,7 @@
 
     <p>you are Fluffy balls 🐾</p>
 
-    <button class="nav-button" id="nextPageBtn">Next Page →</button>
+    <button id="nextPageBtn" style="margin-top:2rem; padding:1rem 2rem; font-size:1.1rem; border-radius: 40px; background: #bb99ff; border:none; color:#222; cursor:pointer; box-shadow: 0 0 15px rgba(187,153,255,0.8); transition: background 0.3s ease;">Next Page →</button>
   </div>
 
   <!-- About Page -->
@@ -269,21 +312,19 @@
     <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
     <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
 
-    <button class="nav-button back-button" id="backBtn">← Back</button>
-  </div>
-
-  <!-- Audio Player -->
-  <div id="audioContainer">
-    <audio id="bgMusic" controls loop volume="0.05" muted>
-      <source src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
+    <button id="backBtn">← Back</button>
   </div>
 
   <!-- Sound Effects -->
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
+  <!-- Background music stream with controls -->
+  <div id="audioContainer" style="display:none;">
+    <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
+  </div>
+
+  <!-- Scripts -->
   <script>
     // Floating Hearts
     const heartContainer = document.getElementById("hearts");
@@ -301,19 +342,19 @@
     const overlay = document.getElementById("overlay");
     const mainContent = document.getElementById("mainContent");
     const aboutPage = document.getElementById("aboutPage");
-    const bgMusic = document.getElementById("bgMusic");
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
+    const bgMusic = document.getElementById("bgMusic");
     const audioContainer = document.getElementById("audioContainer");
+    const nextPageBtn = document.getElementById("nextPageBtn");
+    const backBtn = document.getElementById("backBtn");
 
     let soundsEnabled = false;
 
-    // Overlay click to start interaction and sounds
     overlay.addEventListener("click", () => {
       if (!soundsEnabled) {
         hoverSound.play().catch(() => {});
         clickSound.play().catch(() => {});
-        bgMusic.muted = false;
         bgMusic.volume = 0.05;
         bgMusic.play().catch(() => {});
         soundsEnabled = true;
@@ -322,12 +363,12 @@
       setTimeout(() => {
         overlay.style.display = "none";
         mainContent.style.display = "block";
-        audioContainer.style.display = "block";
+        audioContainer.style.display = "flex";
       }, 700);
     });
 
     // Hover and click sounds on links and buttons
-    document.querySelectorAll(".content a, .nav-button").forEach(el => {
+    document.querySelectorAll(".content a, button").forEach(el => {
       el.addEventListener("mouseover", () => {
         if (soundsEnabled) {
           hoverSound.currentTime = 0;
@@ -342,21 +383,21 @@
       });
     });
 
-    // Next Page button click
-    document.getElementById("nextPageBtn").addEventListener("click", () => {
-      clickSound.play().catch(() => {});
+    nextPageBtn.addEventListener("click", () => {
       mainContent.style.display = "none";
       aboutPage.style.display = "block";
-      audioContainer.style.display = "none";  // Hide music on about page
+      // Keep audio player visible but move it above bottom margin so no overlap
+      audioContainer.style.bottom = "10px";
+      audioContainer.style.display = "flex";
     });
 
-    // Back button click
-    document.getElementById("backBtn").addEventListener("click", () => {
-      clickSound.play().catch(() => {});
+    backBtn.addEventListener("click", () => {
       aboutPage.style.display = "none";
       mainContent.style.display = "block";
-      audioContainer.style.display = "block";  // Show music on main page
+      audioContainer.style.bottom = "10px";
+      audioContainer.style.display = "flex";
     });
   </script>
+
 </body>
 </html>
