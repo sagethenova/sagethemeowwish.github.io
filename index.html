@@ -1,439 +1,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>sagethenova</title>
-  <style>
-    /* Reset & Background */
-    body {
-      margin: 0;
-      padding: 0;
-      background: url('background1.png') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      color: #fff;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>sagethenova</title>
+<style>
+/* Reset & Background */
+body {
+  margin: 0;
+  padding: 0;
+  background: url('background1.png') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+  color: #fff;
+}
 
-    /* Google Translate container */
-    #google_translate_element {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 10000;
-      background: rgba(0,0,0,0.6);
-      padding: 5px 10px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      color: #fff;
-    }
+/* Google Translate */
+#google_translate_element {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10000;
+  background: rgba(0,0,0,0.6);
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  color: #fff;
+}
 
-    /* Floating Hearts */
-    .hearts {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-    .heart {
-      position: absolute;
-      background-color: pink;
-      transform: rotate(45deg);
-      opacity: 0.7;
-      animation: floatUp 6s linear infinite;
-    }
-    .heart::before,
-    .heart::after {
-      content: '';
-      position: absolute;
-      background-color: pink;
-      border-radius: 50%;
-    }
-    .heart::before {
-      width: 20px; height: 20px;
-      top: -10px; left: 0;
-    }
-    .heart::after {
-      width: 20px; height: 20px;
-      left: -10px; top: 0;
-    }
-    @keyframes floatUp {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
-    }
+/* Hearts */
+.hearts {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+.heart {
+  position: absolute;
+  background-color: pink;
+  transform: rotate(45deg);
+  opacity: 0.7;
+  animation: floatUp 6s linear infinite;
+}
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  background-color: pink;
+  border-radius: 50%;
+}
+.heart::before { width: 20px; height: 20px; top: -10px; left: 0; }
+.heart::after { width: 20px; height: 20px; left: -10px; top: 0; }
+@keyframes floatUp {
+  0% { transform: translateY(100vh) rotate(45deg); opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+}
 
-    /* Welcome Overlay */
-    #overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 0.7s ease;
-      color: #fff;
-      text-align: center;
-      padding: 0 1rem;
-    }
-    #overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #overlay h1 {
-      font-size: 2.4rem;
-      margin-bottom: 1rem;
-    }
-    #overlay p {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
+/* Overlay */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.7s ease;
+  color: #fff;
+  text-align: center;
+  padding: 0 5vw;
+}
+#overlay.hidden { opacity: 0; pointer-events: none; }
+#overlay h1 {
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  margin-bottom: 1rem;
+}
+#overlay p {
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  margin-bottom: 0.5rem;
+}
 
-    /* Main Content Box */
-    .content {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-      position: relative;
-      z-index: 2;
-      max-width: 90%;
-      text-align: center;
-    }
-    .content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-    .content a {
-      position: relative;
-      display: block;
-      color: #bb99ff;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 1.5rem 0;
-      font-size: 1.5rem;
-      transition: color 0.3s ease;
-      padding: 0.7rem 1.5rem;
-      border-radius: 40px;
-      background: rgba(128, 0, 255, 0.3);
-      box-shadow:
-        0 0 8px rgba(128, 0, 255, 0.6),
-        0 0 20px rgba(128, 0, 255, 0.3);
-      cursor: pointer;
-    }
-    .content a:hover {
-      color: #ddbbff;
-      background: rgba(180, 80, 255, 0.5);
-      box-shadow:
-        0 0 12px rgba(180, 80, 255, 0.8),
-        0 0 30px rgba(180, 80, 255, 0.5);
-    }
-    .content p {
-      margin-top: 1.5rem;
-      font-size: 1rem;
-    }
+/* Content Box */
+.content {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: clamp(1rem, 4vw, 2rem);
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+}
+.content h1 {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  margin-bottom: 1rem;
+}
+.content a {
+  display: block;
+  color: #bb99ff;
+  font-weight: bold;
+  text-decoration: none;
+  margin: clamp(0.8rem, 2vw, 1.5rem) auto;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  padding: 0.7rem 1.5rem;
+  border-radius: 40px;
+  background: rgba(128, 0, 255, 0.3);
+  box-shadow: 0 0 8px rgba(128, 0, 255, 0.6), 0 0 20px rgba(128, 0, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: 300px;
+}
+.content a:hover {
+  color: #ddbbff;
+  background: rgba(180, 80, 255, 0.5);
+  box-shadow: 0 0 12px rgba(180, 80, 255, 0.8), 0 0 30px rgba(180, 80, 255, 0.5);
+}
+.content p {
+  margin-top: 1.5rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
 
-    /* About Page */
-    #aboutPage {
-      display: none;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-      position: relative;
-      z-index: 2;
-      max-width: 90%;
-      color: #ddd;
-      text-align: left;
-      overflow-y: auto;
-      max-height: 80vh;
-      margin: auto;
-    }
-    #aboutPage h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #bb99ff;
-    }
-    #aboutPage ul {
-      list-style: none;
-      padding-left: 0;
-      columns: 2;
-      column-gap: 2rem;
-      font-size: 1.1rem;
-    }
-    #aboutPage ul li {
-      margin-bottom: 0.7rem;
-      padding-left: 1rem;
-      position: relative;
-    }
-    #aboutPage ul li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #bb99ff;
-      font-weight: bold;
-    }
-    #aboutPage p {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      line-height: 1.4;
-      color: #ccc;
-    }
-    #aboutPage button {
-      margin-top: 1rem;
-      display: block;
-      background: #bb99ff;
-      border: none;
-      color: #222;
-      font-weight: bold;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 40px;
-      cursor: pointer;
-      box-shadow:
-        0 0 10px rgba(187, 153, 255, 0.8);
-      transition: background 0.3s ease;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #aboutPage button:hover {
-      background: #ddbbff;
-      box-shadow:
-        0 0 15px rgba(221, 187, 255, 1);
-    }
+/* About Page */
+#aboutPage {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: clamp(1rem, 4vw, 2rem);
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  width: 95%;
+  color: #ddd;
+  text-align: left;
+  overflow-y: auto;
+  max-height: 80vh;
+  margin: auto;
+}
+#aboutPage h2 {
+  text-align: center;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  margin-bottom: 1rem;
+  color: #bb99ff;
+}
+#aboutPage ul {
+  list-style: none;
+  padding-left: 0;
+  columns: 2;
+  column-gap: 2rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+#aboutPage ul li {
+  margin-bottom: 0.7rem;
+  padding-left: 1rem;
+  position: relative;
+}
+#aboutPage ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #bb99ff;
+  font-weight: bold;
+}
+#aboutPage p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  color: #ccc;
+}
+#aboutPage button {
+  margin-top: 1rem;
+  display: block;
+  background: #bb99ff;
+  border: none;
+  color: #222;
+  font-weight: bold;
+  padding: 0.7rem 1.5rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(187, 153, 255, 0.8);
+  transition: background 0.3s ease;
+  margin-left: auto;
+  margin-right: auto;
+}
+#aboutPage button:hover {
+  background: #ddbbff;
+  box-shadow: 0 0 15px rgba(221, 187, 255, 1);
+}
 
-    /* Audio Player styling */
-    #audioContainer {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      width: 350px;
-      max-width: 90vw;
-      background: rgba(0,0,0,0.4);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(128, 0, 255, 0.7);
-      padding: 0.4rem 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #bgMusic {
-      width: 100%;
-      outline: none;
-      border-radius: 10px;
-      filter: drop-shadow(0 0 4px rgba(128, 0, 255, 0.7));
-    }
+/* Audio Player */
+#audioContainer {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: min(350px, 90vw);
+  background: rgba(0,0,0,0.4);
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(128, 0, 255, 0.7);
+  padding: 0.4rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#bgMusic {
+  width: 100%;
+  outline: none;
+  border-radius: 10px;
+  filter: drop-shadow(0 0 4px rgba(128, 0, 255, 0.7));
+}
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      #overlay h1 {
-        font-size: 1.8rem;
-      }
-      #overlay p {
-        font-size: 1rem;
-      }
-      .content h1 {
-        font-size: 1.6rem;
-      }
-      .content a {
-        font-size: 1.3rem;
-        margin: 1rem 0;
-      }
-      #aboutPage ul {
-        columns: 1;
-      }
-      #audioContainer {
-        width: 90vw;
-      }
-    }
-  </style>
+/* Mobile tweaks */
+@media (max-width: 800px) {
+  #aboutPage ul { columns: 1; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Google Translate -->
-  <div id="google_translate_element"></div>
+<div id="google_translate_element"></div>
+<div class="hearts" id="hearts"></div>
 
-  <!-- Floating Hearts -->
-  <div class="hearts" id="hearts"></div>
+<div id="overlay">
+  <h1>Welcome to my web page</h1>
+  <p>I made this so you can find me more easily.</p>
+  <p><strong>Click anywhere to continue.</strong></p>
+</div>
 
-  <!-- Welcome Overlay -->
-  <div id="overlay">
-    <h1>Welcome to my web page</h1>
-    <p>I made this so you can find me more easily.</p>
-    <p><strong>Click anywhere to continue.</strong></p>
-  </div>
+<div class="content" id="mainContent" style="display:none;">
+  <h1>Welcome to sagethenova.com</h1>
+  <a href="https://x.com/sagethenova" target="_blank">X (Twitter)</a>
+  <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank">Bluesky</a>
+  <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank">VRChat</a>
+  <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank">Spotify</a>
+  <a href="https://woof.tech/@sagethenova" target="_blank">Fediverse</a>
+  <a href="https://www.youtube.com/@sagethenova" target="_blank">YouTube</a>
+  <p>made by sagethenova 2025</p>
+  <button id="nextPageBtn">Next Page →</button>
+</div>
 
-  <!-- Main Content -->
-  <div class="content" id="mainContent" style="display:none;">
-    <h1>Welcome to sagethenova.com</h1>
+<div id="aboutPage">
+  <h2>About Me</h2>
+  <p>I have Xbox Game Pass and I play Steam games.</p>
+  <p>My favorite Steam games are:</p>
+  <ul>
+    <li>VR Chat</li>
+    <li>Call of Duty: Cold War</li>
+    <li>Palworld</li>
+    <li>Terraria</li>
+    <li>Wild Assault</li>
+    <li>Atlas</li>
+    <li>Forewarned</li>
+    <li>Call of Duty: Black Ops 3</li>
+    <li>Cattails</li>
+    <li>Gunfire Reborn</li>
+    <li>Devour</li>
+    <li>Lethal Company</li>
+    <li>Star Trek Bridge Crew</li>
+    <li>Ironwolf VR</li>
+    <li>Indigo Park</li>
+    <li>War Trigger 1, 2, 3</li>
+    <li>7 Days to Die (my most favorite)</li>
+    <li>Resonate</li>
+  </ul>
+  <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
+  <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
+  <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
+  <p>I'm autistic and I constantly rock to self-regulate; it's not sexual or meant to make anyone uncomfortable.</p>
+  <p>I am 27 years old.</p>
+  <p>I love thunderstorms, computers, technology, and spooky goth and ghost stuff.</p>
+  <p>Contact me:</p>
+  <ul>
+    <li>Discord: sagethenova</li>
+    <li>Steam Friend Code: 988123941</li>
+    <li>Xbox: sagethecat</li>
+  </ul>
+  <button id="backBtn">← Back</button>
+</div>
 
-    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
-    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
-    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
-    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
+<audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
-    <p>made by sagethenova 2025</p>
+<div id="audioContainer" style="display:none;">
+  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
+</div>
 
-    <button id="nextPageBtn" style="margin-top:2rem; padding:1rem 2rem; font-size:1.1rem; border-radius: 40px; background: #bb99ff; border:none; color:#222; cursor:pointer; box-shadow: 0 0 15px rgba(187,153,255,0.8); transition: background 0.3s ease;">Next Page →</button>
-  </div>
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'ru,es,fr,de,it,zh-CN,en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
 
-  <!-- About Page -->
-  <div id="aboutPage">
-    <h2>About Me</h2>
-    <p>I have Xbox Game Pass and I play Steam games.</p>
-    <p>My favorite Steam games are:</p>
-    <ul>
-      <li>VR Chat</li>
-      <li>Call of Duty: Cold War</li>
-      <li>Palworld</li>
-      <li>Terraria</li>
-      <li>Wild Assault</li>
-      <li>Atlas</li>
-      <li>Forewarned</li>
-      <li>Call of Duty: Black Ops 3</li>
-      <li>Cattails</li>
-      <li>Gunfire Reborn</li>
-      <li>Devour</li>
-      <li>Lethal Company</li>
-      <li>Star Trek Bridge Crew</li>
-      <li>Ironwolf VR</li>
-      <li>Indigo Park</li>
-      <li>War Trigger 1, 2, 3</li>
-      <li>7 Days to Die (my most favorite)</li>
-      <li>Resonate</li>
-    </ul>
-    <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
-    <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
-    <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
-    <p>I'm autistic and I constantly rock to self-regulate; it's not sexual or meant to make anyone uncomfortable.</p>
-    <p>I am 27 years old.</p>
-    <p>I love thunderstorms, computers, technology, and spooky goth and ghost stuff.</p>
-    <p>Contact me:</p>
-    <ul>
-      <li>Discord: sagethenova</li>
-      <li>Steam Friend Code: 988123941</li>
-      <li>Xbox: sagethecat</li>
-    </ul>
-    <button id="backBtn">← Back</button>
-  </div>
+// Hearts
+const heartContainer = document.getElementById("hearts");
+for (let i = 0; i < 30; i++) {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+  heart.style.opacity = 0.3 + Math.random() * 0.7;
+  const size = 10 + Math.random() * 15;
+  heart.style.width = heart.style.height = size + "px";
+  heartContainer.appendChild(heart);
+}
 
-  <!-- Sound Effects -->
-  <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
-  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+const overlay = document.getElementById("overlay");
+const mainContent = document.getElementById("mainContent");
+const aboutPage = document.getElementById("aboutPage");
+const hoverSound = document.getElementById("hoverSound");
+const clickSound = document.getElementById("clickSound");
+const bgMusic = document.getElementById("bgMusic");
+const audioContainer = document.getElementById("audioContainer");
+const nextPageBtn = document.getElementById("nextPageBtn");
+const backBtn = document.getElementById("backBtn");
 
-  <!-- Background music stream with controls -->
-  <div id="audioContainer" style="display:none;">
-    <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
-  </div>
+let soundsEnabled = false;
 
-  <!-- Scripts -->
-  <script>
-    // Google Translate
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'ru,es,fr,de,it,zh-CN,en',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
+overlay.addEventListener("click", () => {
+  if (!soundsEnabled) {
+    hoverSound.play().catch(() => {});
+    clickSound.play().catch(() => {});
+    bgMusic.volume = 0.05;
+    bgMusic.play().catch(() => {});
+    soundsEnabled = true;
+  }
+  overlay.classList.add("hidden");
+  setTimeout(() => {
+    overlay.style.display = "none";
+    mainContent.style.display = "block";
+    audioContainer.style.display = "flex";
+  }, 700);
+});
+
+document.querySelectorAll(".content a, button").forEach(el => {
+  el.addEventListener("mouseover", () => {
+    if (soundsEnabled) {
+      hoverSound.currentTime = 0;
+      hoverSound.play().catch(() => {});
     }
-
-    // Floating Hearts
-    const heartContainer = document.getElementById("hearts");
-    for (let i = 0; i < 30; i++) {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = 4 + Math.random() * 3 + "s";
-      heart.style.opacity = 0.3 + Math.random() * 0.7;
-      const size = 10 + Math.random() * 15;
-      heart.style.width = heart.style.height = size + "px";
-      heartContainer.appendChild(heart);
+  });
+  el.addEventListener("click", () => {
+    if (soundsEnabled) {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
     }
+  });
+});
 
-    const overlay = document.getElementById("overlay");
-    const mainContent = document.getElementById("mainContent");
-    const aboutPage = document.getElementById("aboutPage");
-    const hoverSound = document.getElementById("hoverSound");
-    const clickSound = document.getElementById("clickSound");
-    const bgMusic = document.getElementById("bgMusic");
-    const audioContainer = document.getElementById("audioContainer");
-    const nextPageBtn = document.getElementById("nextPageBtn");
-    const backBtn = document.getElementById("backBtn");
+nextPageBtn.addEventListener("click", () => {
+  mainContent.style.display = "none";
+  aboutPage.style.display = "block";
+});
 
-    let soundsEnabled = false;
-
-    overlay.addEventListener("click", () => {
-      if (!soundsEnabled) {
-        hoverSound.play().catch(() => {});
-        clickSound.play().catch(() => {});
-        bgMusic.volume = 0.05;
-        bgMusic.play().catch(() => {});
-        soundsEnabled = true;
-      }
-      overlay.classList.add("hidden");
-      setTimeout(() => {
-        overlay.style.display = "none";
-        mainContent.style.display = "block";
-        audioContainer.style.display = "flex";
-      }, 700);
-    });
-
-    // Hover and click sounds on links and buttons
-    document.querySelectorAll(".content a, button").forEach(el => {
-      el.addEventListener("mouseover", () => {
-        if (soundsEnabled) {
-          hoverSound.currentTime = 0;
-          hoverSound.play().catch(() => {});
-        }
-      });
-      el.addEventListener("click", () => {
-        if (soundsEnabled) {
-          clickSound.currentTime = 0;
-          clickSound.play().catch(() => {});
-        }
-      });
-    });
-
-    nextPageBtn.addEventListener("click", () => {
-      mainContent.style.display = "none";
-      aboutPage.style.display = "block";
-      audioContainer.style.bottom = "10px";
-      audioContainer.style.display = "flex";
-    });
-
-    backBtn.addEventListener("click", () => {
-      aboutPage.style.display = "none";
-      mainContent.style.display = "block";
-      audioContainer.style.bottom = "10px";
-      audioContainer.style.display = "flex";
-    });
-
-  </script>
-
-  <!-- Google Translate Script -->
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
+backBtn.addEventListener("click", () => {
+  aboutPage.style.display = "none";
+  mainContent.style.display = "block";
+});
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
