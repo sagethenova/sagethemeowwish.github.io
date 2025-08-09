@@ -1,323 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>sagethenova</title>
-  <style>
-    :root{
-      --accent: #bb99ff;
-      --accent-strong: #b450ff;
-      --glass: rgba(0,0,0,0.6);
-      --glass-strong: rgba(0,0,0,0.75);
-      --text: #eae6ff;
-      --muted: #cfc9e6;
-      --radius: 14px;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>sagethenova</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0b0033 0%, #2e005a 100%);
+    color: #ddd;
+    overflow-x: hidden;
+  }
+
+  /* Sparkle background */
+  #sparkles {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at center, #4b0082 5%, transparent 30%), 
+                radial-gradient(circle at 80% 20%, #7b3fbf 4%, transparent 20%);
+    animation: pulseBG 10s ease-in-out infinite;
+  }
+  @keyframes pulseBG {
+    0%, 100% { background-position: center, 80% 20%; }
+    50% { background-position: 10% 80%, 70% 40%; }
+  }
+
+  /* Sparkle dots */
+  .sparkle {
+    position: fixed;
+    border-radius: 50%;
+    background: #bb99ff;
+    opacity: 0.8;
+    animation: twinkle 3s infinite ease-in-out alternate;
+  }
+  @keyframes twinkle {
+    0% {opacity: 0.3;}
+    50% {opacity: 1;}
+    100% {opacity: 0.3;}
+  }
+
+  /* Container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Welcome Overlay */
+  #overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 0, 45, 0.95);
+    color: #bb99ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 9999;
+    cursor: pointer;
+    user-select: none;
+  }
+  #overlay h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px #bb99ff;
+  }
+  #overlay p {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  #overlay small {
+    font-size: 0.9rem;
+    color: #8a6fc4;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  header h1 {
+    font-size: 3rem;
+    color: #bb99ff;
+    text-shadow: 0 0 10px #a061ff;
+    margin-bottom: 0.3rem;
+  }
+  header p {
+    color: #ccc;
+    font-size: 1.2rem;
+  }
+
+  /* Social links */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    margin-bottom: 3rem;
+  }
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #35005a;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #bb99ffaa;
+    color: #bb99ff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    user-select: none;
+  }
+  .social-links a:hover {
+    background: #7b3fbf;
+    box-shadow: 0 0 20px #ddbbff;
+    color: #f0e6ff;
+  }
+  /* Tooltip for icons */
+  .social-links a::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #7b3fbf;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .social-links a:hover::after {
+    opacity: 1;
+  }
+
+  /* About Me Section */
+  #about {
+    background: rgba(50, 0, 90, 0.8);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 40px #bb99ffcc;
+    color: #ddd;
+  }
+  #about h2 {
+    color: #bb99ff;
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 0 0 6px #a061ff;
+  }
+  #about p {
+    font-size: 1.15rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* List styles */
+  #about ul {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    columns: 2;
+    column-gap: 3rem;
+    list-style: none;
+    padding: 0;
+  }
+  #about ul li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+  }
+  #about ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #bb99ff;
+    font-weight: bold;
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  /* Contact info */
+  #contact {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #ccc;
+  }
+  #contact p {
+    margin: 0.4rem 0;
+  }
+
+  /* Purchased Avatars */
+  #avatars {
+    background: rgba(40, 0, 80, 0.8);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 0 30px #bb99ffcc;
+    max-width: 700px;
+    margin: 3rem auto 5rem;
+    color: #ddd;
+  }
+  #avatars h2 {
+    color: #bb99ff;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  #avatars ul {
+    columns: 2;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    column-gap: 2.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  #avatars ul li {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+  #avatars ul li::before {
+    content: "◉";
+    position: absolute;
+    left: 0;
+    color: #cc99ff;
+  }
+  /* Scrollbar styling for avatars list */
+  #avatars ul::-webkit-scrollbar {
+    width: 8px;
+  }
+  #avatars ul::-webkit-scrollbar-thumb {
+    background: #7b3fbf;
+    border-radius: 10px;
+  }
+
+  /* Audio Player */
+  #audioContainer {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    width: 320px;
+    max-width: 90vw;
+    background: rgba(55, 0, 90, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 20px #bb99ffcc;
+    padding: 0.4rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #bgMusic {
+    width: 100%;
+    outline: none;
+    border-radius: 12px;
+    filter: drop-shadow(0 0 5px #bb99ffcc);
+  }
+
+  /* Links hover and click sounds (cursor pointer) */
+  a, button {
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    #avatars ul {
+      columns: 1;
+      max-height: 250px;
     }
-
-    /* Base */
-    html,body{height:100%;margin:0;font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;background: #000; color:var(--text); -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;}
-    body{background-image:url('VRChat_2025-08-09_07-52-44.945_1920x1080.png'); background-size:cover; background-position:center; background-attachment:fixed;}
-
-    /* sparkles container - pointer-events: none so UI works */
-    .sparkles { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
-    .sparkle {
-      position:absolute;
-      width:4px;height:4px;border-radius:50%;
-      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(187,153,255,0.95) 45%);
-      box-shadow:0 0 12px rgba(187,153,255,0.8);
-      opacity:0.9;
-      will-change: transform, opacity;
-      animation-name: sparkleFloat, sparklePulse;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
+    #about ul {
+      columns: 1;
+      max-width: 100%;
     }
-    @keyframes sparkleFloat { from { transform: translateY(110vh) scale(.7); opacity:0.9; } to { transform: translateY(-30vh) scale(1.1); opacity:0; } }
-    @keyframes sparklePulse { 0%{transform:scale(.8)}50%{transform:scale(1.05)}100%{transform:scale(.9)} }
-
-    /* overlay */
-    #overlay { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.6rem; background:rgba(0,0,0,0.88); z-index:9999; text-align:center; padding:1rem; }
-    #overlay.hidden{ opacity:0; visibility:hidden; pointer-events:none; transition:opacity .45s ease, visibility .45s ease; }
-    #overlay h1{ font-size:2.2rem; color:var(--accent); margin:0; text-shadow:0 4px 20px rgba(0,0,0,0.6); }
-    #overlay p{ color:var(--muted); margin:0; }
-    #enterBtn{ margin-top:.5rem; padding:.8rem 1.4rem; border-radius:26px; border:none; font-weight:700; cursor:pointer; background:linear-gradient(90deg,var(--accent),var(--accent-strong)); color:#111; box-shadow:0 8px 24px rgba(180,80,255,0.12); }
-
-    /* wrapper & main card */
-    .wrap{ position:relative; z-index:2; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; box-sizing:border-box; }
-    .card{ background:var(--glass); padding:1.6rem; border-radius:var(--radius); box-shadow:0 14px 40px rgba(0,0,0,0.6); width:100%; max-width:980px; color:var(--text); }
-    .card h1{ margin:0 0 .6rem 0; color:var(--accent); font-size:2rem; text-align:center; }
-    .links{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin: .6rem 0 1rem 0; }
-    .links a{ display:inline-block; padding:.7rem 1rem; border-radius:999px; text-decoration:none; color:var(--text); background:linear-gradient(180deg, rgba(128,0,255,0.12), rgba(128,0,255,0.04)); border:1px solid rgba(187,153,255,0.08); font-weight:700; transition:transform .12s ease, box-shadow .12s ease; }
-    .links a:hover, .links a:focus{ transform:translateY(-4px); box-shadow:0 14px 36px rgba(180,80,255,0.18); }
-
-    .meta{ color:var(--muted); text-align:center; margin-top:.4rem; font-size:.95rem; }
-
-    /* nav row */
-    .nav-row{ display:flex; gap:.6rem; justify-content:center; margin-top:.9rem; flex-wrap:wrap; }
-    .btn{ padding:.8rem 1.25rem; border-radius:28px; border:none; cursor:pointer; font-weight:800; color:#111; background:var(--accent); box-shadow:0 10px 30px rgba(128,0,255,0.12); }
-    .btn.secondary{ background:transparent; color:var(--text); border:1px solid rgba(187,153,255,0.08); font-weight:700; }
-    .btn:focus{ outline:3px solid rgba(187,153,255,0.14); }
-
-    /* about panel */
-    #aboutPage { display:block; margin-top:1rem; background:var(--glass-strong); padding:1rem; border-radius:12px; color:var(--muted); max-height:66vh; overflow:auto; visibility:hidden; opacity:0; transform:translateY(8px); transition:opacity .28s ease, transform .28s ease, visibility .28s; }
-    #aboutPage.show { visibility:visible; opacity:1; transform:translateY(0); }
-    #aboutPage h2{ margin-top:0; color:var(--accent); text-align:center; }
-    .lists{ display:flex; gap:1rem; flex-wrap:wrap; }
-    .games, .avatars{ flex:1 1 300px; min-width:220px; background:rgba(255,255,255,0.02); padding:.7rem; border-radius:8px; }
-    .games ul, .avatars ul{ margin:0; padding-left:1rem; list-style:disc; column-gap:1rem; }
-    @media(min-width:900px){ .avatars ul{ columns:2; } }
-
-    .contact{ text-align:center; margin-top:.8rem; color:var(--text); font-weight:700; }
-
-    /* audio container */
-    #audioContainer{ position:fixed; bottom:12px; left:50%; transform:translateX(-50%); z-index:9998; background:rgba(0,0,0,0.46); padding:.5rem .8rem; border-radius:12px; display:none; align-items:center; gap:.6rem; box-shadow:0 10px 30px rgba(0,0,0,0.4); }
-    #bgMusic{ width:260px; max-width:66vw; outline:none; border-radius:8px; }
-
-    /* responsive tweaks */
-    @media(max-width:600px){
-      .card{ padding:1rem; border-radius:10px; margin-top:40px; }
-      .links a{ padding:.6rem .9rem; font-size:.95rem; }
-      .btn{ padding:.7rem .95rem; font-size:.95rem; }
-      #bgMusic{ width:200px; }
+  }
+  @media (max-width: 400px) {
+    header h1 {
+      font-size: 2rem;
     }
-  </style>
+    #avatars h2, #about h2 {
+      font-size: 1.6rem;
+    }
+  }
+</style>
 </head>
 <body>
-  <!-- Sparkles -->
-  <div class="sparkles" id="sparkles"></div>
 
-  <!-- Overlay -->
-  <div id="overlay" role="dialog" aria-modal="true" aria-label="Welcome overlay">
-    <h1>Welcome to sagethenova.com</h1>
-    <p style="margin-top:.3rem;color:var(--muted)">Click Enter or anywhere to continue and enable sounds.</p>
-    <button id="enterBtn" aria-label="Enter site">Enter</button>
-  </div>
+<div id="sparkles"></div>
 
-  <!-- Main content -->
-  <div class="wrap" aria-hidden="false">
-    <div class="card" id="mainCard">
-      <h1>sagethenova</h1>
+<!-- Welcome Overlay -->
+<div id="overlay" title="Click to enable sound and continue">
+  <h1>Welcome to sagethenova.com</h1>
+  <p>I made this so you can get to know me.</p>
+  <p><strong>Click anywhere to continue and enable audio</strong></p>
+  <small>Music volume is set low for your comfort</small>
+</div>
 
-      <nav class="links" role="navigation" aria-label="social links">
-        <a class="sfx" href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-        <a class="sfx" href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-        <a class="sfx" href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
-        <a class="sfx" href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
-        <a class="sfx" href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
-        <a class="sfx" href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
-      </nav>
+<div class="container" style="display:none;" id="mainContent">
 
-      <div class="nav-row" role="toolbar" aria-label="main actions">
-        <button id="aboutBtn" class="btn" aria-pressed="false">About Me</button>
-        <button id="visitVRBtn" class="btn secondary sfx" title="Open VRChat" aria-label="Visit VRChat">Visit VRChat</button>
-      </div>
+  <header>
+    <h1>sagethenova</h1>
+    <p>Connect with me online or learn more below</p>
+  </header>
 
-      <p class="meta">Made by <strong>sagethenova</strong></p>
+  <!-- Social Links -->
+  <nav class="social-links" aria-label="Social media links">
+    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="X (Twitter)">X</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer" data-tooltip="Bluesky">BSky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer" data-tooltip="VRChat">VR</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer" data-tooltip="Spotify">SP</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="Fediverse">Fed</a>
+    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="YouTube">YT</a>
+  </nav>
 
-      <section id="aboutPage" aria-hidden="true" tabindex="-1">
-        <h2>About Me</h2>
-        <p>I have Xbox Game Pass and I play Steam games. I enjoy playing with friends and I love technology, art, and collecting avatars.</p>
+  <!-- About Me -->
+  <section id="about" aria-label="About Me">
+    <h2>About Me</h2>
+    <p>I have Xbox Game Pass and I play Steam games.</p>
+    <p>My favorite Steam games are:</p>
+    <ul>
+      <li>VR Chat</li>
+      <li>Call of Duty: Cold War</li>
+      <li>Palworld</li>
+      <li>Terraria</li>
+      <li>Wild Assault</li>
+      <li>Atlas</li>
+      <li>Forewarned</li>
+      <li>Call of Duty: Black Ops 3</li>
+      <li>Cattails</li>
+      <li>Gunfire Reborn</li>
+      <li>Devour</li>
+      <li>Lethal Company</li>
+      <li>Star Trek Bridge Crew</li>
+      <li>Ironwolf VR</li>
+      <li>Portal to Indigo Park</li>
+      <li>War Trigger 1, 2, 3</li>
+      <li>7 Days to Die (my most favorite)</li>
+      <li>Resonate</li>
+    </ul>
+    <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
+    <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
+    <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
 
-        <div class="lists" style="margin-top:.5rem;">
-          <div class="games" aria-label="favorite games">
-            <strong style="color:var(--accent);">Favorite Steam games</strong>
-            <ul>
-              <li>VR Chat</li>
-              <li>Call of Duty: Cold War</li>
-              <li>Palworld</li>
-              <li>Terraria</li>
-              <li>Wild Assault</li>
-              <li>Atlas</li>
-              <li>Forewarned</li>
-              <li>Call of Duty: Black Ops 3</li>
-              <li>Cattails</li>
-              <li>Gunfire Reborn</li>
-              <li>Devour</li>
-              <li>Lethal Company</li>
-              <li>Star Trek Bridge Crew</li>
-              <li>Ironwolf VR</li>
-              <li>Portal to Indigo Park</li>
-              <li>War Trigger 1, 2, 3</li>
-              <li>7 Days to Die (my most favorite)</li>
-              <li>Resonate</li>
-            </ul>
-          </div>
-
-          <div class="avatars" aria-label="avatars purchased">
-            <strong style="color:var(--accent);">Avatars I’ve Purchased</strong>
-            <ul>
-              <li>Moontail</li>
-              <li>Sola</li>
-              <li>Delphy Kobo</li>
-              <li>Space Chinchilla</li>
-              <li>Ghostly Female Felines Tier 2</li>
-              <li>Mayu</li>
-              <li>WashingBear</li>
-              <li>Piko Kobold</li>
-              <li>Meownyrn Cat V2</li>
-              <li>kdarts Deer</li>
-              <li>Kita'vali</li>
-              <li>Da'vali avatar</li>
-              <li>FaeRie</li>
-              <li>Ligeia</li>
-              <li>Taidum</li>
-              <li>FluffyDog</li>
-              <li>Paw'vali</li>
-              <li>Rantichi</li>
-              <li>Bestboi</li>
-              <li>Zio Red Panda</li>
-              <li>Candy - Nanachi</li>
-              <li>Anxious kitten</li>
-              <li>Zoichi</li>
-              <li>Arkon</li>
-              <li>Nomoth</li>
-              <li>Rabi</li>
-              <li>Silver fox</li>
-              <li>Zywie</li>
-              <li>Ryuki</li>
-              <li>Amaterasu</li>
-              <li>Saffron</li>
-              <li>Winterpaw's Mouse &amp; Rat</li>
-              <li>Nanachi</li>
-              <li>Stellara</li>
-              <li>Vika</li>
-              <li>Noelle Holiday</li>
-              <li>Taigooma</li>
-              <li>Mary</li>
-              <li>Griffin</li>
-              <li>Flufi</li>
-              <li>Kessa</li>
-              <li>The Awtter</li>
-              <li>Novabeast</li>
-              <li>hobkin redux</li>
-              <li>hobkin</li>
-              <li>vulfen</li>
-              <li>mewlin</li>
-              <li>arflin</li>
-              <li>kengu</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="contact" role="contentinfo">
-          <div>discord: <strong>sagethenova</strong></div>
-          <div>xbox: <strong>sagethecat</strong></div>
-          <div>steam: <strong>988123941</strong></div>
-        </div>
-
-        <div style="text-align:center;margin-top:.8rem;">
-          <button id="backBtn" class="btn secondary">← Back</button>
-        </div>
-      </section>
+    <h2>Contact Me</h2>
+    <div id="contact">
+      <p>Discord: <strong>sagethenova</strong></p>
+      <p>Xbox: <strong>sagethecat</strong></p>
+      <p>Steam Friend Code: <strong>988123941</strong></p>
     </div>
-  </div>
+  </section>
 
-  <!-- sound fx + music (will only play after gesture) -->
-  <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
-  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+  <!-- Purchased Avatars -->
+  <section id="avatars" aria-label="Avatars I have purchased">
+    <h2>Avatars I’ve Purchased</h2>
+    <ul>
+      <li>Moontail</li>
+      <li>Sola</li>
+      <li>Delphy Kobo</li>
+      <li>Space Chinchilla</li>
+      <li>Ghostly Female Felines Tier 2</li>
+      <li>Mayu</li>
+      <li>WashingBear</li>
+      <li>Piko Kobold</li>
+      <li>Meownyrn Cat V2</li>
+      <li>kdarts Deer</li>
+      <li>Kita'vali</li>
+      <li>Da'vali avatar</li>
+      <li>FaeRie</li>
+      <li>Ligeia</li>
+      <li>Taidum</li>
+      <li>FluffyDog</li>
+      <li>Paw'vali</li>
+      <li>Rantichi</li>
+      <li>Bestboi</li>
+      <li>Zio Red Panda</li>
+      <li>Candy - Nanachi</li>
+      <li>Anxious kitten</li>
+      <li>Zoichi</li>
+      <li>Arkon</li>
+      <li>Nomoth</li>
+      <li>Rabi</li>
+      <li>Silver fox</li>
+      <li>Zywie</li>
+      <li>Ryuki</li>
+      <li>Amaterasu</li>
+      <li>Saffron</li>
+      <li>Winterpaw's Mouse & Rat</li>
+      <li>Nanachi</li>
+      <li>Stellara</li>
+      <li>Vika</li>
+      <li>Noelle Holiday</li>
+      <li>Taigooma</li>
+      <li>Mary</li>
+      <li>Griffin</li>
+      <li>Flufi</li>
+      <li>Kessa</li>
+      <li>The Awtter</li>
+      <li>Novabeast</li>
+      <li>hobkin redux</li>
+      <li>hobkin</li>
+      <li>vulfen</li>
+      <li>mewlin</li>
+      <li>arflin</li>
+      <li>kengu</li>
+    </ul>
+  </section>
 
-  <div id="audioContainer" aria-hidden="true">
-    <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
-  </div>
+</div>
 
-  <script>
-    /* Sparkles generation */
-    (function(){
-      const container = document.getElementById('sparkles');
-      const COUNT = 70;
-      for(let i=0;i<COUNT;i++){
-        const s = document.createElement('div');
-        s.className = 'sparkle';
-        s.style.left = (Math.random()*100) + 'vw';
-        s.style.top = (100 + Math.random()*30) + 'vh'; // start below so they float up
-        const size = (3 + Math.random()*7);
-        s.style.width = s.style.height = size + 'px';
-        const dur1 = (6 + Math.random()*8).toFixed(2) + 's';
-        const dur2 = (1 + Math.random()*1.6).toFixed(2) + 's';
-        s.style.animationDuration = dur1 + ', ' + dur2;
-        s.style.animationDelay = (Math.random()*4).toFixed(2) + 's';
-        container.appendChild(s);
-      }
-    })();
+<!-- Sound Effects -->
+<audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
-    /* Controls & behavior */
-    const overlay = document.getElementById('overlay');
-    const enterBtn = document.getElementById('enterBtn');
-    const mainCard = document.getElementById('mainCard');
-    const aboutBtn = document.getElementById('aboutBtn');
-    const aboutPage = document.getElementById('aboutPage');
-    const backBtn = document.getElementById('backBtn');
-    const hoverSound = document.getElementById('hoverSound');
-    const clickSound = document.getElementById('clickSound');
-    const bgMusic = document.getElementById('bgMusic');
-    const audioContainer = document.getElementById('audioContainer');
+<!-- Background music player -->
+<div id="audioContainer" style="display:none;">
+  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
+</div>
 
-    let soundsEnabled = false;
-    let aboutVisible = false;
+<script>
+  // Create multiple sparkle dots with random positions and sizes
+  const sparkleCount = 40;
+  const sparkleContainer = document.getElementById('sparkles');
+  for(let i = 0; i < sparkleCount; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    sparkle.style.width = sparkle.style.height = (5 + Math.random() * 5) + 'px';
+    sparkle.style.top = (Math.random() * 100) + 'vh';
+    sparkle.style.left = (Math.random() * 100) + 'vw';
+    sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+    sparkle.style.animationDelay = (Math.random() * 3) + 's';
+    sparkleContainer.appendChild(sparkle);
+  }
 
-    function enableSoundsAndShow(){
-      if (!soundsEnabled) {
-        soundsEnabled = true;
-        // try start bg music (user gesture)
-        try { bgMusic.volume = 0.05; bgMusic.play().catch(()=>{}); } catch(e){}
-        // show audio controls
-        audioContainer.style.display = 'flex';
-        audioContainer.setAttribute('aria-hidden','false');
-      }
-      // hide overlay and show main card (main card already visible under overlay)
-      overlay.classList.add('hidden');
+  // Elements
+  const overlay = document.getElementById('overlay');
+  const mainContent = document.getElementById('mainContent');
+  const hoverSound = document.getElementById('hoverSound');
+  const clickSound = document.getElementById('clickSound');
+  const bgMusic = document.getElementById('bgMusic');
+  const audioContainer = document.getElementById('audioContainer');
+
+  let soundsEnabled = false;
+
+  // Enable audio on overlay click and show main content
+  overlay.addEventListener('click', () => {
+    if (!soundsEnabled) {
+      hoverSound.play().catch(() => {});
+      clickSound.play().catch(() => {});
+      bgMusic.volume = 0.05;
+      bgMusic.play().catch(() => {});
+      soundsEnabled = true;
     }
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      mainContent.style.display = 'block';
+      audioContainer.style.display = 'flex';
+    }, 600);
+  });
 
-    // overlay click anywhere or Enter button
-    overlay.addEventListener('click', (e) => { enableSoundsAndShow(); });
-    enterBtn.addEventListener('click', (e) => { e.stopPropagation(); enableSoundsAndShow(); });
-
-    // toggle About (acts as on/off)
-    function setAboutVisibility(show){
-      aboutVisible = !!show;
-      if (aboutVisible){
-        aboutPage.classList.add('show');
-        aboutPage.setAttribute('aria-hidden','false');
-        aboutBtn.setAttribute('aria-pressed','true');
-        // focus for accessibility
-        aboutPage.focus && aboutPage.focus();
-      } else {
-        aboutPage.classList.remove('show');
-        aboutPage.setAttribute('aria-hidden','true');
-        aboutBtn.setAttribute('aria-pressed','false');
+  // Add hover and click sounds to links and buttons
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      if (soundsEnabled) {
+        hoverSound.currentTime = 0;
+        hoverSound.play().catch(() => {});
       }
-      // play click sfx when toggling if allowed
-      if (soundsEnabled) { try { clickSound.currentTime = 0; clickSound.play().catch(()=>{}); } catch(e){} }
-    }
-
-    aboutBtn.addEventListener('click', () => { setAboutVisibility(!aboutVisible); });
-
-    backBtn.addEventListener('click', () => { setAboutVisibility(false); });
-
-    // sfx for hover/touch on interactive elements
-    function attachSfx(selector){
-      document.querySelectorAll(selector).forEach(el => {
-        el.addEventListener('mouseenter', () => { if (!soundsEnabled) return; try { hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } catch(e){} });
-        el.addEventListener('touchstart', () => { if (!soundsEnabled) return; try { hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } catch(e){} }, {passive:true});
-        el.addEventListener('click', () => { /* click sound handled on toggle to avoid double */ });
-      });
-    }
-    attachSfx('.links a');
-    attachSfx('.btn');
-
-    // keep initial state: overlay visible, about hidden, audio controls hidden
-    window.addEventListener('load', () => {
-      overlay.classList.remove('hidden');
-      aboutPage.classList.remove('show');
-      aboutPage.setAttribute('aria-hidden','true');
-      audioContainer.style.display = 'none';
     });
-
-    // keyboard shortcut for toggling about (optional)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'a' || e.key === 'A') { setAboutVisibility(!aboutVisible); }
-      if ((e.key === 'Escape' || e.key === 'Esc') && aboutVisible) { setAboutVisibility(false); }
+    el.addEventListener('click', () => {
+      if (soundsEnabled) {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {});
+      }
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
