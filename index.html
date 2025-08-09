@@ -17,7 +17,6 @@ body {
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
-  position: relative;
   color: #fff;
 }
 
@@ -34,35 +33,25 @@ body {
   color: #fff;
 }
 
-/* Hearts */
-.hearts {
+/* Sparkle Background */
+.sparkles {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
 }
-.heart {
+.sparkle {
   position: absolute;
-  background-color: pink;
-  transform: rotate(45deg);
-  opacity: 0.7;
-  animation: floatUp 6s linear infinite;
-}
-.heart::before,
-.heart::after {
-  content: '';
-  position: absolute;
-  background-color: pink;
+  width: 3px;
+  height: 3px;
+  background: white;
   border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 3s infinite ease-in-out;
 }
-.heart::before { width: 20px; height: 20px; top: -10px; left: 0; }
-.heart::after { width: 20px; height: 20px; left: -10px; top: 0; }
-@keyframes floatUp {
-  0% { transform: translateY(100vh) rotate(45deg); opacity: 1; }
-  100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.2); }
 }
 
 /* Overlay */
@@ -91,22 +80,29 @@ body {
 }
 
 /* Content Box */
-.content {
+.content, #aboutPage {
   background-color: rgba(0, 0, 0, 0.6);
   padding: clamp(1rem, 4vw, 2rem);
   border-radius: 15px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 20px rgba(187, 153, 255, 0.7), inset 0 0 20px rgba(128, 0, 255, 0.5);
   position: relative;
   z-index: 2;
   max-width: 700px;
   width: 90%;
   text-align: center;
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .content h1 {
   font-size: clamp(1.4rem, 4vw, 2.2rem);
   margin-bottom: 1rem;
 }
-.content a {
+
+/* Buttons & Links */
+.content a, button {
   display: block;
   color: #bb99ff;
   font-weight: bold;
@@ -118,28 +114,35 @@ body {
   background: rgba(128, 0, 255, 0.3);
   box-shadow: 0 0 8px rgba(128, 0, 255, 0.6), 0 0 20px rgba(128, 0, 255, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, box-shadow 0.5s ease;
   max-width: 300px;
+  position: relative;
+  overflow: hidden;
 }
-.content a:hover {
-  color: #ddbbff;
+.content a:hover, button:hover {
+  color: #fff;
   background: rgba(180, 80, 255, 0.5);
-  box-shadow: 0 0 12px rgba(180, 80, 255, 0.8), 0 0 30px rgba(180, 80, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 180, 255, 0.8), 0 0 40px rgba(180, 80, 255, 0.5);
 }
-.content p {
-  margin-top: 1.5rem;
-  font-size: clamp(0.9rem, 2vw, 1rem);
+.content a::after, button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 10%, transparent 30%);
+  opacity: 0;
+  animation: sparkleHover 2s infinite;
+}
+@keyframes sparkleHover {
+  0%, 100% { transform: translate(0,0); opacity: 0; }
+  50% { transform: translate(30%, 30%); opacity: 1; }
 }
 
 /* About Page */
 #aboutPage {
   display: none;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: clamp(1rem, 4vw, 2rem);
-  border-radius: 15px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-  position: relative;
-  z-index: 2;
   max-width: 900px;
   width: 95%;
   color: #ddd;
@@ -173,31 +176,8 @@ body {
   color: #bb99ff;
   font-weight: bold;
 }
-#aboutPage p {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  color: #ccc;
-}
 #aboutPage button {
   margin-top: 1rem;
-  display: block;
-  background: #bb99ff;
-  border: none;
-  color: #222;
-  font-weight: bold;
-  padding: 0.7rem 1.5rem;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  border-radius: 40px;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(187, 153, 255, 0.8);
-  transition: background 0.3s ease;
-  margin-left: auto;
-  margin-right: auto;
-}
-#aboutPage button:hover {
-  background: #ddbbff;
-  box-shadow: 0 0 15px rgba(221, 187, 255, 1);
 }
 
 /* Audio Player */
@@ -220,7 +200,6 @@ body {
   width: 100%;
   outline: none;
   border-radius: 10px;
-  filter: drop-shadow(0 0 4px rgba(128, 0, 255, 0.7));
 }
 
 /* Mobile tweaks */
@@ -232,11 +211,11 @@ body {
 <body>
 
 <div id="google_translate_element"></div>
-<div class="hearts" id="hearts"></div>
+<div class="sparkles" id="sparkles"></div>
 
 <div id="overlay">
   <h1>Welcome to sagethenova.com</h1>
-  <p> I made this website so you can get to know me</p>
+  <p>I made this website so you can get to know me</p>
   <p><strong>Click anywhere to continue.</strong></p>
 </div>
 
@@ -255,7 +234,6 @@ body {
 <div id="aboutPage">
   <h2>About Me</h2>
   <p>I have Xbox Game Pass and I play Steam games.</p>
-  <p>My favorite Steam games are:</p>
   <ul>
     <li>VR Chat</li>
     <li>Call of Duty: Cold War</li>
@@ -276,12 +254,6 @@ body {
     <li>7 Days to Die (my most favorite)</li>
     <li>Resonate</li>
   </ul>
-  <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
-  <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
-  <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
-  <p>I'm autistic and I constantly rock to self-regulate; it's not sexual or meant to make anyone uncomfortable.</p>
-  <p>I am 27 years old.</p>
-  <p>I love thunderstorms, computers, technology, and spooky goth and ghost stuff.</p>
   <p>Contact me:</p>
   <ul>
     <li>Discord: sagethenova</li>
@@ -307,17 +279,15 @@ function googleTranslateElementInit() {
   }, 'google_translate_element');
 }
 
-// Hearts
-const heartContainer = document.getElementById("hearts");
-for (let i = 0; i < 30; i++) {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = 4 + Math.random() * 3 + "s";
-  heart.style.opacity = 0.3 + Math.random() * 0.7;
-  const size = 10 + Math.random() * 15;
-  heart.style.width = heart.style.height = size + "px";
-  heartContainer.appendChild(heart);
+// Sparkles generator
+const sparkleContainer = document.getElementById("sparkles");
+for (let i = 0; i < 50; i++) {
+  const sparkle = document.createElement("div");
+  sparkle.className = "sparkle";
+  sparkle.style.top = Math.random() * 100 + "%";
+  sparkle.style.left = Math.random() * 100 + "%";
+  sparkle.style.animationDelay = (Math.random() * 3) + "s";
+  sparkleContainer.appendChild(sparkle);
 }
 
 const overlay = document.getElementById("overlay");
@@ -348,26 +318,24 @@ overlay.addEventListener("click", () => {
   }, 700);
 });
 
-document.querySelectorAll(".content a, button").forEach(el => {
-  el.addEventListener("mouseover", () => {
-    if (soundsEnabled) {
-      hoverSound.currentTime = 0;
-      hoverSound.play().catch(() => {});
-    }
-  });
-  el.addEventListener("click", () => {
-    if (soundsEnabled) {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(() => {});
-    }
-  });
+// Hover/Click sounds
+document.body.addEventListener("mouseover", e => {
+  if (e.target.matches("a, button") && soundsEnabled) {
+    hoverSound.currentTime = 0;
+    hoverSound.play().catch(()=>{});
+  }
+});
+document.body.addEventListener("click", e => {
+  if (e.target.matches("a, button") && soundsEnabled) {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(()=>{});
+  }
 });
 
 nextPageBtn.addEventListener("click", () => {
   mainContent.style.display = "none";
   aboutPage.style.display = "block";
 });
-
 backBtn.addEventListener("click", () => {
   aboutPage.style.display = "none";
   mainContent.style.display = "block";
