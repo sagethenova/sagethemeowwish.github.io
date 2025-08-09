@@ -6,454 +6,167 @@
   <title>sagethenova</title>
   <style>
     /* Reset & Background */
-    body {
+    body, html {
       margin: 0;
       padding: 0;
-      background: url('VRChat_2025-08-09_07-52-44.945_1920x1080.png') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      color: #fff;
-    }
-
-    /* Floating Hearts */
-    .hearts {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
       height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-    .heart {
-      position: absolute;
-      background-color: pink;
-      transform: rotate(45deg);
-      opacity: 0.7;
-      animation: floatUp 6s linear infinite;
-    }
-    .heart::before,
-    .heart::after {
-      content: '';
-      position: absolute;
-      background-color: pink;
-      border-radius: 50%;
-    }
-    .heart::before {
-      width: 20px; height: 20px;
-      top: -10px; left: 0;
-    }
-    .heart::after {
-      width: 20px; height: 20px;
-      left: -10px; top: 0;
-    }
-    @keyframes floatUp {
-      0% {
-        transform: translateY(100vh) rotate(45deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) rotate(45deg);
-        opacity: 0;
-      }
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: black;
+      overflow-x: hidden;
+      color: white;
     }
 
-    /* Welcome Overlay */
+    /* Sparkle Animation */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkleMove 8s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes sparkleMove {
+      0% { transform: translateY(0); opacity: 0.8; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    /* Overlay */
     #overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
-      transition: opacity 0.7s ease;
-      color: #fff;
-      text-align: center;
-      padding: 0 1rem;
-    }
-    #overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
+      z-index: 1000;
     }
     #overlay h1 {
-      font-size: 2.4rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
     }
-    #overlay p {
+    #overlay button {
+      padding: 10px 20px;
       font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    /* Main Content Box */
-    .content {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-      position: relative;
-      z-index: 2;
-      max-width: 90%;
-      text-align: center;
-    }
-    .content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-    .content a {
-      position: relative;
-      display: block;
-      color: #bb99ff;
-      font-weight: bold;
-      text-decoration: none;
-      margin: 1.5rem 0;
-      font-size: 1.5rem;
-      transition: color 0.3s ease;
-      padding: 0.7rem 1.5rem;
-      border-radius: 40px;
-      background: rgba(128, 0, 255, 0.3);
-      box-shadow:
-        0 0 8px rgba(128, 0, 255, 0.6),
-        0 0 20px rgba(128, 0, 255, 0.3);
-      cursor: pointer;
-    }
-    .content a:hover {
-      color: #ddbbff;
-      background: rgba(180, 80, 255, 0.5);
-      box-shadow:
-        0 0 12px rgba(180, 80, 255, 0.8),
-        0 0 30px rgba(180, 80, 255, 0.5);
-    }
-    .content p {
-      margin-top: 1.5rem;
-      font-size: 1rem;
-    }
-
-    /* About Page */
-    #aboutPage {
-      display: none;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-      position: relative;
-      z-index: 2;
-      max-width: 90%;
-      color: #ddd;
-      text-align: left;
-      overflow-y: auto;
-      max-height: 80vh;
-      margin: auto;
-    }
-    #aboutPage h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #bb99ff;
-    }
-    #aboutPage ul {
-      list-style: none;
-      padding-left: 0;
-      columns: 2;
-      column-gap: 2rem;
-      font-size: 1.1rem;
-    }
-    #aboutPage ul li {
-      margin-bottom: 0.7rem;
-      padding-left: 1rem;
-      position: relative;
-    }
-    #aboutPage ul li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #bb99ff;
-      font-weight: bold;
-    }
-    #aboutPage p {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      line-height: 1.4;
-      color: #ccc;
-    }
-    #aboutPage button {
-      margin-top: 1rem;
-      display: block;
-      background: #bb99ff;
       border: none;
-      color: #222;
-      font-weight: bold;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 40px;
+      border-radius: 25px;
+      background: purple;
+      color: white;
       cursor: pointer;
-      box-shadow:
-        0 0 10px rgba(187, 153, 255, 0.8);
-      transition: background 0.3s ease;
-      margin-left: auto;
-      margin-right: auto;
     }
-    #aboutPage button:hover {
-      background: #ddbbff;
-      box-shadow:
-        0 0 15px rgba(221, 187, 255, 1);
+    #overlay button:hover {
+      background: violet;
     }
 
-    /* Audio Player styling */
-    #audioContainer {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      width: 350px;
-      max-width: 90vw;
-      background: rgba(0,0,0,0.4);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(128, 0, 255, 0.7);
-      padding: 0.4rem 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    /* Main Content */
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding-top: 100px;
     }
-    #bgMusic {
-      width: 100%;
-      outline: none;
-      border-radius: 10px;
-      filter: drop-shadow(0 0 4px rgba(128, 0, 255, 0.7));
+    .link-circle {
+      display: inline-block;
+      margin: 10px;
+      width: 80px;
+      height: 80px;
+      background: rgba(0,0,0,0.5);
+      border: 2px solid purple;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .link-circle:hover {
+      transform: scale(1.1);
+      background: rgba(128,0,128,0.6);
+    }
+    .nav-button {
+      margin-top: 40px;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 25px;
+      background: purple;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .nav-button:hover {
+      background: violet;
     }
 
     /* Responsive */
     @media (max-width: 600px) {
-      #overlay h1 {
-        font-size: 1.8rem;
-      }
-      #overlay p {
-        font-size: 1rem;
-      }
-      .content h1 {
-        font-size: 1.6rem;
-      }
-      .content a {
-        font-size: 1.3rem;
-        margin: 1rem 0;
-      }
-      #aboutPage ul {
-        columns: 1;
-      }
-      #audioContainer {
-        width: 90vw;
+      .link-circle {
+        width: 60px;
+        height: 60px;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Sparkles -->
+  <script>
+    for (let i = 0; i < 80; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = Math.random() * 100 + 'vw';
+      sparkle.style.top = Math.random() * -100 + 'vh';
+      sparkle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      sparkle.style.animationDelay = Math.random() * 5 + 's';
+      document.body.appendChild(sparkle);
+    }
+  </script>
 
-  <!-- Floating Hearts -->
-  <div class="hearts" id="hearts"></div>
-
-  <!-- Welcome Overlay -->
+  <!-- Overlay -->
   <div id="overlay">
-    <h1>Welcome to sagethenova.com</h1>
-    <p>I made this so You can get to know me</p>
-    <p><strong>Click anywhere to continue.</strong></p>
+    <h1>Welcome to SageTheNova!</h1>
+    <button onclick="startSite()">Enter</button>
   </div>
 
   <!-- Main Content -->
-  <div class="content" id="mainContent" style="display:none;">
-    <h1>Welcome to sagethenova.com</h1>
-
-    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
-    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
-    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
-    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
-
-    <p>Made by sagethenova</p>
-
-    <button id="nextPageBtn" style="margin-top:2rem; padding:1rem 2rem; font-size:1.1rem; border-radius: 40px; background: #bb99ff; border:none; color:#222; cursor:pointer; box-shadow: 0 0 15px rgba(187,153,255,0.8); transition: background 0.3s ease;">Next Page →</button>
+  <div class="content" style="display:none;">
+    <h1>SageTheNova</h1>
+    <div>
+      <a href="https://twitter.com/" class="link-circle">X</a>
+      <a href="https://bsky.app/" class="link-circle">B</a>
+      <a href="https://vrchat.com/" class="link-circle">VR</a>
+      <a href="https://spotify.com/" class="link-circle">S</a>
+      <a href="https://mastodon.social/" class="link-circle">F</a>
+      <a href="https://youtube.com/" class="link-circle">YT</a>
+    </div>
+    <button class="nav-button" onclick="window.location.href='about.html'">About Me</button>
   </div>
 
-  <!-- About Page -->
-  <div id="aboutPage">
-    <h2>About Me</h2>
-    <p>I have Xbox Game Pass and I play Steam games.</p>
-    <p>My favorite Steam games are:</p>
-    <ul>
-      <li>VR Chat</li>
-      <li>Call of Duty: Cold War</li>
-      <li>Palworld</li>
-      <li>Terraria</li>
-      <li>Wild Assault</li>
-      <li>Atlas</li>
-      <li>Forewarned</li>
-      <li>Call of Duty: Black Ops 3</li>
-      <li>Cattails</li>
-      <li>Gunfire Reborn</li>
-      <li>Devour</li>
-      <li>Lethal Company</li>
-      <li>Star Trek Bridge Crew</li>
-      <li>Ironwolf VR</li>
-      <li>Portal to Indigo Park</li>
-      <li>War Trigger 1, 2, 3</li>
-      <li>7 Days to Die (my most favorite)</li>
-      <li>Resonate</li>
-    </ul>
-    <p>On Xbox, I enjoy many games but especially Call of Duty 6.</p>
-    <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
-    <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
-    
-    <h2>Avatars I’ve Purchased</h2>
-    <ul>
-      <li>Moontail</li>
-      <li>Sola</li>
-      <li>Delphy Kobo</li>
-      <li>Space Chinchilla</li>
-      <li>Ghostly Female Felines Tier 2</li>
-      <li>Mayu</li>
-      <li>WashingBear</li>
-      <li>Piko Kobold</li>
-      <li>Meownyrn Cat V2</li>
-      <li>kdarts Deer</li>
-      <li>Kita'vali</li>
-      <li>Da'vali avatar</li>
-      <li>FaeRie</li>
-      <li>Ligeia</li>
-      <li>Taidum</li>
-      <li>FluffyDog</li>
-      <li>Paw'vali</li>
-      <li>Rantichi</li>
-      <li>Bestboi</li>
-      <li>Zio Red Panda</li>
-      <li>Candy - Nanachi</li>
-      <li>Anxious kitten</li>
-      <li>Zoichi</li>
-      <li>Arkon</li>
-      <li>Nomoth</li>
-      <li>Rabi</li>
-      <li>Silver fox</li>
-      <li>Zywie</li>
-      <li>Ryuki</li>
-      <li>Amaterasu</li>
-      <li>Saffron</li>
-      <li>Winterpaw's Mouse & Rat</li>
-      <li>Nanachi</li>
-      <li>Stellara</li>
-      <li>Vika</li>
-      <li>Noelle Holiday</li>
-      <li>Taigooma</li>
-      <li>Mary</li>
-      <li>Griffin</li>
-      <li>Flufi</li>
-      <li>Kessa</li>
-      <li>The Awtter</li>
-      <li>Novabeast</li>
-      <li>hobkin redux</li>
-      <li>hobkin</li>
-      <li>vulfen</li>
-      <li>mewlin</li>
-      <li>arflin</li>
-      <li>kengu</li>
-    </ul>
-
-    <h2>contact me</h2>
-    <p>discord sagethenova</p>
-    <p>xbox sagethecat</p>
-    <p>steam 988123941</p>
-    <button id="backBtn">← Back</button>
-  </div>
-
-  <!-- Sound Effects -->
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
-
-  <!-- Background music stream with controls -->
-  <div id="audioContainer" style="display:none;">
-    <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
-  </div>
-
-  <!-- Scripts -->
   <script>
-    // Floating Hearts
-    const heartContainer = document.getElementById("hearts");
-    for (let i = 0; i < 30; i++) {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = 4 + Math.random() * 3 + "s";
-      heart.style.opacity = 0.3 + Math.random() * 0.7;
-      const size = 10 + Math.random() * 15;
-      heart.style.width = heart.style.height = size + "px";
-      heartContainer.appendChild(heart);
-    }
-
-    const overlay = document.getElementById("overlay");
-    const mainContent = document.getElementById("mainContent");
-    const aboutPage = document.getElementById("aboutPage");
     const hoverSound = document.getElementById("hoverSound");
     const clickSound = document.getElementById("clickSound");
-    const bgMusic = document.getElementById("bgMusic");
-    const audioContainer = document.getElementById("audioContainer");
-    const nextPageBtn = document.getElementById("nextPageBtn");
-    const backBtn = document.getElementById("backBtn");
 
-    let soundsEnabled = false;
-
-    overlay.addEventListener("click", () => {
-      if (!soundsEnabled) {
-        hoverSound.play().catch(() => {});
-        clickSound.play().catch(() => {});
-        bgMusic.volume = 0.05;
-        bgMusic.play().catch(() => {});
-        soundsEnabled = true;
+    document.addEventListener("mouseover", e => {
+      if (e.target.classList.contains("link-circle") || e.target.classList.contains("nav-button")) {
+        hoverSound.currentTime = 0;
+        hoverSound.play();
       }
-      overlay.classList.add("hidden");
-      setTimeout(() => {
-        overlay.style.display = "none";
-        mainContent.style.display = "block";
-        audioContainer.style.display = "flex";
-      }, 700);
+    });
+    document.addEventListener("click", e => {
+      if (e.target.classList.contains("link-circle") || e.target.classList.contains("nav-button")) {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      }
     });
 
-    // Hover and click sounds on links and buttons
-    document.querySelectorAll(".content a, button").forEach(el => {
-      el.addEventListener("mouseover", () => {
-        if (soundsEnabled) {
-          hoverSound.currentTime = 0;
-          hoverSound.play().catch(() => {});
-        }
-      });
-      el.addEventListener("click", () => {
-        if (soundsEnabled) {
-          clickSound.currentTime = 0;
-          clickSound.play().catch(() => {});
-        }
-      });
-    });
-
-    nextPageBtn.addEventListener("click", () => {
-      mainContent.style.display = "none";
-      aboutPage.style.display = "block";
-      audioContainer.style.bottom = "10px";
-      audioContainer.style.display = "flex";
-    });
-
-    backBtn.addEventListener("click", () => {
-      aboutPage.style.display = "none";
-      mainContent.style.display = "block";
-      audioContainer.style.bottom = "10px";
-      audioContainer.style.display = "flex";
-    });
+    function startSite() {
+      document.getElementById("overlay").style.display = "none";
+      document.querySelector(".content").style.display = "block";
+    }
   </script>
-
 </body>
 </html>
