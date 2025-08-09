@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>sagethenova</title>
   <style>
-    /* ---------- Base / background ---------- */
     :root{
       --accent: #bb99ff;
       --accent-strong: #b450ff;
@@ -13,243 +12,113 @@
       --glass-strong: rgba(0,0,0,0.75);
       --text: #eae6ff;
       --muted: #cfc9e6;
-    }
-    html,body{
-      height:100%;
-      margin:0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      background: url('VRChat_2025-08-09_07-52-44.945_1920x1080.png') center/cover no-repeat fixed;
-      overflow:hidden;
+      --radius: 14px;
     }
 
-    /* ---------- Sparkles (pointer-events: none so clickable UI works) ---------- */
-    .sparkles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
+    /* Base */
+    html,body{height:100%;margin:0;font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;background: #000; color:var(--text); -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;}
+    body{background-image:url('VRChat_2025-08-09_07-52-44.945_1920x1080.png'); background-size:cover; background-position:center; background-attachment:fixed;}
+
+    /* sparkles container - pointer-events: none so UI works */
+    .sparkles { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
     .sparkle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      filter: blur(0.6px);
-      opacity: 0.85;
-      box-shadow: 0 0 8px var(--accent);
-      transform: translateY(0) scale(1);
+      position:absolute;
+      width:4px;height:4px;border-radius:50%;
+      background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(187,153,255,0.95) 45%);
+      box-shadow:0 0 12px rgba(187,153,255,0.8);
+      opacity:0.9;
       will-change: transform, opacity;
-      animation-name: sparkleFloat, sparkleTwinkle;
+      animation-name: sparkleFloat, sparklePulse;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
     }
-    @keyframes sparkleFloat {
-      from { transform: translateY(110vh) scale(0.7); opacity: 0.9; }
-      to   { transform: translateY(-20vh) scale(1.2); opacity: 0; }
-    }
-    @keyframes sparkleTwinkle {
-      0% { opacity: 0.6; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.05); }
-      100% { opacity: 0.6; transform: scale(0.9); }
-    }
+    @keyframes sparkleFloat { from { transform: translateY(110vh) scale(.7); opacity:0.9; } to { transform: translateY(-30vh) scale(1.1); opacity:0; } }
+    @keyframes sparklePulse { 0%{transform:scale(.8)}50%{transform:scale(1.05)}100%{transform:scale(.9)} }
 
-    /* ---------- Overlay (welcome / click-to-enable audio) ---------- */
-    #overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.86);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:1rem;
-      z-index: 9999;
-      text-align:center;
-      padding: 1rem;
-      transition: opacity .5s ease, visibility .5s ease;
-    }
-    #overlay.hidden { opacity:0; visibility:hidden; pointer-events:none; }
-    #overlay h1 { font-size:2.4rem; margin:0; color:var(--accent); text-shadow:0 2px 10px rgba(0,0,0,0.7); }
-    #overlay p { margin:0; color:var(--muted); font-size:1.05rem; }
-    #enterBtn {
-      margin-top:.6rem;
-      padding:.75rem 1.5rem;
-      font-size:1.05rem;
-      border-radius:28px;
-      border: none;
-      background: linear-gradient(90deg,var(--accent),var(--accent-strong));
-      color:#111;
-      cursor:pointer;
-      box-shadow: 0 6px 18px rgba(128,0,255,0.25);
-    }
-    #enterBtn:focus { outline: 3px solid rgba(187,153,255,0.25); }
+    /* overlay */
+    #overlay { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.6rem; background:rgba(0,0,0,0.88); z-index:9999; text-align:center; padding:1rem; }
+    #overlay.hidden{ opacity:0; visibility:hidden; pointer-events:none; transition:opacity .45s ease, visibility .45s ease; }
+    #overlay h1{ font-size:2.2rem; color:var(--accent); margin:0; text-shadow:0 4px 20px rgba(0,0,0,0.6); }
+    #overlay p{ color:var(--muted); margin:0; }
+    #enterBtn{ margin-top:.5rem; padding:.8rem 1.4rem; border-radius:26px; border:none; font-weight:700; cursor:pointer; background:linear-gradient(90deg,var(--accent),var(--accent-strong)); color:#111; box-shadow:0 8px 24px rgba(180,80,255,0.12); }
 
-    /* ---------- Main content card ---------- */
-    .wrap {
-      position:relative;
-      z-index:2;
-      width:100%;
-      height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:2rem;
-      box-sizing:border-box;
-    }
-    .content {
-      background: var(--glass);
-      padding:2rem;
-      border-radius:16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-      max-width:980px;
-      width:96%;
-      text-align:center;
-    }
-    .content h1 { margin:0 0 0.5rem 0; font-size:2.1rem; color:var(--accent); }
-    .links {
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      margin:1rem 0 1.5rem 0;
-    }
-    .links a {
-      display:inline-block;
-      padding:.8rem 1.1rem;
-      border-radius:999px;
-      text-decoration:none;
-      color:var(--text);
-      background: linear-gradient(180deg, rgba(128,0,255,0.18), rgba(128,0,255,0.06));
-      border:1px solid rgba(187,153,255,0.12);
-      box-shadow: 0 6px 18px rgba(128,0,255,0.12);
-      font-weight:600;
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .links a:hover, .links a:focus{
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(180,80,255,0.22);
-    }
+    /* wrapper & main card */
+    .wrap{ position:relative; z-index:2; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; box-sizing:border-box; }
+    .card{ background:var(--glass); padding:1.6rem; border-radius:var(--radius); box-shadow:0 14px 40px rgba(0,0,0,0.6); width:100%; max-width:980px; color:var(--text); }
+    .card h1{ margin:0 0 .6rem 0; color:var(--accent); font-size:2rem; text-align:center; }
+    .links{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; margin: .6rem 0 1rem 0; }
+    .links a{ display:inline-block; padding:.7rem 1rem; border-radius:999px; text-decoration:none; color:var(--text); background:linear-gradient(180deg, rgba(128,0,255,0.12), rgba(128,0,255,0.04)); border:1px solid rgba(187,153,255,0.08); font-weight:700; transition:transform .12s ease, box-shadow .12s ease; }
+    .links a:hover, .links a:focus{ transform:translateY(-4px); box-shadow:0 14px 36px rgba(180,80,255,0.18); }
 
-    .meta { color:var(--muted); margin-top:.6rem; }
+    .meta{ color:var(--muted); text-align:center; margin-top:.4rem; font-size:.95rem; }
 
-    /* nav / about button */
-    .nav-row { margin-top:1.25rem; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
-    .btn {
-      padding: .85rem 1.4rem;
-      border-radius: 28px;
-      border:none;
-      background:var(--accent);
-      color:#111;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow: 0 10px 30px rgba(128,0,255,0.12);
-      transition: transform .12s ease, background .12s;
-    }
-    .btn.secondary {
-      background: rgba(255,255,255,0.06);
-      color:var(--text);
-      border:1px solid rgba(187,153,255,0.07);
-      font-weight:600;
-    }
-    .btn:focus { outline:3px solid rgba(187,153,255,0.18); }
+    /* nav row */
+    .nav-row{ display:flex; gap:.6rem; justify-content:center; margin-top:.9rem; flex-wrap:wrap; }
+    .btn{ padding:.8rem 1.25rem; border-radius:28px; border:none; cursor:pointer; font-weight:800; color:#111; background:var(--accent); box-shadow:0 10px 30px rgba(128,0,255,0.12); }
+    .btn.secondary{ background:transparent; color:var(--text); border:1px solid rgba(187,153,255,0.08); font-weight:700; }
+    .btn:focus{ outline:3px solid rgba(187,153,255,0.14); }
 
-    /* ---------- About page (in-page) ---------- */
-    #aboutPage {
-      display:none;
-      background: var(--glass-strong);
-      color:var(--muted);
-      padding:1.5rem;
-      border-radius:12px;
-      max-height:72vh;
-      overflow:auto;
-      text-align:left;
-    }
-    #aboutPage h2 { color:var(--accent); margin-top:0; text-align:center; }
-    .lists { display:flex; gap:1.25rem; flex-wrap:wrap; }
-    .games, .avatars {
-      flex:1 1 320px;
-      min-width:200px;
-      background: rgba(255,255,255,0.02);
-      padding:0.9rem;
-      border-radius:8px;
-    }
-    .games ul, .avatars ul { margin:0; padding-left:1.1rem; columns:1; column-gap:1rem; list-style:disc; }
-    /* allow 2 columns on wider screens for the avatar list */
-    @media(min-width:900px){
-      .avatars ul { columns:2; }
-      .games ul { columns:1; }
-    }
-    .contact { margin-top:1rem; font-weight:600; color:var(--text); text-align:center; }
+    /* about panel */
+    #aboutPage { display:block; margin-top:1rem; background:var(--glass-strong); padding:1rem; border-radius:12px; color:var(--muted); max-height:66vh; overflow:auto; visibility:hidden; opacity:0; transform:translateY(8px); transition:opacity .28s ease, transform .28s ease, visibility .28s; }
+    #aboutPage.show { visibility:visible; opacity:1; transform:translateY(0); }
+    #aboutPage h2{ margin-top:0; color:var(--accent); text-align:center; }
+    .lists{ display:flex; gap:1rem; flex-wrap:wrap; }
+    .games, .avatars{ flex:1 1 300px; min-width:220px; background:rgba(255,255,255,0.02); padding:.7rem; border-radius:8px; }
+    .games ul, .avatars ul{ margin:0; padding-left:1rem; list-style:disc; column-gap:1rem; }
+    @media(min-width:900px){ .avatars ul{ columns:2; } }
 
-    /* audio controls container */
-    #audioContainer {
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9998;
-      background: rgba(0,0,0,0.45);
-      padding:8px 12px;
-      border-radius:12px;
-      display:none;
-      align-items:center;
-      gap:10px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.45);
-    }
-    #bgMusic { width:260px; max-width:60vw; outline:none; }
+    .contact{ text-align:center; margin-top:.8rem; color:var(--text); font-weight:700; }
 
-    /* responsiveness */
+    /* audio container */
+    #audioContainer{ position:fixed; bottom:12px; left:50%; transform:translateX(-50%); z-index:9998; background:rgba(0,0,0,0.46); padding:.5rem .8rem; border-radius:12px; display:none; align-items:center; gap:.6rem; box-shadow:0 10px 30px rgba(0,0,0,0.4); }
+    #bgMusic{ width:260px; max-width:66vw; outline:none; border-radius:8px; }
+
+    /* responsive tweaks */
     @media(max-width:600px){
-      .content { padding:1rem; border-radius:10px; }
-      .links a { padding:.6rem .9rem; font-size:.95rem; }
-      .btn { padding:.7rem 1rem; font-size:.95rem; }
-      #bgMusic { width:200px; }
+      .card{ padding:1rem; border-radius:10px; margin-top:40px; }
+      .links a{ padding:.6rem .9rem; font-size:.95rem; }
+      .btn{ padding:.7rem .95rem; font-size:.95rem; }
+      #bgMusic{ width:200px; }
     }
-
   </style>
 </head>
 <body>
-
-  <!-- Sparkles (generated by JS) -->
+  <!-- Sparkles -->
   <div class="sparkles" id="sparkles"></div>
 
-  <!-- Overlay: first click/gesture to enable audio -->
+  <!-- Overlay -->
   <div id="overlay" role="dialog" aria-modal="true" aria-label="Welcome overlay">
     <h1>Welcome to sagethenova.com</h1>
-    <p>I made this site to share a little about me — click <strong>Enter</strong> to continue and enable sounds.</p>
+    <p style="margin-top:.3rem;color:var(--muted)">Click Enter or anywhere to continue and enable sounds.</p>
     <button id="enterBtn" aria-label="Enter site">Enter</button>
-    <p style="font-size:.85rem;color:var(--muted);margin-top:.4rem;">(or click anywhere)</p>
   </div>
 
-  <!-- Main wrapper -->
+  <!-- Main content -->
   <div class="wrap" aria-hidden="false">
-    <div class="content" id="mainContent" style="display:none;">
+    <div class="card" id="mainCard">
       <h1>sagethenova</h1>
-      <div class="links" role="navigation" aria-label="social links">
+
+      <nav class="links" role="navigation" aria-label="social links">
         <a class="sfx" href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
         <a class="sfx" href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
         <a class="sfx" href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer">VRChat</a>
         <a class="sfx" href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer">Spotify</a>
         <a class="sfx" href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer">Fediverse</a>
         <a class="sfx" href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer">YouTube</a>
-      </div>
+      </nav>
 
-      <div class="nav-row">
-        <button id="aboutBtn" class="btn">About Me</button>
-        <button id="visitVRBtn" class="btn secondary sfx" onclick="window.open('https://vrchat.com/home','_blank')">Visit VRChat</button>
+      <div class="nav-row" role="toolbar" aria-label="main actions">
+        <button id="aboutBtn" class="btn" aria-pressed="false">About Me</button>
+        <button id="visitVRBtn" class="btn secondary sfx" title="Open VRChat" aria-label="Visit VRChat">Visit VRChat</button>
       </div>
 
       <p class="meta">Made by <strong>sagethenova</strong></p>
 
-      <div id="aboutPage" aria-hidden="true" tabindex="-1" style="margin-top:1rem;">
+      <section id="aboutPage" aria-hidden="true" tabindex="-1">
         <h2>About Me</h2>
         <p>I have Xbox Game Pass and I play Steam games. I enjoy playing with friends and I love technology, art, and collecting avatars.</p>
 
-        <div class="lists" style="margin-top:.6rem;">
+        <div class="lists" style="margin-top:.5rem;">
           <div class="games" aria-label="favorite games">
             <strong style="color:var(--accent);">Favorite Steam games</strong>
             <ul>
@@ -330,20 +199,20 @@
           </div>
         </div>
 
-        <div class="contact" style="margin-top:1rem;">
+        <div class="contact" role="contentinfo">
           <div>discord: <strong>sagethenova</strong></div>
           <div>xbox: <strong>sagethecat</strong></div>
           <div>steam: <strong>988123941</strong></div>
         </div>
 
-        <div style="text-align:center; margin-top:1rem;">
+        <div style="text-align:center;margin-top:.8rem;">
           <button id="backBtn" class="btn secondary">← Back</button>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 
-  <!-- Sound files and background music -->
+  <!-- sound fx + music (will only play after gesture) -->
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
@@ -352,144 +221,102 @@
   </div>
 
   <script>
-    /* ---------- Sparkles generation ---------- */
-    (function makeSparkles(){
+    /* Sparkles generation */
+    (function(){
       const container = document.getElementById('sparkles');
       const COUNT = 70;
       for(let i=0;i<COUNT;i++){
         const s = document.createElement('div');
         s.className = 'sparkle';
-        // random start left and starting top slightly below viewport so they float up
         s.style.left = (Math.random()*100) + 'vw';
-        s.style.top = (100 + Math.random()*40) + 'vh'; // start below
-        // random size and tint
-        const size = 3 + Math.random()*8;
+        s.style.top = (100 + Math.random()*30) + 'vh'; // start below so they float up
+        const size = (3 + Math.random()*7);
         s.style.width = s.style.height = size + 'px';
-        // slight color variety around accent
-        const hue = 270 + Math.round(Math.random()*60 - 30);
-        s.style.background = 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(187,153,255,0.9) 45%)';
-        // random duration and delay
-        const dur = (6 + Math.random()*8).toFixed(2) + 's';
-        s.style.animationDuration = dur + ', ' + (1.2 + Math.random()*1.8).toFixed(2) + 's';
+        const dur1 = (6 + Math.random()*8).toFixed(2) + 's';
+        const dur2 = (1 + Math.random()*1.6).toFixed(2) + 's';
+        s.style.animationDuration = dur1 + ', ' + dur2;
         s.style.animationDelay = (Math.random()*4).toFixed(2) + 's';
         container.appendChild(s);
       }
     })();
 
-    /* ---------- Controls & interactions ---------- */
+    /* Controls & behavior */
     const overlay = document.getElementById('overlay');
     const enterBtn = document.getElementById('enterBtn');
-    const mainContent = document.getElementById('mainContent');
-    const aboutPage = document.getElementById('aboutPage');
+    const mainCard = document.getElementById('mainCard');
     const aboutBtn = document.getElementById('aboutBtn');
+    const aboutPage = document.getElementById('aboutPage');
     const backBtn = document.getElementById('backBtn');
-    const bgMusic = document.getElementById('bgMusic');
-    const audioContainer = document.getElementById('audioContainer');
     const hoverSound = document.getElementById('hoverSound');
     const clickSound = document.getElementById('clickSound');
+    const bgMusic = document.getElementById('bgMusic');
+    const audioContainer = document.getElementById('audioContainer');
 
     let soundsEnabled = false;
+    let aboutVisible = false;
 
-    function showMain(){
-      overlay.classList.add('hidden');
-      // reveal main content
-      mainContent.style.display = 'block';
-      // allow audio controls to show
-      audioContainer.style.display = 'flex';
-      audioContainer.setAttribute('aria-hidden','false');
-    }
-
-    // start the site + enable audio on a user gesture
-    function startSite(ev){
-      // prevent double handling if a child triggered
-      if (soundsEnabled) {
-        showMain();
-        return;
+    function enableSoundsAndShow(){
+      if (!soundsEnabled) {
+        soundsEnabled = true;
+        // try start bg music (user gesture)
+        try { bgMusic.volume = 0.05; bgMusic.play().catch(()=>{}); } catch(e){}
+        // show audio controls
+        audioContainer.style.display = 'flex';
+        audioContainer.setAttribute('aria-hidden','false');
       }
-      soundsEnabled = true;
-      // try to play background music (user gesture required)
-      try {
-        bgMusic.volume = 0.05;
-        bgMusic.play().catch(()=>{/*ignore autoplay rejection*/});
-      } catch(e){}
-      // small click sound feedback
-      try {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(()=>{});
-      } catch(e){}
-      // show content
-      showMain();
+      // hide overlay and show main card (main card already visible under overlay)
+      overlay.classList.add('hidden');
     }
 
-    // overlay: click anywhere to enter
-    overlay.addEventListener('click', startSite);
-    // enter button specifically
-    enterBtn.addEventListener('click', function(e){
-      e.stopPropagation();
-      startSite();
-    });
+    // overlay click anywhere or Enter button
+    overlay.addEventListener('click', (e) => { enableSoundsAndShow(); });
+    enterBtn.addEventListener('click', (e) => { e.stopPropagation(); enableSoundsAndShow(); });
 
-    // ABOUT navigation (toggling sections in-page)
-    aboutBtn.addEventListener('click', () => {
-      mainContent.querySelector('#aboutPage').style.display = 'block';
-      aboutPage.style.display = 'block';
-      aboutPage.setAttribute('aria-hidden','false');
-      // scroll into view for accessibility
-      aboutPage.focus && aboutPage.focus();
-      // Play click sound if allowed
-      if (soundsEnabled) { try { clickSound.currentTime=0; clickSound.play().catch(()=>{}); } catch(e){} }
-    });
+    // toggle About (acts as on/off)
+    function setAboutVisibility(show){
+      aboutVisible = !!show;
+      if (aboutVisible){
+        aboutPage.classList.add('show');
+        aboutPage.setAttribute('aria-hidden','false');
+        aboutBtn.setAttribute('aria-pressed','true');
+        // focus for accessibility
+        aboutPage.focus && aboutPage.focus();
+      } else {
+        aboutPage.classList.remove('show');
+        aboutPage.setAttribute('aria-hidden','true');
+        aboutBtn.setAttribute('aria-pressed','false');
+      }
+      // play click sfx when toggling if allowed
+      if (soundsEnabled) { try { clickSound.currentTime = 0; clickSound.play().catch(()=>{}); } catch(e){} }
+    }
 
-    backBtn.addEventListener('click', () => {
-      aboutPage.style.display = 'none';
-      aboutPage.setAttribute('aria-hidden','true');
-      if (soundsEnabled) { try { clickSound.currentTime=0; clickSound.play().catch(()=>{}); } catch(e){} }
-    });
+    aboutBtn.addEventListener('click', () => { setAboutVisibility(!aboutVisible); });
 
-    // Add hover and click sounds only to intended interactive elements
-    function attachSfxTo(selector){
+    backBtn.addEventListener('click', () => { setAboutVisibility(false); });
+
+    // sfx for hover/touch on interactive elements
+    function attachSfx(selector){
       document.querySelectorAll(selector).forEach(el => {
-        // mouseenter for desktop
-        el.addEventListener('mouseenter', () => {
-          if (!soundsEnabled) return;
-          try { hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); } catch(e){}
-        });
-        // touchstart for mobile (gives immediate feedback)
-        el.addEventListener('touchstart', () => {
-          if (!soundsEnabled) return;
-          try { hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); } catch(e){}
-        }, {passive:true});
-        // click sound
-        el.addEventListener('click', () => {
-          if (!soundsEnabled) return;
-          try { clickSound.currentTime = 0; clickSound.play().catch(()=>{}); } catch(e){}
-        });
+        el.addEventListener('mouseenter', () => { if (!soundsEnabled) return; try { hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } catch(e){} });
+        el.addEventListener('touchstart', () => { if (!soundsEnabled) return; try { hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } catch(e){} }, {passive:true});
+        el.addEventListener('click', () => { /* click sound handled on toggle to avoid double */ });
       });
     }
+    attachSfx('.links a');
+    attachSfx('.btn');
 
-    // attach only to visible UI (social links and nav buttons)
-    attachSfxTo('.links a');   // social links
-    attachSfxTo('.nav-row .btn'); // About, Visit VR
-    attachSfxTo('#backBtn');
-
-    // Accessibility: allow Enter key on focused "About Me" and "Back" as normal buttons (they are <button> so OK)
-
-    // Safety: if user closes audio controls, pause music (optional)
-    bgMusic.addEventListener('pause', () => {/* left intentionally empty */});
-
-    // When page loads, keep content hidden until overlay dismissed
+    // keep initial state: overlay visible, about hidden, audio controls hidden
     window.addEventListener('load', () => {
-      mainContent.style.display = 'none';
-      aboutPage.style.display = 'none';
+      overlay.classList.remove('hidden');
+      aboutPage.classList.remove('show');
+      aboutPage.setAttribute('aria-hidden','true');
       audioContainer.style.display = 'none';
     });
 
-    // small keyboard shortcut: pressing 'a' toggles About (useful for testing)
+    // keyboard shortcut for toggling about (optional)
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'a' || e.key === 'A') {
-        if (aboutPage.style.display === 'block') { backBtn.click(); }
-        else { aboutBtn.click(); }
-      }
+      if (e.key === 'a' || e.key === 'A') { setAboutVisibility(!aboutVisible); }
+      if ((e.key === 'Escape' || e.key === 'Esc') && aboutVisible) { setAboutVisibility(false); }
     });
   </script>
 </body>
