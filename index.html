@@ -1,346 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>sagethenova</title>
-<style>
-/* Reset & Background */
-body {
-  margin: 0;
-  padding: 0;
-  background: url('VRChat_2025-08-09_07-52-44.945_1920x1080.png') no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-x: hidden;
-  color: #fff;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>sagethenova</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: black;
+      color: white;
+    }
 
-/* Google Translate */
-#google_translate_element {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10000;
-  background: rgba(0,0,0,0.6);
-  padding: 0.4rem 0.8rem;
-  border-radius: 10px;
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
-  color: #fff;
-}
+    /* Sparkle background */
+    #sparkleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
 
-/* Sparkle Background */
-.sparkles {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-.sparkle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0;
-  animation: twinkle 3s infinite ease-in-out;
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
+    /* Welcome overlay */
+    #welcomeOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      text-align: center;
+    }
 
-/* Overlay */
-#overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.7s ease;
-  color: #fff;
-  text-align: center;
-  padding: 0 5vw;
-}
-#overlay.hidden { opacity: 0; pointer-events: none; }
-#overlay h1 {
-  font-size: clamp(1.5rem, 5vw, 2.4rem);
-  margin-bottom: 1rem;
-}
-#overlay p {
-  font-size: clamp(1rem, 3vw, 1.2rem);
-  margin-bottom: 0.5rem;
-}
+    #welcomeOverlay h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
 
-/* Content Box */
-.content, #aboutPage {
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: clamp(1rem, 4vw, 2rem);
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(187, 153, 255, 0.7), inset 0 0 20px rgba(128, 0, 255, 0.5);
-  position: relative;
-  z-index: 2;
-  max-width: 700px;
-  width: 90%;
-  text-align: center;
-  animation: fadeIn 1s ease forwards;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.content h1 {
-  font-size: clamp(1.4rem, 4vw, 2.2rem);
-  margin-bottom: 1rem;
-}
+    #welcomeButton {
+      background: linear-gradient(45deg, purple, violet);
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: white;
+      cursor: pointer;
+      border-radius: 50px;
+      box-shadow: 0 0 15px purple;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #welcomeButton:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px violet;
+    }
 
-/* Buttons & Links */
-.content a, button {
-  display: block;
-  color: #bb99ff;
-  font-weight: bold;
-  text-decoration: none;
-  margin: clamp(0.8rem, 2vw, 1.5rem) auto;
-  font-size: clamp(1rem, 3vw, 1.5rem);
-  padding: 0.7rem 1.5rem;
-  border-radius: 40px;
-  background: rgba(128, 0, 255, 0.3);
-  box-shadow: 0 0 8px rgba(128, 0, 255, 0.6), 0 0 20px rgba(128, 0, 255, 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease, box-shadow 0.5s ease;
-  max-width: 300px;
-  position: relative;
-  overflow: hidden;
-}
-.content a:hover, button:hover {
-  color: #fff;
-  background: rgba(180, 80, 255, 0.5);
-  box-shadow: 0 0 20px rgba(255, 180, 255, 0.8), 0 0 40px rgba(180, 80, 255, 0.5);
-}
-.content a::after, button::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.8) 10%, transparent 30%);
-  opacity: 0;
-  animation: sparkleHover 2s infinite;
-}
-@keyframes sparkleHover {
-  0%, 100% { transform: translate(0,0); opacity: 0; }
-  50% { transform: translate(30%, 30%); opacity: 1; }
-}
+    /* Main content */
+    #content {
+      display: none;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
 
-/* About Page */
-#aboutPage {
-  display: none;
-  max-width: 900px;
-  width: 95%;
-  color: #ddd;
-  text-align: left;
-  overflow-y: auto;
-  max-height: 80vh;
-  margin: auto;
-}
-#aboutPage h2 {
-  text-align: center;
-  font-size: clamp(1.4rem, 4vw, 2rem);
-  margin-bottom: 1rem;
-  color: #bb99ff;
-}
-#aboutPage ul {
-  list-style: none;
-  padding-left: 0;
-  columns: 2;
-  column-gap: 2rem;
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-}
-#aboutPage ul li {
-  margin-bottom: 0.7rem;
-  padding-left: 1rem;
-  position: relative;
-}
-#aboutPage ul li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #bb99ff;
-  font-weight: bold;
-}
-#aboutPage button {
-  margin-top: 1rem;
-}
+    /* Link bubbles */
+    .link-bubble {
+      display: inline-block;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border-radius: 50%;
+      padding: 20px;
+      margin: 15px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 15px purple;
+    }
+    .link-bubble:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px violet;
+    }
 
-/* Audio Player */
-#audioContainer {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  width: min(350px, 90vw);
-  background: rgba(0,0,0,0.4);
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(128, 0, 255, 0.7);
-  padding: 0.4rem 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#bgMusic {
-  width: 100%;
-  outline: none;
-  border-radius: 10px;
-}
-
-/* Mobile tweaks */
-@media (max-width: 800px) {
-  #aboutPage ul { columns: 1; }
-}
-</style>
+    @media (max-width: 600px) {
+      .link-bubble {
+        padding: 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <canvas id="sparkleCanvas"></canvas>
 
-<div id="google_translate_element"></div>
-<div class="sparkles" id="sparkles"></div>
+  <div id="welcomeOverlay">
+    <h1>Welcome to SageTheNova</h1>
+    <button id="welcomeButton">Enter</button>
+  </div>
 
-<div id="overlay">
-  <h1>Welcome to sagethenova.com</h1>
-  <p>I made this website so you can get to know me</p>
-  <p><strong>Click anywhere to continue.</strong></p>
-</div>
+  <div id="content">
+    <h2>Main Page</h2>
+    <a href="#" class="link-bubble">Twitter</a>
+    <a href="#" class="link-bubble">Bluesky</a>
+    <a href="#" class="link-bubble">VRChat</a>
+    <a href="#" class="link-bubble">Spotify</a>
+    <a href="#" class="link-bubble">Fediverse</a>
+    <a href="#" class="link-bubble">YouTube</a>
+  </div>
 
-<div class="content" id="mainContent" style="display:none;">
-  <h1>Welcome to sagethenova.com</h1>
-  <a href="https://x.com/sagethenova" target="_blank">X (Twitter)</a>
-  <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank">Bluesky</a>
-  <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank">VRChat</a>
-  <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank">Spotify</a>
-  <a href="https://woof.tech/@sagethenova" target="_blank">Fediverse</a>
-  <a href="https://www.youtube.com/@sagethenova" target="_blank">YouTube</a>
-  <p>made by sagethenova 2025</p>
-  <button id="nextPageBtn">Next Page →</button>
-</div>
+  <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+  <audio id="bgMusic" src="https://lunar.radio/stream" preload="auto" loop></audio>
 
-<div id="aboutPage">
-  <h2>About Me</h2>
-  <p>I have Xbox Game Pass and I play Steam games.</p>
-  <ul>
-    <li>VR Chat</li>
-    <li>Call of Duty: Cold War</li>
-    <li>Palworld</li>
-    <li>Terraria</li>
-    <li>Wild Assault</li>
-    <li>Atlas</li>
-    <li>Forewarned</li>
-    <li>Call of Duty: Black Ops 3</li>
-    <li>Cattails</li>
-    <li>Gunfire Reborn</li>
-    <li>Devour</li>
-    <li>Lethal Company</li>
-    <li>Star Trek Bridge Crew</li>
-    <li>Ironwolf VR</li>
-    <li>Indigo Park</li>
-    <li>War Trigger 1, 2, 3</li>
-    <li>7 Days to Die (my most favorite)</li>
-    <li>Resonate</li>
-  </ul>
-  <p>Contact me:</p>
-  <ul>
-    <li>Discord: sagethenova</li>
-    <li>Steam Friend Code: 988123941</li>
-    <li>Xbox: sagethecat</li>
-  </ul>
-  <button id="backBtn">← Back</button>
-</div>
+  <script>
+    const overlay = document.getElementById("welcomeOverlay");
+    const welcomeButton = document.getElementById("welcomeButton");
+    const content = document.getElementById("content");
+    const bgMusic = document.getElementById("bgMusic");
 
-<audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
-<audio id="clickSound" src="click.mp3" preload="auto"></audio>
+    welcomeButton.addEventListener("click", () => {
+      overlay.style.display = "none";
+      content.style.display = "block";
+      bgMusic.volume = 0.05;
+      bgMusic.play();
+    });
 
-<div id="audioContainer" style="display:none;">
-  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
-</div>
+    // Sparkle effect
+    const canvas = document.getElementById("sparkleCanvas");
+    const ctx = canvas.getContext("2d");
+    let w, h;
+    let sparkles = [];
 
-<script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'ru,es,fr,de,it,zh-CN,en',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
+    function resizeCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-// Sparkles generator
-const sparkleContainer = document.getElementById("sparkles");
-for (let i = 0; i < 50; i++) {
-  const sparkle = document.createElement("div");
-  sparkle.className = "sparkle";
-  sparkle.style.top = Math.random() * 100 + "%";
-  sparkle.style.left = Math.random() * 100 + "%";
-  sparkle.style.animationDelay = (Math.random() * 3) + "s";
-  sparkleContainer.appendChild(sparkle);
-}
+    function randomColor() {
+      const colors = ["#ff66ff", "#66ffff", "#ffff66", "#ff99cc", "#99ff99", "#ccccff"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
 
-const overlay = document.getElementById("overlay");
-const mainContent = document.getElementById("mainContent");
-const aboutPage = document.getElementById("aboutPage");
-const hoverSound = document.getElementById("hoverSound");
-const clickSound = document.getElementById("clickSound");
-const bgMusic = document.getElementById("bgMusic");
-const audioContainer = document.getElementById("audioContainer");
-const nextPageBtn = document.getElementById("nextPageBtn");
-const backBtn = document.getElementById("backBtn");
+    for (let i = 0; i < 100; i++) {
+      sparkles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 3 + 1,
+        color: randomColor(),
+        opacity: Math.random(),
+        fade: Math.random() * 0.02 + 0.005
+      });
+    }
 
-let soundsEnabled = false;
+    function drawSparkles() {
+      ctx.clearRect(0, 0, w, h);
+      for (let s of sparkles) {
+        ctx.globalAlpha = s.opacity;
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
 
-overlay.addEventListener("click", () => {
-  if (!soundsEnabled) {
-    hoverSound.play().catch(() => {});
-    clickSound.play().catch(() => {});
-    bgMusic.volume = 0.05;
-    bgMusic.play().catch(() => {});
-    soundsEnabled = true;
-  }
-  overlay.classList.add("hidden");
-  setTimeout(() => {
-    overlay.style.display = "none";
-    mainContent.style.display = "block";
-    audioContainer.style.display = "flex";
-  }, 700);
-});
-
-// Hover/Click sounds
-document.body.addEventListener("mouseover", e => {
-  if (e.target.matches("a, button") && soundsEnabled) {
-    hoverSound.currentTime = 0;
-    hoverSound.play().catch(()=>{});
-  }
-});
-document.body.addEventListener("click", e => {
-  if (e.target.matches("a, button") && soundsEnabled) {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(()=>{});
-  }
-});
-
-nextPageBtn.addEventListener("click", () => {
-  mainContent.style.display = "none";
-  aboutPage.style.display = "block";
-});
-backBtn.addEventListener("click", () => {
-  aboutPage.style.display = "none";
-  mainContent.style.display = "block";
-});
-</script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        s.opacity += s.fade;
+        if (s.opacity <= 0 || s.opacity >= 1) s.fade = -s.fade;
+      }
+      requestAnimationFrame(drawSparkles);
+    }
+    drawSparkles();
+  </script>
 </body>
 </html>
