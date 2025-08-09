@@ -1,177 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>sagethenova</title>
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: black;
-      color: white;
+    /* ---------- Base & background ---------- */
+    :root{
+      --accent:#bb99ff;
+      --accent-strong:#b450ff;
+      --glass: rgba(0,0,0,0.6);
+      --glass-strong: rgba(0,0,0,0.75);
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: url('VRChat_2025-08-09_07-52-44.945_1920x1080.png') center/cover no-repeat fixed;
+      overflow-x:hidden;
     }
 
-    /* Sparkle background */
-    #sparkleCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+    /* ---------- Google Translate ---------- */
+    #google_translate_element{
+      position:fixed;
+      top:1rem;
+      right:1rem;
+      z-index:10050;
+      background: rgba(0,0,0,0.55);
+      padding:0.35rem 0.6rem;
+      border-radius:9px;
+      font-size:clamp(0.7rem,1.6vw,0.9rem);
+      color:#fff;
     }
 
-    /* Welcome overlay */
-    #welcomeOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-      text-align: center;
+    /* ---------- Sparkle canvas ---------- */
+    #sparkleCanvas{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      display:block;
     }
 
-    #welcomeOverlay h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
+    /* ---------- Overlay (welcome) ---------- */
+    #overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,0.86);
+      z-index:10000;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:0 4vw;
+      transition:opacity 0.6s ease;
     }
+    #overlay.hidden{ opacity:0; pointer-events:none; }
+    #overlay h1{ font-size:clamp(1.5rem,4.5vw,2.6rem); margin:0 0 0.5rem; }
+    #overlay p{ font-size:clamp(0.95rem,2.4vw,1.1rem); margin:0.2rem 0; color:#ddd;}
+    .start-btn{
+      margin-top:1rem;
+      background:linear-gradient(135deg,var(--accent-strong),var(--accent));
+      border:none;
+      color:#fff;
+      font-weight:700;
+      padding:0.7rem 1.2rem;
+      border-radius:999px;
+      cursor:pointer;
+      box-shadow:0 6px 20px rgba(180,80,255,0.18), 0 0 12px rgba(187,153,255,0.12);
+      transition:transform .18s ease, box-shadow .18s ease;
+      font-size:clamp(0.95rem,2.4vw,1.05rem);
+    }
+    .start-btn:active{ transform:scale(.98); }
+    .start-btn:hover{ box-shadow:0 10px 30px rgba(180,80,255,0.25); }
 
-    #welcomeButton {
-      background: linear-gradient(45deg, purple, violet);
-      border: none;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      color: white;
-      cursor: pointer;
-      border-radius: 50px;
-      box-shadow: 0 0 15px purple;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* ---------- Main content box ---------- */
+    .content{
+      position:relative;
+      z-index:20;
+      max-width:900px;
+      margin:6vh auto;
+      background:var(--glass);
+      padding:clamp(1rem,4vw,2rem);
+      border-radius:14px;
+      box-shadow:0 6px 36px rgba(0,0,0,0.6), inset 0 0 36px rgba(128,0,255,0.06);
+      text-align:center;
+      backdrop-filter: blur(6px);
+      transition: transform .35s ease, box-shadow .35s ease, opacity .35s ease;
     }
-    #welcomeButton:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px violet;
-    }
+    .content h1{ margin:0 0 0.6rem; font-size:clamp(1.25rem,3.6vw,2rem); color:var(--accent); }
 
-    /* Main content */
-    #content {
-      display: none;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
+    /* ---------- Link buttons (bubbles) ---------- */
+    .link-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.8rem;
+      justify-content:center;
+      margin-top:1rem;
     }
+    .link-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:150px;
+      padding:0.7rem 1rem;
+      border-radius:40px;
+      background: linear-gradient(180deg, rgba(128,0,255,0.16), rgba(128,0,255,0.06));
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:700;
+      box-shadow: 0 6px 18px rgba(128,0,255,0.12), 0 0 8px rgba(187,153,255,0.05);
+      transition: transform .22s ease, box-shadow .22s ease, color .18s ease;
+      position:relative;
+      overflow:visible;
+    }
+    .link-btn:focus{ outline:3px solid rgba(187,153,255,0.14); outline-offset:4px; }
+    .link-btn:hover{
+      transform:translateY(-6px);
+      color:#fff;
+      box-shadow: 0 14px 40px rgba(180,80,255,0.22), 0 0 30px rgba(180,80,255,0.14);
+    }
+    /* shimmer sparkle pseudo element */
+    .link-btn::after{
+      content:"";
+      position:absolute;
+      inset:-60% -60% auto auto;
+      width:220%;
+      height:220%;
+      pointer-events:none;
+      background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0, transparent 12%),
+                  radial-gradient(circle at 70% 70%, rgba(255,255,255,0.07) 0, transparent 12%);
+      opacity:0;
+      transform:translateY(6px) scale(.95);
+      transition:opacity .35s ease, transform .35s ease;
+    }
+    .link-btn:hover::after{ opacity:1; transform:translateY(-2px) scale(1); }
 
-    /* Link bubbles */
-    .link-bubble {
-      display: inline-block;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border-radius: 50%;
-      padding: 20px;
-      margin: 15px;
-      text-decoration: none;
-      font-size: 1.1rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 0 15px purple;
-    }
-    .link-bubble:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 25px violet;
-    }
+    /* small footer note */
+    .madeby{ margin-top:1rem; font-size:0.85rem; color:#ddd; }
 
-    @media (max-width: 600px) {
-      .link-bubble {
-        padding: 15px;
-        font-size: 0.9rem;
-      }
+    /* ---------- About page ---------- */
+    #aboutPage{
+      display:none;
+      max-width:900px;
+      margin:4vh auto;
+      background:var(--glass);
+      padding:clamp(1rem,4vw,2rem);
+      border-radius:14px;
+      box-shadow:0 6px 36px rgba(0,0,0,0.6);
+      color:#ddd;
+      text-align:left;
+      z-index:20;
+      overflow:auto;
+      max-height:78vh;
+    }
+    #aboutPage h2{ text-align:center; color:var(--accent); margin-top:0; }
+    #gameList{ columns:2; column-gap:1.4rem; list-style:none; padding:0; margin:0.5rem 0 1rem 0; }
+    #gameList li{ margin-bottom:0.6rem; position:relative; padding-left:0.9rem;}
+    #gameList li::before{ content:"•"; position:absolute; left:0; color:var(--accent); font-weight:700; }
+
+    /* about nav buttons */
+    .nav-btn{
+      display:block;
+      margin:1rem auto 0;
+      background:var(--accent);
+      color:#222;
+      border:none;
+      padding:0.6rem 1.1rem;
+      border-radius:40px;
+      font-weight:800;
+      box-shadow:0 6px 18px rgba(187,153,255,0.14);
+      cursor:pointer;
+    }
+    .nav-btn:hover{ background:#fff; }
+
+    /* ---------- Audio player ---------- */
+    #audioContainer{
+      position:fixed;
+      bottom:10px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:10020;
+      width:min(420px,92vw);
+      background: rgba(0,0,0,0.45);
+      padding:0.45rem .9rem;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(128,0,255,0.14);
+      display:none;
+      align-items:center;
+      justify-content:center;
+    }
+    #bgMusic{ width:100%; border-radius:8px; }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width:760px){
+      .link-btn{ min-width:120px; font-size:0.95rem; padding:0.6rem 0.9rem; }
+      #gameList{ columns:1; }
+      .content{ margin:4vh 1rem; width:calc(100% - 2rem); }
+      #aboutPage{ margin:3vh 1rem; width:calc(100% - 2rem); }
     }
   </style>
 </head>
 <body>
-  <canvas id="sparkleCanvas"></canvas>
 
-  <div id="welcomeOverlay">
-    <h1>Welcome to SageTheNova</h1>
-    <button id="welcomeButton">Enter</button>
+  <!-- Google Translate widget -->
+  <div id="google_translate_element" aria-hidden="false"></div>
+
+  <!-- Sparkle canvas -->
+  <canvas id="sparkleCanvas" aria-hidden="true"></canvas>
+
+  <!-- Overlay: click or press Start -->
+  <div id="overlay" role="dialog" aria-modal="true">
+    <h1>Welcome to sagethenova.com</h1>
+    <p>I made this website so you can get to know me.</p>
+    <p><strong>Click anywhere or press Start to continue.</strong></p>
+    <button class="start-btn" id="startButton" aria-label="Start and enable sounds">Start</button>
   </div>
 
-  <div id="content">
-    <h2>Main Page</h2>
-    <a href="#" class="link-bubble">Twitter</a>
-    <a href="#" class="link-bubble">Bluesky</a>
-    <a href="#" class="link-bubble">VRChat</a>
-    <a href="#" class="link-bubble">Spotify</a>
-    <a href="#" class="link-bubble">Fediverse</a>
-    <a href="#" class="link-bubble">YouTube</a>
-  </div>
+  <!-- Main content -->
+  <main class="content" id="mainContent" style="display:none;" role="main">
+    <h1>Welcome to sagethenova.com</h1>
 
+    <div class="link-grid" id="links">
+      <a class="link-btn" href="https://x.com/sagethenova" target="_blank" rel="noopener" aria-label="Visit my X profile">X (Twitter)</a>
+      <a class="link-btn" href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener" aria-label="Visit my Bluesky profile">Bluesky</a>
+      <a class="link-btn" href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener" aria-label="Visit my VRChat profile">VRChat</a>
+      <a class="link-btn" href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener" aria-label="Visit my Spotify profile">Spotify</a>
+      <a class="link-btn" href="https://woof.tech/@sagethenova" target="_blank" rel="noopener" aria-label="Visit my Fediverse profile">Fediverse</a>
+      <a class="link-btn" href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener" aria-label="Visit my YouTube channel">YouTube</a>
+    </div>
+
+    <p class="madeby">made by sagethenova 2025</p>
+    <button class="nav-btn" id="nextPageBtn" aria-label="Open About page">Next Page →</button>
+  </main>
+
+  <!-- About page -->
+  <section id="aboutPage" aria-hidden="true">
+    <h2>About Me</h2>
+    <p>I have Xbox Game Pass and I play Steam games. My favorites include:</p>
+    <ul id="gameList">
+      <li>VR Chat</li>
+      <li>Call of Duty: Cold War</li>
+      <li>Palworld</li>
+      <li>Terraria</li>
+      <li>Wild Assault</li>
+      <li>Atlas</li>
+      <li>Forewarned</li>
+      <li>Call of Duty: Black Ops 3</li>
+      <li>Cattails</li>
+      <li>Gunfire Reborn</li>
+      <li>Devour</li>
+      <li>Lethal Company</li>
+      <li>Star Trek Bridge Crew</li>
+      <li>Ironwolf VR</li>
+      <li>Indigo Park</li>
+      <li>War Trigger 1, 2, 3</li>
+      <li>7 Days to Die (my most favorite)</li>
+      <li>Resonate</li>
+    </ul>
+
+    <p>I love to have fun with friends, play games, and share memories. I also enjoy helping others and collecting art. I'm autistic and I rock to self-regulate — it's not sexual or intended to make anyone uncomfortable. I am 27 years old. I love thunderstorms, spooky goth stuff, and technology.</p>
+
+    <p>Contact me:</p>
+    <ul>
+      <li>Discord: sagethenova</li>
+      <li>Steam Friend Code: 988123941</li>
+      <li>Xbox: sagethecat</li>
+    </ul>
+
+    <button class="nav-btn" id="backBtn" aria-label="Back to main page">← Back</button>
+  </section>
+
+  <!-- Sounds & Music -->
   <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
   <audio id="clickSound" src="click.mp3" preload="auto"></audio>
-  <audio id="bgMusic" src="https://lunar.radio/stream" preload="auto" loop></audio>
 
+  <div id="audioContainer">
+    <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
+  </div>
+
+  <!-- ---------- Scripts ---------- -->
   <script>
-    const overlay = document.getElementById("welcomeOverlay");
-    const welcomeButton = document.getElementById("welcomeButton");
-    const content = document.getElementById("content");
-    const bgMusic = document.getElementById("bgMusic");
-
-    welcomeButton.addEventListener("click", () => {
-      overlay.style.display = "none";
-      content.style.display = "block";
-      bgMusic.volume = 0.05;
-      bgMusic.play();
-    });
-
-    // Sparkle effect
-    const canvas = document.getElementById("sparkleCanvas");
-    const ctx = canvas.getContext("2d");
-    let w, h;
-    let sparkles = [];
-
-    function resizeCanvas() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    function randomColor() {
-      const colors = ["#ff66ff", "#66ffff", "#ffff66", "#ff99cc", "#99ff99", "#ccccff"];
-      return colors[Math.floor(Math.random() * colors.length)];
+    /* ===== Google Translate callback (keeps previous behavior) ===== */
+    function googleTranslateElementInit() {
+      if (typeof google === 'undefined') return;
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'ru,es,fr,de,it,zh-CN,en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
     }
 
-    for (let i = 0; i < 100; i++) {
-      sparkles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        size: Math.random() * 3 + 1,
-        color: randomColor(),
-        opacity: Math.random(),
-        fade: Math.random() * 0.02 + 0.005
-      });
-    }
+    /* ===== Sparkles canvas: multicolor, twinkle + drift ===== */
+    (function () {
+      const canvas = document.getElementById('sparkleCanvas');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let DPR = Math.max(1, window.devicePixelRatio || 1);
+      let W = 0, H = 0;
 
-    function drawSparkles() {
-      ctx.clearRect(0, 0, w, h);
-      for (let s of sparkles) {
-        ctx.globalAlpha = s.opacity;
-        ctx.fillStyle = s.color;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        s.opacity += s.fade;
-        if (s.opacity <= 0 || s.opacity >= 1) s.fade = -s.fade;
+      function resize() {
+        DPR = Math.max(1, window.devicePixelRatio || 1);
+        W = canvas.width = Math.floor(window.innerWidth * DPR);
+        H = canvas.height = Math.floor(window.innerHeight * DPR);
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       }
-      requestAnimationFrame(drawSparkles);
-    }
-    drawSparkles();
+      window.addEventListener('resize', resize);
+      resize();
+
+      // color palette for sparkles (soft neon pastel)
+      const COLORS = ['#ff66ff','#66ffff','#ffff66','#ff99cc','#99ff99','#ccccff','#ffd166','#a0c4ff'];
+
+      // particle generator
+      const MAX = Math.min(120, Math.round((window.innerWidth * window.innerHeight) / 90000)); // scale by viewport
+      const particles = [];
+
+      function rand(min, max){ return Math.random()*(max-min)+min; }
+
+      for (let i=0;i<MAX;i++){
+        particles.push({
+          x: Math.random()*window.innerWidth,
+          y: Math.random()*window.innerHeight,
+          vx: rand(-0.06,0.06),
+          vy: rand(-0.02,0.02) - 0.02 * Math.random(), // subtle upward drift
+          size: rand(0.8,3.2),
+          hue: COLORS[Math.floor(Math.random()*COLORS.length)],
+          twinkleOffset: Math.random()*Math.PI*2,
+          twinkleSpeed: rand(0.8,2.4),
+          driftRange: rand(6,30)
+        });
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+        const time = performance.now() / 1000;
+        for (let p of particles){
+          // gentle drift & wrap
+          p.x += p.vx;
+          p.y += p.vy + Math.sin(time * 0.2 + p.twinkleOffset) * 0.02;
+
+          if (p.x < -20) p.x = window.innerWidth + 20;
+          if (p.x > window.innerWidth + 20) p.x = -20;
+          if (p.y < -20) p.y = window.innerHeight + 20;
+          if (p.y > window.innerHeight + 20) p.y = -20;
+
+          // twinkle alpha oscillation
+          const alpha = 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(time * p.twinkleSpeed + p.twinkleOffset));
+          const size = p.size * (0.8 + 0.6 * Math.abs(Math.sin(time * p.twinkleSpeed + p.twinkleOffset)));
+
+          // draw glow (radial gradient)
+          const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * p.driftRange/10);
+          grd.addColorStop(0, hexToRgba(p.hue, alpha * 0.9));
+          grd.addColorStop(0.15, hexToRgba(p.hue, alpha * 0.6));
+          grd.addColorStop(0.5, hexToRgba(p.hue, alpha * 0.12));
+          grd.addColorStop(1, hexToRgba('#000000', 0));
+          ctx.fillStyle = grd;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, size * (p.driftRange/12), 0, Math.PI*2);
+          ctx.fill();
+
+          // small center bright dot
+          ctx.fillStyle = hexToRgba('#fff', Math.min(1, alpha + 0.2));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(0.4, size*0.45), 0, Math.PI*2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      function hexToRgba(hex, a){
+        // hex like #rrggbb
+        const bigint = parseInt(hex.replace('#',''),16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `rgba(${r},${g},${b},${a})`;
+      }
+
+      // small periodic color shuffle to gently vary hues over time
+      setInterval(()=> {
+        for (let p of particles){
+          if (Math.random() < 0.06) p.hue = COLORS[Math.floor(Math.random()*COLORS.length)];
+        }
+      }, 1600);
+
+      draw();
+    })();
+
+    /* ===== UI behavior: overlay, audio, navigation, sounds ===== */
+    (function(){
+      const overlay = document.getElementById('overlay');
+      const startButton = document.getElementById('startButton');
+      const mainContent = document.getElementById('mainContent');
+      const aboutPage = document.getElementById('aboutPage');
+      const nextPageBtn = document.getElementById('nextPageBtn');
+      const backBtn = document.getElementById('backBtn');
+      const hoverSound = document.getElementById('hoverSound');
+      const clickSound = document.getElementById('clickSound');
+      const bgMusic = document.getElementById('bgMusic');
+      const audioContainer = document.getElementById('audioContainer');
+
+      // show/hide functions
+      function revealMain(){
+        overlay.classList.add('hidden');
+        // allow CSS transition time then remove from flow
+        setTimeout(()=> { overlay.style.display = 'none'; }, 600);
+        mainContent.style.display = 'block';
+        audioContainer.style.display = 'flex';
+      }
+
+      // play on user interaction; browsers require gesture
+      function enableAudio(){
+        try { hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); } catch(e){}
+        try { clickSound.currentTime = 0; clickSound.play().catch(()=>{}); } catch(e){}
+        try { bgMusic.volume = 0.05; bgMusic.play().catch(()=>{}); } catch(e){}
+      }
+
+      // overlay click anywhere
+      overlay.addEventListener('click', (ev)=>{
+        enableAudio();
+        revealMain();
+      });
+
+      // explicit start button
+      startButton.addEventListener('click', (ev)=>{
+        ev.stopPropagation();
+        enableAudio();
+        revealMain();
+      });
+
+      // navigation
+      nextPageBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        mainContent.style.display = 'none';
+        aboutPage.style.display = 'block';
+        aboutPage.setAttribute('aria-hidden','false');
+      });
+      backBtn.addEventListener('click', ()=>{
+        aboutPage.style.display = 'none';
+        aboutPage.setAttribute('aria-hidden','true');
+        mainContent.style.display = 'block';
+      });
+
+      // Delegated hover & click sounds for a, button
+      document.body.addEventListener('mouseover', (e)=>{
+        if (e.target && (e.target.matches('a') || e.target.matches('button') || e.target.closest('.link-btn')) ){
+          if (hoverSound){ try { hoverSound.currentTime = 0; hoverSound.play().catch(()=>{});} catch(e){} }
+        }
+      }, {passive:true});
+
+      document.body.addEventListener('click', (e)=>{
+        if (e.target && (e.target.matches('a') || e.target.matches('button') || e.target.closest('.link-btn')) ){
+          if (clickSound){ try { clickSound.currentTime = 0; clickSound.play().catch(()=>{});} catch(e){} }
+        }
+      });
+
+      // show audio container only after overlay dismissed (keeps control visible)
+      const observer = new MutationObserver(()=> {
+        if (overlay.style.display === 'none') {
+          // ensure audio container visible (in case overlay was hidden via other means)
+          document.getElementById('audioContainer').style.display = 'flex';
+        }
+      });
+      observer.observe(overlay, { attributes:true, attributeFilter:['style'] });
+
+    })();
   </script>
+
+  <!-- Google Translate script (keeps your original behavior) -->
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
