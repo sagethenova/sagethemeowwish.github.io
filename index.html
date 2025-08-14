@@ -176,6 +176,7 @@
     margin-right: auto;
     text-align: center;
   }
+
   #about ul {
     max-width: 700px;
     margin: 0 auto 2rem;
@@ -228,37 +229,37 @@
     margin-bottom: 1rem;
     text-align: center;
   }
-  #avatarList {
+  #avatars ul {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: center;
-    max-height: 320px;
-    overflow-y: auto;
     padding-left: 0;
     list-style: none;
+    max-height: 600px;
+    overflow-y: auto;
   }
-  #avatarList li {
-    margin-bottom: 0.5rem;
+  #avatars ul li {
+    list-style: none;
   }
-  .avatar-thumb {
-    width: 80px;
-    height: 80px;
+  #avatars ul li a {
+    display: block;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 12px #bb99ffaa;
+    transition: all 0.3s ease;
+  }
+  #avatars ul li a:hover {
+    box-shadow: 0 0 20px #ddbbff;
+    transform: scale(1.05);
+  }
+  #avatars ul li img.avatar-thumb {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .avatar-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 12px #bb99ff;
-  }
-  #avatarList::-webkit-scrollbar {
-    width: 8px;
-  }
-  #avatarList::-webkit-scrollbar-thumb {
-    background: #7b3fbf;
-    border-radius: 10px;
+    display: block;
   }
 
   /* Audio Player */
@@ -285,27 +286,16 @@
     filter: drop-shadow(0 0 5px #bb99ffcc);
   }
 
-  a, button {
-    cursor: pointer;
-  }
+  /* Links hover and click sounds */
+  a, button { cursor: pointer; }
 
   /* Responsive */
   @media (max-width: 800px) {
-    #avatarList {
-      max-height: 250px;
-    }
-    #about ul {
-      columns: 1;
-      max-width: 100%;
-    }
+    #avatars ul li a { width: 80px; height: 80px; }
   }
   @media (max-width: 400px) {
-    header h1 {
-      font-size: 2rem;
-    }
-    #avatars h2, #about h2 {
-      font-size: 1.6rem;
-    }
+    header h1 { font-size: 2rem; }
+    #avatars h2, #about h2 { font-size: 1.6rem; }
   }
 </style>
 </head>
@@ -378,18 +368,17 @@
   <!-- Purchased Avatars -->
   <section id="avatars" aria-label="Avatars I have purchased">
     <h2>Avatars I’ve Purchased</h2>
-    <ul id="avatarList">
-      <li><a href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(1).png" alt="Nova Beast" class="avatar-thumb"></a></li>
-      <!-- Placeholder links for v(2) to v(41) -->
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(2).png" alt="Avatar 2" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(3).png" alt="Avatar 3" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(4).png" alt="Avatar 4" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(5).png" alt="Avatar 5" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(6).png" alt="Avatar 6" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(7).png" alt="Avatar 7" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(8).png" alt="Avatar 8" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(9).png" alt="Avatar 9" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(10).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+    <ul>
+      <li><a href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank"><img src="Avatar Pictures/v (1).png" alt="Nova Beast" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (2).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (3).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (4).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (5).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (6).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (7).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (8).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (9).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (10).png" alt="Avatar 10" class="avatar-thumb"></a></li>
       <!-- Continue same pattern up to v(41) -->
     </ul>
   </section>
