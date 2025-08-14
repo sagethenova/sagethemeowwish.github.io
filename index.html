@@ -6,9 +6,7 @@
 <title>sagethenova</title>
 <style>
   /* Reset and base */
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
   body {
     margin: 0; padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -71,35 +69,14 @@
     cursor: pointer;
     user-select: none;
   }
-  #overlay h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 10px #bb99ff;
-  }
-  #overlay p {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-  }
-  #overlay small {
-    font-size: 0.9rem;
-    color: #8a6fc4;
-  }
+  #overlay h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 0 0 10px #bb99ff; }
+  #overlay p { font-size: 1.25rem; margin-bottom: 1.5rem; }
+  #overlay small { font-size: 0.9rem; color: #8a6fc4; }
 
   /* Header */
-  header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  header h1 {
-    font-size: 3rem;
-    color: #bb99ff;
-    text-shadow: 0 0 10px #a061ff;
-    margin-bottom: 0.3rem;
-  }
-  header p {
-    color: #ccc;
-    font-size: 1.2rem;
-  }
+  header { text-align: center; margin-bottom: 3rem; }
+  header h1 { font-size: 3rem; color: #bb99ff; text-shadow: 0 0 10px #a061ff; margin-bottom: 0.3rem; }
+  header p { color: #ccc; font-size: 1.2rem; }
 
   /* Social links */
   .social-links {
@@ -113,8 +90,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 60px; height: 60px;
     background: #35005a;
     border-radius: 50%;
     box-shadow: 0 0 12px #bb99ffaa;
@@ -127,11 +103,7 @@
     position: relative;
     user-select: none;
   }
-  .social-links a:hover {
-    background: #7b3fbf;
-    box-shadow: 0 0 20px #ddbbff;
-    color: #f0e6ff;
-  }
+  .social-links a:hover { background: #7b3fbf; box-shadow: 0 0 20px #ddbbff; color: #f0e6ff; }
   .social-links a::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -148,9 +120,7 @@
     pointer-events: none;
     transition: opacity 0.3s ease;
   }
-  .social-links a:hover::after {
-    opacity: 1;
-  }
+  .social-links a:hover::after { opacity: 1; }
 
   /* About Me Section */
   #about {
@@ -160,58 +130,16 @@
     box-shadow: 0 0 40px #bb99ffcc;
     color: #ddd;
   }
-  #about h2 {
-    color: #bb99ff;
-    font-size: 2.4rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    text-shadow: 0 0 6px #a061ff;
-  }
-  #about p {
-    font-size: 1.15rem;
-    line-height: 1.5;
-    margin-bottom: 1.25rem;
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
+  #about h2 { color: #bb99ff; font-size: 2.4rem; margin-bottom: 1rem; text-align: center; text-shadow: 0 0 6px #a061ff; }
+  #about p { font-size: 1.15rem; line-height: 1.5; margin-bottom: 1.25rem; max-width: 650px; margin-left: auto; margin-right: auto; text-align: center; }
 
-  #about ul {
-    max-width: 700px;
-    margin: 0 auto 2rem;
-    columns: 2;
-    column-gap: 3rem;
-    list-style: none;
-    padding: 0;
-  }
-  #about ul li {
-    position: relative;
-    padding-left: 1.2rem;
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-  }
-  #about ul li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #bb99ff;
-    font-weight: bold;
-    font-size: 1.4rem;
-    line-height: 1;
-  }
+  #about ul { max-width: 700px; margin: 0 auto 2rem; columns: 2; column-gap: 3rem; list-style: none; padding: 0; }
+  #about ul li { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; font-size: 1.1rem; }
+  #about ul li::before { content: "•"; position: absolute; left: 0; color: #bb99ff; font-weight: bold; font-size: 1.4rem; line-height: 1; }
 
   /* Contact info */
-  #contact {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-    font-size: 1.1rem;
-    color: #ccc;
-  }
-  #contact p {
-    margin: 0.4rem 0;
-  }
+  #contact { max-width: 700px; margin: 0 auto; text-align: center; font-size: 1.1rem; color: #ccc; }
+  #contact p { margin: 0.4rem 0; }
 
   /* Purchased Avatars */
   #avatars {
@@ -223,44 +151,21 @@
     margin: 3rem auto 5rem;
     color: #ddd;
   }
-  #avatars h2 {
-    color: #bb99ff;
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  #avatars ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    padding-left: 0;
-    list-style: none;
-    max-height: 600px;
-    overflow-y: auto;
-  }
-  #avatars ul li {
-    list-style: none;
-  }
-  #avatars ul li a {
-    display: block;
-    width: 100px;
-    height: 100px;
+  #avatars h2 { color: #bb99ff; font-size: 2.2rem; margin-bottom: 1rem; text-align: center; }
+  #avatars ul { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; padding-left: 0; list-style: none; max-height: 500px; overflow-y: auto; }
+  #avatars ul li { flex: 0 0 auto; }
+  .avatar-thumb {
+    width: 100px; height: 100px;
     border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 0 12px #bb99ffaa;
-    transition: all 0.3s ease;
-  }
-  #avatars ul li a:hover {
-    box-shadow: 0 0 20px #ddbbff;
-    transform: scale(1.05);
-  }
-  #avatars ul li img.avatar-thumb {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
-    display: block;
+    box-shadow: 0 0 10px #bb99ff;
+    transition: transform 0.3s;
   }
+  .avatar-thumb:hover { transform: scale(1.1); }
+
+  /* Scrollbar for avatars */
+  #avatars ul::-webkit-scrollbar { width: 8px; }
+  #avatars ul::-webkit-scrollbar-thumb { background: #7b3fbf; border-radius: 10px; }
 
   /* Audio Player */
   #audioContainer {
@@ -279,19 +184,14 @@
     justify-content: center;
     align-items: center;
   }
-  #bgMusic {
-    width: 100%;
-    outline: none;
-    border-radius: 12px;
-    filter: drop-shadow(0 0 5px #bb99ffcc);
-  }
+  #bgMusic { width: 100%; outline: none; border-radius: 12px; filter: drop-shadow(0 0 5px #bb99ffcc); }
 
-  /* Links hover and click sounds */
   a, button { cursor: pointer; }
 
   /* Responsive */
   @media (max-width: 800px) {
-    #avatars ul li a { width: 80px; height: 80px; }
+    #avatars ul { max-height: 250px; gap: 0.6rem; }
+    #about ul { columns: 1; max-width: 100%; }
   }
   @media (max-width: 400px) {
     header h1 { font-size: 2rem; }
@@ -303,7 +203,6 @@
 
 <div id="sparkles"></div>
 
-<!-- Welcome Overlay -->
 <div id="overlay" title="Click to enable sound and continue">
   <h1>Welcome to sagethenova.com</h1>
   <p>I made this so you can get to know me.</p>
@@ -318,7 +217,6 @@
     <p>Connect with me online or learn more below</p>
   </header>
 
-  <!-- Social Links -->
   <nav class="social-links" aria-label="Social media links">
     <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="X (Twitter)">X</a>
     <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer" data-tooltip="Bluesky">BSky</a>
@@ -328,7 +226,6 @@
     <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="YouTube">YT</a>
   </nav>
 
-  <!-- About Me -->
   <section id="about" aria-label="About Me">
     <h2>About Me</h2>
     <p>I have Xbox Game Pass and I play Steam games.</p>
@@ -365,21 +262,21 @@
     </div>
   </section>
 
-  <!-- Purchased Avatars -->
   <section id="avatars" aria-label="Avatars I have purchased">
     <h2>Avatars I’ve Purchased</h2>
     <ul>
-      <li><a href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank"><img src="Avatar Pictures/v (1).png" alt="Nova Beast" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (2).png" alt="Avatar 2" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (3).png" alt="Avatar 3" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (4).png" alt="Avatar 4" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (5).png" alt="Avatar 5" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (6).png" alt="Avatar 6" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (7).png" alt="Avatar 7" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (8).png" alt="Avatar 8" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (9).png" alt="Avatar 9" class="avatar-thumb"></a></li>
-      <li><a href="#" target="_blank"><img src="Avatar Pictures/v (10).png" alt="Avatar 10" class="avatar-thumb"></a></li>
-      <!-- Continue same pattern up to v(41) -->
+      <!-- Example format, update links as needed -->
+      <li><a href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank"><img src="v (1).png" alt="Nova Beast" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (2).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (3).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (4).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (5).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (6).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (7).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (8).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (9).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank"><img src="v (10).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+      <!-- Continue for all v (11) to v (41)... -->
     </ul>
   </section>
 
@@ -395,6 +292,7 @@
 </div>
 
 <script>
+  // Create sparkles
   const sparkleCount = 40;
   const sparkleContainer = document.getElementById('sparkles');
   for(let i = 0; i < sparkleCount; i++) {
@@ -408,43 +306,30 @@
     sparkleContainer.appendChild(sparkle);
   }
 
+  // Overlay & audio
   const overlay = document.getElementById('overlay');
   const mainContent = document.getElementById('mainContent');
   const hoverSound = document.getElementById('hoverSound');
   const clickSound = document.getElementById('clickSound');
   const bgMusic = document.getElementById('bgMusic');
   const audioContainer = document.getElementById('audioContainer');
-
   let soundsEnabled = false;
+
   overlay.addEventListener('click', () => {
-    if (!soundsEnabled) {
+    if(!soundsEnabled){
       hoverSound.play().catch(()=>{});
       clickSound.play().catch(()=>{});
       bgMusic.volume = 0.05;
       bgMusic.play().catch(()=>{});
       soundsEnabled = true;
     }
-    overlay.style.opacity = '0';
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      mainContent.style.display = 'block';
-      audioContainer.style.display = 'flex';
-    }, 600);
+    overlay.style.opacity='0';
+    setTimeout(()=>{ overlay.style.display='none'; mainContent.style.display='block'; audioContainer.style.display='flex'; },600);
   });
 
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      if (soundsEnabled) {
-        hoverSound.currentTime = 0;
-        hoverSound.play().catch(()=>{});
-      }
-    });
-    el.addEventListener('click', () => {
-      if (soundsEnabled) {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(()=>{});
-      }
-    });
+  document.querySelectorAll('a, button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ if(soundsEnabled){ hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } });
+    el.addEventListener('click',()=>{ if(soundsEnabled){ clickSound.currentTime=0; clickSound.play().catch(()=>{}); } });
   });
 </script>
 
