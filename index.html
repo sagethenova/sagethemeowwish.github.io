@@ -132,7 +132,6 @@
     box-shadow: 0 0 20px #ddbbff;
     color: #f0e6ff;
   }
-  /* Tooltip for icons */
   .social-links a::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -177,8 +176,6 @@
     margin-right: auto;
     text-align: center;
   }
-
-  /* List styles */
   #about ul {
     max-width: 700px;
     margin: 0 auto 2rem;
@@ -231,32 +228,35 @@
     margin-bottom: 1rem;
     text-align: center;
   }
-  #avatars ul {
-    columns: 2;
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-    column-gap: 2.5rem;
-    max-height: 300px;
+  #avatarList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    max-height: 320px;
     overflow-y: auto;
+    padding-left: 0;
+    list-style: none;
   }
-  #avatars ul li {
+  #avatarList li {
     margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-    padding-left: 1rem;
-    position: relative;
   }
-  #avatars ul li::before {
-    content: "◉";
-    position: absolute;
-    left: 0;
-    color: #cc99ff;
+  .avatar-thumb {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  /* Scrollbar styling for avatars list */
-  #avatars ul::-webkit-scrollbar {
+  .avatar-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px #bb99ff;
+  }
+  #avatarList::-webkit-scrollbar {
     width: 8px;
   }
-  #avatars ul::-webkit-scrollbar-thumb {
+  #avatarList::-webkit-scrollbar-thumb {
     background: #7b3fbf;
     border-radius: 10px;
   }
@@ -285,15 +285,13 @@
     filter: drop-shadow(0 0 5px #bb99ffcc);
   }
 
-  /* Links hover and click sounds (cursor pointer) */
   a, button {
     cursor: pointer;
   }
 
   /* Responsive */
   @media (max-width: 800px) {
-    #avatars ul {
-      columns: 1;
+    #avatarList {
       max-height: 250px;
     }
     #about ul {
@@ -380,56 +378,19 @@
   <!-- Purchased Avatars -->
   <section id="avatars" aria-label="Avatars I have purchased">
     <h2>Avatars I’ve Purchased</h2>
-    <ul>
-      <li>Moontail</li>
-      <li>Sola</li>
-      <li>Delphy Kobo</li>
-      <li>Space Chinchilla</li>
-      <li>Ghostly Female Felines Tier 2</li>
-      <li>Mayu</li>
-      <li>WashingBear</li>
-      <li>Piko Kobold</li>
-      <li>Meownyrn Cat V2</li>
-      <li>kdarts Deer</li>
-      <li>Kita'vali</li>
-      <li>Da'vali avatar</li>
-      <li>FaeRie</li>
-      <li>Ligeia</li>
-      <li>Taidum</li>
-      <li>FluffyDog</li>
-      <li>Paw'vali</li>
-      <li>Rantichi</li>
-      <li>Bestboi</li>
-      <li>Zio Red Panda</li>
-      <li>Candy - Nanachi</li>
-      <li>Anxious kitten</li>
-      <li>Zoichi</li>
-      <li>Arkon</li>
-      <li>Nomoth</li>
-      <li>Rabi</li>
-      <li>Silver fox</li>
-      <li>Zywie</li>
-      <li>Ryuki</li>
-      <li>Amaterasu</li>
-      <li>Saffron</li>
-      <li>Winterpaw's Mouse & Rat</li>
-      <li>Nanachi</li>
-      <li>Stellara</li>
-      <li>Vika</li>
-      <li>Noelle Holiday</li>
-      <li>Taigooma</li>
-      <li>Mary</li>
-      <li>Griffin</li>
-      <li>Flufi</li>
-      <li>Kessa</li>
-      <li>The Awtter</li>
-      <li>Novabeast</li>
-      <li>hobkin redux</li>
-      <li>hobkin</li>
-      <li>vulfen</li>
-      <li>mewlin</li>
-      <li>arflin</li>
-      <li>kengu</li>
+    <ul id="avatarList">
+      <li><a href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(1).png" alt="Nova Beast" class="avatar-thumb"></a></li>
+      <!-- Placeholder links for v(2) to v(41) -->
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(2).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(3).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(4).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(5).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(6).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(7).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(8).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(9).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="#" target="_blank" rel="noopener noreferrer"><img src="https://github.com/sagethemeowwish/sagethemeowwish.github.io/raw/main/Avatar%20Pictures/v%20(10).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+      <!-- Continue same pattern up to v(41) -->
     </ul>
   </section>
 
@@ -445,7 +406,6 @@
 </div>
 
 <script>
-  // Create multiple sparkle dots with random positions and sizes
   const sparkleCount = 40;
   const sparkleContainer = document.getElementById('sparkles');
   for(let i = 0; i < sparkleCount; i++) {
@@ -459,7 +419,6 @@
     sparkleContainer.appendChild(sparkle);
   }
 
-  // Elements
   const overlay = document.getElementById('overlay');
   const mainContent = document.getElementById('mainContent');
   const hoverSound = document.getElementById('hoverSound');
@@ -468,14 +427,12 @@
   const audioContainer = document.getElementById('audioContainer');
 
   let soundsEnabled = false;
-
-  // Enable audio on overlay click and show main content
   overlay.addEventListener('click', () => {
     if (!soundsEnabled) {
-      hoverSound.play().catch(() => {});
-      clickSound.play().catch(() => {});
+      hoverSound.play().catch(()=>{});
+      clickSound.play().catch(()=>{});
       bgMusic.volume = 0.05;
-      bgMusic.play().catch(() => {});
+      bgMusic.play().catch(()=>{});
       soundsEnabled = true;
     }
     overlay.style.opacity = '0';
@@ -486,18 +443,17 @@
     }, 600);
   });
 
-  // Add hover and click sounds to links and buttons
   document.querySelectorAll('a, button').forEach(el => {
     el.addEventListener('mouseenter', () => {
       if (soundsEnabled) {
         hoverSound.currentTime = 0;
-        hoverSound.play().catch(() => {});
+        hoverSound.play().catch(()=>{});
       }
     });
     el.addEventListener('click', () => {
       if (soundsEnabled) {
         clickSound.currentTime = 0;
-        clickSound.play().catch(() => {});
+        clickSound.play().catch(()=>{});
       }
     });
   });
