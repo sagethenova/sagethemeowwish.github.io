@@ -1,477 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>sagethenova</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>sagethenova</title>
+<style>
+  /* Reset and base */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0b0033 0%, #2e005a 100%);
+    color: #ddd;
+    overflow-x: hidden;
+  }
 
-  <!-- SEO -->
-  <meta name="description" content="sagethenova — games, avatars, socials, and vibes. Come say hi!" />
-  <link rel="canonical" href="https://sagethenova.com/" />
-  <meta name="robots" content="index,follow" />
-  <meta name="theme-color" content="#6b3074" />
+  /* Sparkle background */
+  #sparkles {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at center, #4b0082 5%, transparent 30%), 
+                radial-gradient(circle at 80% 20%, #7b3fbf 4%, transparent 20%);
+    animation: pulseBG 10s ease-in-out infinite;
+  }
+  @keyframes pulseBG {
+    0%, 100% { background-position: center, 80% 20%; }
+    50% { background-position: 10% 80%, 70% 40%; }
+  }
 
-  <!-- Open Graph / Twitter -->
-  <meta property="og:title" content="sagethenova" />
-  <meta property="og:description" content="Games, avatars, socials, and vibes. Come say hi!" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://sagethenova.com/" />
-  <meta property="og:image" content="preview.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="sagethenova" />
-  <meta name="twitter:description" content="Games, avatars, socials, and vibes. Come say hi!" />
-  <meta name="twitter:image" content="preview.png" />
+  /* Sparkle dots */
+  .sparkle {
+    position: fixed;
+    border-radius: 50%;
+    background: #bb99ff;
+    opacity: 0.8;
+    animation: twinkle 3s infinite ease-in-out alternate;
+  }
+  @keyframes twinkle {
+    0% {opacity: 0.3;}
+    50% {opacity: 1;}
+    100% {opacity: 0.3;}
+  }
 
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "sagethenova",
-    "url": "https://sagethenova.com/",
-    "sameAs": [
-      "https://x.com/sagethenova",
-      "https://bsky.app/profile/sagethenova.bsky.social",
-      "https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac",
-      "https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq",
-      "https://woof.tech/@sagethenova",
-      "https://www.youtube.com/@sagethenova"
-    ]
-  }
-  </script>
+  /* Container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+  /* Welcome Overlay */
+  #overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 0, 45, 0.95);
+    color: #bb99ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 9999;
+    cursor: pointer;
+    user-select: none;
+  }
+  #overlay h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 0 0 10px #bb99ff; }
+  #overlay p { font-size: 1.25rem; margin-bottom: 1.5rem; }
+  #overlay small { font-size: 0.9rem; color: #8a6fc4; }
 
-  <style>
-    /* This CSS custom property and the JS below are the core of the fix.
-     * We use JavaScript to dynamically set the viewport height, which avoids
-     * the issues with mobile browser toolbars resizing the layout.
-     */
-    :root {
-      --vh: 100vh;
-    }
+  /* Header */
+  header { text-align: center; margin-bottom: 3rem; }
+  header h1 { font-size: 3rem; color: #bb99ff; text-shadow: 0 0 10px #a061ff; margin-bottom: 0.3rem; }
+  header p { color: #ccc; font-size: 1.2rem; }
 
-    :root{
-      --fr-primary:#7268a5;   /* lavender-purple */
-      --fr-secondary:#6b3074; /* deep plum */
-      --fr-accent:#86a3c3;    /* soft bluish gray */
-      --fr-text:#f0e6ff;
-      --glass-bg:rgba(255,255,255,0.08);
-      --glass-br:20px;
-      --shadow:0 0 24px rgba(255,255,255,0.18);
-    }
+  /* Social links */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    margin-bottom: 3rem;
+  }
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; height: 60px;
+    background: #35005a;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #bb99ffaa;
+    color: #bb99ff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    user-select: none;
+  }
+  .social-links a:hover { background: #7b3fbf; box-shadow: 0 0 20px #ddbbff; color: #f0e6ff; }
+  .social-links a::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #7b3fbf;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .social-links a:hover::after { opacity: 1; }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      color:var(--fr-text);
-      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue','Noto Sans',Arial,sans-serif;
-      background: radial-gradient(1200px 800px at 10% 10%, rgba(255,255,255,0.08), transparent 40%),
-                  radial-gradient(900px 700px at 90% 30%, rgba(255,255,255,0.06), transparent 50%),
-                  linear-gradient(135deg, var(--fr-secondary), var(--fr-primary), var(--fr-accent));
-      background-size: 300% 300%;
-      animation: bgShift 22s ease-in-out infinite;
-      overflow-x:hidden;
-      /* This line has been updated to use the new viewport height calculation */
-      min-height: 100dvh; /* Fallback for browsers that don't support dvh */
-      min-height: calc(var(--vh, 1vh) * 100);
-    }
-    @keyframes bgShift{
-      0%{background-position: 0% 50%}
-      50%{background-position: 100% 50%}
-      100%{background-position: 0% 50%}
-    }
+  /* About Me Section */
+  #about {
+    background: rgba(50, 0, 90, 0.8);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 0 40px #bb99ffcc;
+    color: #ddd;
+  }
+  #about h2 { color: #bb99ff; font-size: 2.4rem; margin-bottom: 1rem; text-align: center; text-shadow: 0 0 6px #a061ff; }
+  #about p { font-size: 1.15rem; line-height: 1.5; margin-bottom: 1.25rem; max-width: 650px; margin-left: auto; margin-right: auto; text-align: center; }
 
-    /* Sparkles layer */
-    #sparkles{
-      position:fixed; inset:0; pointer-events:none; z-index:0;
-    }
-    .sparkle{
-      position:fixed; border-radius:50%;
-      background: radial-gradient(circle, #ffffff, rgba(255,255,255,0.2) 60%, transparent 70%);
-      opacity:.8;
-      animation: twinkle 3.2s infinite ease-in-out alternate;
-      filter: drop-shadow(0 0 6px rgba(255,255,255,.5));
-    }
-    @keyframes twinkle{
-      0%{opacity:.3; transform:scale(1)}
-      50%{opacity:1; transform:scale(1.2)}
-      100%{opacity:.3; transform:scale(1)}
-    }
+  #about ul { max-width: 700px; margin: 0 auto 2rem; columns: 2; column-gap: 3rem; list-style: none; padding: 0; }
+  #about ul li { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; font-size: 1.1rem; }
+  #about ul li::before { content: "•"; position: absolute; left: 0; color: #bb99ff; font-weight: bold; font-size: 1.4rem; line-height: 1; }
 
-    /* Container */
-    .container{max-width: 1000px; margin:0 auto; padding: 2.4rem 1.2rem; position:relative; z-index:1}
+  /* Contact info */
+  #contact { max-width: 700px; margin: 0 auto; text-align: center; font-size: 1.1rem; color: #ccc; }
+  #contact p { margin: 0.4rem 0; }
 
-    /* Overlay */
-    #overlay{
-      position:fixed; inset:0;
-      background: rgba(18,10,32,0.92);
-      display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-      z-index:9999; cursor:pointer; user-select:none;
-      transition: opacity .5s ease;
-    }
-    #overlay h1{
-      font-family:'Outfit', sans-serif;
-      font-size: clamp(2.2rem, 4.2vw, 3.5rem);
-      margin:.2rem 0 .6rem;
-      text-shadow:0 0 18px var(--fr-accent);
-    }
-    #overlay p{opacity:.95; font-size:1.1rem; margin:.3rem 0}
-    #overlay small{opacity:.8}
+  /* Purchased Avatars */
+  #avatars {
+    background: rgba(40, 0, 80, 0.8);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 0 30px #bb99ffcc;
+    max-width: 700px;
+    margin: 3rem auto 5rem;
+    color: #ddd;
+  }
+  #avatars h2 { color: #bb99ff; font-size: 2.2rem; margin-bottom: 1rem; text-align: center; }
+  #avatars ul { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; padding-left: 0; list-style: none; max-height: 500px; overflow-y: auto; }
+  #avatars ul li { flex: 0 0 auto; }
+  .avatar-thumb {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 10px #bb99ff;
+    transition: transform 0.3s;
+  }
+  .avatar-thumb:hover { transform: scale(1.1); }
 
-    /* Header */
-    header{ margin-bottom: 2rem; text-align:center }
-    .brand{
-      display:inline-grid; place-items:center;
-      gap:.4rem; padding: 1.1rem 1.4rem;
-      border-radius: 18px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
-    }
-    .brand h1{
-      font-family:'Outfit', sans-serif;
-      font-size: clamp(2rem, 6vw, 3rem);
-      margin:0;
-      letter-spacing:.5px;
-      background: linear-gradient(90deg, var(--fr-text), #d9d1ff, #e9f3ff);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      text-shadow:0 0 10px rgba(255,255,255,.18);
-    }
-    .brand p{ margin:0; opacity:.9 }
+  /* Scrollbar for avatars */
+  #avatars ul::-webkit-scrollbar { width: 8px; }
+  #avatars ul::-webkit-scrollbar-thumb { background: #7b3fbf; border-radius: 10px; }
 
-    /* Social row */
-    .social-links{
-      display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin: 1.6rem 0 2.4rem;
-    }
-    .social-links a{
-      width:64px; height:64px; border-radius:50%;
-      display:grid; place-items:center; text-decoration:none;
-      color:var(--fr-text); font-weight:700;
-      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
-      backdrop-filter: blur(8px);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.15), 0 10px 24px rgba(0,0,0,.25);
-      transition: transform .25s ease, box-shadow .25s ease;
-      position:relative;
-    }
-    .social-links a:hover{ transform: translateY(-4px) scale(1.05); box-shadow: 0 0 22px rgba(134,163,195,.6) }
-    .social-links a::after{
-      content: attr(aria-label);
-      position:absolute; bottom:-28px; left:50%; transform:translateX(-50%);
-      background: rgba(0,0,0,.35); padding:.2rem .5rem; border-radius:8px; font-size:.75rem; opacity:0; pointer-events:none; transition:opacity .2s;
-    }
-    .social-links a:hover::after{opacity:1}
+  /* Audio Player */
+  #audioContainer {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    width: 320px;
+    max-width: 90vw;
+    background: rgba(55, 0, 90, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 20px #bb99ffcc;
+    padding: 0.4rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #bgMusic { width: 100%; outline: none; border-radius: 12px; filter: drop-shadow(0 0 5px #bb99ffcc); }
 
-    /* Panels */
-    .panel{
-      background: var(--glass-bg); backdrop-filter: blur(12px);
-      border-radius: var(--glass-br); box-shadow: var(--shadow);
-      padding: clamp(1.2rem, 2.5vw, 2rem); margin-bottom: 2rem;
-      opacity:0; transform: translateY(16px); will-change: transform, opacity;
-    }
-    .panel.show{opacity:1; transform: translateY(0); transition: opacity .6s ease, transform .6s ease}
+  a, button { cursor: pointer; }
 
-    .panel h2{
-      font-family:'Outfit', sans-serif;
-      margin-top:0; margin-bottom:.8rem;
-      font-size: clamp(1.4rem, 3.4vw, 2.1rem);
-      color: #e9f3ff; text-shadow:0 0 12px rgba(114,104,165,.5);
-    }
-    .muted{opacity:.92}
-
-    /* About list */
-    #about ul{
-      columns: 2; column-gap: 2.2rem; list-style:none; padding:0; margin: .6rem 0 1.2rem;
-    }
-    #about li{ margin: .45rem 0; position:relative; padding-left:1rem }
-    #about li::before{content:"•"; position:absolute; left:0; color:var(--fr-accent)}
-
-    #contact{ text-align:center; display:grid; gap:.2rem; margin-top:.8rem }
-
-    /* Avatars grid */
-    #avatars ul{
-      --size: 110px;
-      display:grid; gap: 1rem; list-style:none; padding:0; margin:0;
-      grid-template-columns: repeat(auto-fit, minmax(var(--size), 1fr));
-    }
-    .avatar{
-      display:block; position:relative; isolation:isolate; border-radius:50%;
-      overflow:hidden; box-shadow: 0 6px 18px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.12) inset;
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-    .avatar:hover{ transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 26px rgba(0,0,0,.45), 0 0 18px rgba(134,163,195,.65) }
-    .avatar img{
-      width:100%; height:100%; aspect-ratio:1/1; object-fit:cover; display:block; filter:saturate(1.08);
-      transition: transform .35s ease, filter .35s ease;
-    }
-    .avatar:hover img{ transform: scale(1.08); filter:saturate(1.2) }
-    .ring{
-      position:absolute; inset:-2px; border-radius:50%;
-      background: conic-gradient(from 0deg, var(--fr-accent), var(--fr-primary), var(--fr-secondary), var(--fr-accent));
-      filter: blur(8px); opacity:.0; transition: opacity .25s ease;
-      z-index:-1;
-    }
-    .avatar:hover .ring{opacity:.6}
-
-    /* Audio player */
-    #audioContainer{
-      position:fixed; left:50%; bottom:12px; transform:translateX(-50%); z-index:10000;
-      width:min(92vw, 360px); background: var(--glass-bg); backdrop-filter: blur(10px);
-      border-radius: 16px; box-shadow: var(--shadow); padding:.5rem 1rem; display:none; align-items:center; justify-content:center;
-    }
-    #bgMusic{ width:100%; }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      *{animation:none!important; transition:none!important}
-    }
-
-    /* Mobile */
-    @media (max-width: 780px){
-      #about ul{ columns:1 }
-      #avatars ul{ --size: 96px }
-    }
-    @media (max-width: 420px){
-      .social-links a{ width:56px; height:56px }
-      #avatars ul{ --size: 88px }
-    }
-  </style>
+  /* Responsive */
+  @media (max-width: 800px) {
+    #avatars ul { max-height: 250px; gap: 0.6rem; }
+    #about ul { columns: 1; max-width: 100%; }
+  }
+  @media (max-width: 400px) {
+    header h1 { font-size: 2rem; }
+    #avatars h2, #about h2 { font-size: 1.6rem; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- Decorative sparkles -->
-  <div id="sparkles" aria-hidden="true"></div>
+<div id="sparkles"></div>
 
-  <!-- Welcome overlay -->
-  <div id="overlay" title="Click to enable sound and continue" role="dialog" aria-modal="true" aria-label="Welcome screen">
-    <h1>Welcome to sagethenova.com</h1>
-    <p>Click anywhere to continue and enable audio</p>
-    <small>Volume starts low for comfort</small>
-  </div>
+<div id="overlay" title="Click to enable sound and continue">
+  <h1>Welcome to sagethenova.com</h1>
+  <p>I made this so you can get to know me.</p>
+  <p><strong>Click anywhere to continue and enable audio</strong></p>
+  <small>Music volume is set low for your comfort</small>
+</div>
 
-  <main class="container" id="mainContent" hidden>
-    <header>
-      <div class="brand" aria-label="Site brand">
-        <h1>sagethenova</h1>
-        <p class="muted">Connect with me online or learn more below</p>
-      </div>
+<div class="container" style="display:none;" id="mainContent">
 
-      <nav class="social-links" aria-label="Social links">
-        <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">X</a>
-        <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">BSky</a>
-        <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer" aria-label="VRChat">VR</a>
-        <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer" aria-label="Spotify">SP</a>
-        <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer" aria-label="Fediverse">Fed</a>
-        <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer" aria-label="YouTube">YT</a>
-      </nav>
-    </header>
+  <header>
+    <h1>sagethenova</h1>
+    <p>Connect with me online or learn more below</p>
+  </header>
 
-    <!-- About -->
-    <section id="about" class="panel" aria-label="About Me">
-      <h2>About Me</h2>
-      <p class="muted">I have Xbox Game Pass and I play Steam games. My favorite games are:</p>
-      <ul>
-        <li>VR Chat</li>
-        <li>Call of Duty: Cold War</li>
-        <li>Palworld</li>
-        <li>Terraria</li>
-        <li>Wild Assault</li>
-        <li>Atlyss</li>
-        <li>Forewarned</li>
-        <li>Call of Duty: Black Ops 3</li>
-        <li>Cattails</li>
-        <li>Gunfire Reborn</li>
-        <li>Devour</li>
-        <li>Lethal Company</li>
-        <li>Star Trek Bridge Crew</li>
-        <li>Ironwolf VR</li>
-        <li>Indigo Park</li>
-        <li>War Trigger 1, 2, 3</li>
-        <li>7 Days to Die</li>
-        <li>Resonate</li>
-        <li>Minecraft Java</li>
-        <li>Minecraft Bedrock</li>
-        <li>Call of Duty 6</li>
-      </ul>
+  <nav class="social-links" aria-label="Social media links">
+    <a href="https://x.com/sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="X (Twitter)">X</a>
+    <a href="https://bsky.app/profile/sagethenova.bsky.social" target="_blank" rel="noopener noreferrer" data-tooltip="Bluesky">BSky</a>
+    <a href="https://vrchat.com/home/user/usr_bd09a4e0-d602-433b-a6b3-802890a6daac" target="_blank" rel="noopener noreferrer" data-tooltip="VRChat">VR</a>
+    <a href="https://open.spotify.com/user/31j3emopdwknnukx4xjkhxcrz6iq" target="_blank" rel="noopener noreferrer" data-tooltip="Spotify">SP</a>
+    <a href="https://woof.tech/@sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="Fediverse">Fed</a>
+    <a href="https://www.youtube.com/@sagethenova" target="_blank" rel="noopener noreferrer" data-tooltip="YouTube">YT</a>
+  </nav>
 
-      <p class="muted">I love to have fun with friends, play games, spend time with each other, and share memories. I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
-      <p class="muted">Why I Rock Around 🌀 If you see me rocking back and forth, don’t worry — it’s not anything sexual or weird. I’m autistic, and rocking helps me feel calm, focused, and comfortable. It’s just a part of who I am, and it helps me navigate the world. Rocking is a form of self-expression and self-care, and it’s completely normal for some people on the spectrum. So next time you see me moving to my own rhythm, just know it’s me being me.</p>
-      <p class="muted">The only conventions I go to is Furality — I hope to see you there!</p>
+  <section id="about" aria-label="About Me">
+    <h2>About Me</h2>
+    <p>I have Xbox Game Pass and I play Steam games.</p>
+    <p>My favorit games are:</p>
+    <ul>
+      <li>VR Chat</li>
+      <li>Call of Duty: Cold War</li>
+      <li>Palworld</li>
+      <li>Terraria</li>
+      <li>Wild Assault</li>
+      <li>Atlyss</li>
+      <li>Forewarned</li>
+      <li>Call of Duty: Black Ops 3</li>
+      <li>Cattails</li>
+      <li>Gunfire Reborn</li>
+      <li>Devour</li>
+      <li>Lethal Company</li>
+      <li>Star Trek Bridge Crew</li>
+      <li>Ironwolf VR</li>
+      <li>Indigo Park</li>
+      <li>War Trigger 1, 2, 3</li>
+      <li>7 Days to Die</li>
+      <li>Resonate</li>
+      <li>minecraft java</li>
+      <li>minecraft bedrock</li>
+      <li>Call of Duty 6</li>
+      
 
-      <h2>Contact Me</h2>
-      <div id="contact" aria-label="Contact info">
-        <div>Discord: <strong>sagethenova</strong></div>
-        <div>Xbox: <strong>sagethecat</strong></div>
-        <div>Steam Friend Code: <strong>988123941</strong></div>
-      </div>
-    </section>
+    </ul>
+    <p>I love to have fun with friends, play games, spend time with each other, and share memories.</p>
+    <p>I also love to help others, buy and collect art, and I'm very passionate about computers and technology.</p>
+    <p>Why I Rock Around 🌀 If you see me rocking back and forth, don’t worry — it’s not anything sexual or weird. I’m autistic, and rocking helps me feel calm, focused, and comfortable. It’s just a part of who I am, and it helps me navigate the world. Rocking is a form of self-expression and self-care, and it’s completely normal for some people on the spectrum. So next time you see me moving to my own rhythm, just know it’s me being me</p>
+    <p> The only conventions I go to is Furality I hope to see you there</p>
+    <h2>Contact Me</h2>
+    <div id="contact">
+      <p>Discord: <strong>sagethenova</strong></p>
+      <p>Xbox: <strong>sagethecat</strong></p>
+      <p>Steam Friend Code: <strong>988123941</strong></p>
+    </div>
+  </section>
 
-    <!-- Avatars -->
-    <section id="avatars" class="panel" aria-label="Avatars I have purchased">
-      <h2>Avatars I’ve Purchased</h2>
-      <ul>
-        <!-- Note: spaces encoded as %20 to avoid hosting issues -->
-        <li><a class="avatar" href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(1).png" alt="Nova Beast"></a></li>
-        <li><a class="avatar" href="https://wgivens.gumroad.com/l/spacechinchillavrc?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(2).png" alt="Space Chinchilla"></a></li>
-        <li><a class="avatar" href="https://ghostly.gumroad.com/l/femalefelines?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(3).png" alt="Female Felines"></a></li>
-        <li><a class="avatar" href="https://azukitiger.gumroad.com/l/mayu?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(4).png" alt="Mayu"></a></li>
-        <li><a class="avatar" href="https://habatwo.gumroad.com/l/wsfni?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(5).png" alt="Avatar 5"></a></li>
-        <li><a class="avatar" href="https://conniedragon.gumroad.com/l/PikoSDK3?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(6).png" alt="Piko SDK3"></a></li>
-        <li><a class="avatar" href="https://frostkittypaw.gumroad.com/?recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(7).png" alt="FrostKittyPaw"></a></li>
-        <li><a class="avatar" href="https://kdarts.gumroad.com/l/deer?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(8).png" alt="Deer"></a></li>
-        <li><a class="avatar" href="https://wispweaver.gumroad.com/l/Davali?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(9).png" alt="Davali"></a></li>
-        <li><a class="avatar" href="https://sunstun.gumroad.com/?recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(10).png" alt="Sunstun"></a></li>
-        <li><a class="avatar" href="https://irix.gumroad.com/l/bikcyg?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(11).png" alt="Irix 11"></a></li>
-        <li><a class="avatar" href="https://irix.gumroad.com/l/bikcyg?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(12).png" alt="Irix 12"></a></li>
-        <li><a class="avatar" href="https://therpgslayer.gumroad.com/l/Pawvali?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(13).png" alt="Pawvali"></a></li>
-        <li><a class="avatar" href="https://rantisvr.gumroad.com/l/RsZjE?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(14).png" alt="RantisVR 14"></a></li>
-        <li><a class="avatar" href="https://zexc.gumroad.com/l/BestboiHD?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(15).png" alt="Bestboi HD"></a></li>
-        <li><a class="avatar" href="https://ziodynes098.gumroad.com/l/ZioRedPanda?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(16).png" alt="Zio Red Panda"></a></li>
-        <li><a class="avatar" href="https://echonine.gumroad.com/l/Candy?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(17).png" alt="Candy"></a></li>
-        <li><a class="avatar" href="https://kalystri.gumroad.com/l/GoodBoiAnxiousKitten?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(18).png" alt="Good Boi Anxious Kitten"></a></li>
-        <li><a class="avatar" href="https://zoidberg656.gumroad.com/l/CAhCW?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(19).png" alt="Zoidberg 19"></a></li>
-        <li><a class="avatar" href="https://therpgslayer.gumroad.com/l/qmprh?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(20).png" alt="RPGSlayer 20"></a></li>
-        <li><a class="avatar" href="https://bluegua.gumroad.com/l/xhgau?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(21).png" alt="Bluegua 21"></a></li>
-        <li><a class="avatar" href="https://therpgslayer.gumroad.com/l/zrfkf?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(22).png" alt="RPGSlayer 22"></a></li>
-        <li><a class="avatar" href="https://marivr.gumroad.com/l/Zywie?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(23).png" alt="Zywie"></a></li>
-        <li><a class="avatar" href="https://bluegua.gumroad.com/l/cfzyd?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(24).png" alt="Bluegua 24"></a></li>
-        <li><a class="avatar" href="https://therpgslayer.gumroad.com/l/Amaterasu?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(25).png" alt="Amaterasu"></a></li>
-        <li><a class="avatar" href="https://sunny64.gumroad.com/l/Summerdragon?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(26).png" alt="Summer Dragon"></a></li>
-        <li><a class="avatar" href="https://juliawinterpaw.gumroad.com/l/vrchatmouse?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(27).png" alt="VRChat Mouse"></a></li>
-        <li><a class="avatar" href="https://xetirano.gumroad.com/l/Nanachi?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(28).png" alt="Nanachi"></a></li>
-        <li><a class="avatar" href="https://therpgslayer.gumroad.com/l/mcuui?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(29).png" alt="RPGSlayer 29"></a></li>
-        <li><a class="avatar" href="https://foxipaws.gumroad.com/l/vika?layout=profile" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(30).png" alt="Vika"></a></li>
-        <li><a class="avatar" href="https://xetirano.gumroad.com/l/Noelle?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(31).png" alt="Noelle"></a></li>
-        <li><a class="avatar" href="https://saffronthebat.gumroad.com/?recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(32).png" alt="Saffron the Bat"></a></li>
-        <li><a class="avatar" href="https://apyr.gumroad.com/l/marypony" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(33).png" alt="Mary Pony"></a></li>
-        <li><a class="avatar" href="https://jinapark.gumroad.com/l/JinGriffin?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(34).png" alt="Jin Griffin"></a></li>
-        <li><a class="avatar" href="https://zoidberg656.gumroad.com/l/xMyUSd?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(35).png" alt="Zoidberg 35"></a></li>
-        <li><a class="avatar" href="https://silentdreams.gumroad.com/?recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(36).png" alt="Silent Dreams"></a></li>
-        <li><a class="avatar" href="https://rantisvr.gumroad.com/l/HIrtd?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(37).png" alt="RantisVR 37"></a></li>
-        <li><a class="avatar" href="https://shadethebat.gumroad.com/l/awtter?layout=profile&recommended_by=library" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(38).png" alt="Awtter"></a></li>
-        <li><a class="avatar" href="https://jinxxy.com/zelf/delphykobo" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(39).png" alt="Delphy Kobo"></a></li>
-        <li><a class="avatar" href="https://jinxxy.com/Raideus/Celestial" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(40).png" alt="Celestial"></a></li>
-        <li><a class="avatar" href="https://jinxxy.com/PaperFen/moontail" target="_blank" rel="noopener"><span class="ring"></span><img loading="lazy" src="v%20(41).png" alt="Moontail"></a></li>
-      </ul>
-    </section>
-  </main>
+  <section id="avatars" aria-label="Avatars I have purchased">
+    <h2>Avatars I’ve Purchased</h2>
+    <ul>
+      <!-- Example format, update links as needed -->
+      <li><a href="https://kittomatic.gumroad.com/l/Novabeast?layout=profile&recommended_by=library" target="_blank"><img src="v (1).png" alt="Nova Beast" class="avatar-thumb"></a></li>
+      <li><a href="https://wgivens.gumroad.com/l/spacechinchillavrc?layout=profile&recommended_by=library" target="_blank"><img src="v (2).png" alt="Space Chinchilla" class="avatar-thumb"></a></li>
+      <li><a href="https://ghostly.gumroad.com/l/femalefelines?layout=profile" target="_blank"><img src="v (3).png" alt="femalefelines" class="avatar-thumb"></a></li>
+      <li><a href="https://azukitiger.gumroad.com/l/mayu?layout=profile&recommended_by=library" target="_blank"><img src="v (4).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="https://habatwo.gumroad.com/l/wsfni?layout=profile&recommended_by=library" target="_blank"><img src="v (5).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="https://conniedragon.gumroad.com/l/PikoSDK3?layout=profile" target="_blank"><img src="v (6).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="https://frostkittypaw.gumroad.com/?recommended_by=library" target="_blank"><img src="v (7).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="https://kdarts.gumroad.com/l/deer?layout=profile&recommended_by=library" target="_blank"><img src="v (8).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="https://wispweaver.gumroad.com/l/Davali?layout=profile&recommended_by=library" target="_blank"><img src="v (9).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="https://sunstun.gumroad.com/?recommended_by=library" target="_blank"><img src="v (10).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+      <li><a href="https://irix.gumroad.com/l/bikcyg?layout=profile&recommended_by=library" target="_blank"><img src="v (11).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="https://irix.gumroad.com/l/bikcyg?layout=profile&recommended_by=library" target="_blank"><img src="v (12).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="https://therpgslayer.gumroad.com/l/Pawvali?layout=profile" target="_blank"><img src="v (13).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="https://rantisvr.gumroad.com/l/RsZjE?layout=profile&recommended_by=library" target="_blank"><img src="v (14).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="https://zexc.gumroad.com/l/BestboiHD?layout=profile&recommended_by=library" target="_blank"><img src="v (15).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="https://ziodynes098.gumroad.com/l/ZioRedPanda?layout=profile&recommended_by=library" target="_blank"><img src="v (16).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="https://echonine.gumroad.com/l/Candy?layout=profile&recommended_by=library" target="_blank"><img src="v (17).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="https://kalystri.gumroad.com/l/GoodBoiAnxiousKitten?layout=profile&recommended_by=library" target="_blank"><img src="v (18).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="https://zoidberg656.gumroad.com/l/CAhCW?layout=profile&recommended_by=library" target="_blank"><img src="v (19).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+      <li><a href="https://therpgslayer.gumroad.com/l/qmprh?layout=profile&recommended_by=library" target="_blank"><img src="v (20).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="https://bluegua.gumroad.com/l/xhgau?layout=profile" target="_blank"><img src="v (21).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="https://therpgslayer.gumroad.com/l/zrfkf?layout=profile&recommended_by=library" target="_blank"><img src="v (22).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="https://marivr.gumroad.com/l/Zywie?layout=profile&recommended_by=library" target="_blank"><img src="v (23).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="https://bluegua.gumroad.com/l/cfzyd?layout=profile" target="_blank"><img src="v (24).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="https://therpgslayer.gumroad.com/l/Amaterasu?layout=profile&recommended_by=library" target="_blank"><img src="v (25).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="https://sunny64.gumroad.com/l/Summerdragon?layout=profile&recommended_by=library" target="_blank"><img src="v (26).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="https://juliawinterpaw.gumroad.com/l/vrchatmouse?layout=profile&recommended_by=library" target="_blank"><img src="v (27).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="https://xetirano.gumroad.com/l/Nanachi?layout=profile&recommended_by=library" target="_blank"><img src="v (28).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+      <li><a href="https://therpgslayer.gumroad.com/l/mcuui?layout=profile&recommended_by=library" target="_blank"><img src="v (29).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="https://foxipaws.gumroad.com/l/vika?layout=profile" target="_blank"><img src="v (30).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="https://xetirano.gumroad.com/l/Noelle?layout=profile&recommended_by=library" target="_blank"><img src="v (31).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="https://saffronthebat.gumroad.com/?recommended_by=library" target="_blank"><img src="v (32).png" alt="Avatar 5" class="avatar-thumb"></a></li>
+      <li><a href="https://apyr.gumroad.com/l/marypony" target="_blank"><img src="v (33).png" alt="Avatar 6" class="avatar-thumb"></a></li>
+      <li><a href="https://jinapark.gumroad.com/l/JinGriffin?layout=profile&recommended_by=library" target="_blank"><img src="v (34).png" alt="Avatar 7" class="avatar-thumb"></a></li>
+      <li><a href="https://zoidberg656.gumroad.com/l/xMyUSd?layout=profile&recommended_by=library" target="_blank"><img src="v (35).png" alt="Avatar 8" class="avatar-thumb"></a></li>
+      <li><a href="https://silentdreams.gumroad.com/?recommended_by=library" target="_blank"><img src="v (36).png" alt="Avatar 9" class="avatar-thumb"></a></li>
+      <li><a href="https://rantisvr.gumroad.com/l/HIrtd?layout=profile&recommended_by=library" target="_blank"><img src="v (37).png" alt="Avatar 10" class="avatar-thumb"></a></li>
+      <li><a href="https://shadethebat.gumroad.com/l/awtter?layout=profile&recommended_by=library" target="_blank"><img src="v (38).png" alt="Avatar 2" class="avatar-thumb"></a></li>
+      <li><a href="https://jinxxy.com/zelf/delphykobo" target="_blank"><img src="v (39).png" alt="Avatar 3" class="avatar-thumb"></a></li>
+      <li><a href="https://jinxxy.com/Raideus/Celestial" target="_blank"><img src="v (40).png" alt="Avatar 4" class="avatar-thumb"></a></li>
+      <li><a href="https://jinxxy.com/PaperFen/moontail" target="_blank"><img src="v (41).png" alt="Avatar 5" class="avatar-thumb"></a></li>
 
-  <!-- Sounds -->
-  <audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
-  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+      <!-- Continue for all v (11) to v (41)... -->
+    </ul>
+  </section>
 
-  <!-- Background music -->
-  <div id="audioContainer" aria-label="Background music">
-    <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
-  </div>
+</div>
 
-  <script>
-    // --- START OF NEW CODE FOR FIX ---
-    // Set a custom property for viewport height to address mobile browser UI issues
-    // This runs once on load and again whenever the window is resized.
-    function setVh() {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
-    window.addEventListener('resize', setVh);
-    setVh(); // Initial call to set the variable
-    // --- END OF NEW CODE FOR FIX ---
+<!-- Sound Effects -->
+<audio id="hoverSound" src="hover.mp3" preload="auto"></audio>
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
+<!-- Background music player -->
+<div id="audioContainer" style="display:none;">
+  <audio id="bgMusic" src="https://luna.ponyvillefm.com/listen/lunaradio/radio.mp3" preload="auto" controls loop></audio>
+</div>
 
-    // Sparkles
-    (function makeSparkles(){
-      const container = document.getElementById('sparkles');
-      const COUNT = 44;
-      for(let i=0;i<COUNT;i++){
-        const s = document.createElement('div');
-        s.className='sparkle';
-        const size = 5 + Math.random()*6;
-        s.style.width = s.style.height = size+'px';
-        s.style.top = (Math.random()*100)+'vh';
-        s.style.left = (Math.random()*100)+'vw';
-        s.style.animationDuration = (2 + Math.random()*2.5)+'s';
-        s.style.animationDelay = (Math.random()*3)+'s';
-        container.appendChild(s);
-      }
-    })();
+<script>
+  // Create sparkles
+  const sparkleCount = 40;
+  const sparkleContainer = document.getElementById('sparkles');
+  for(let i = 0; i < sparkleCount; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    sparkle.style.width = sparkle.style.height = (5 + Math.random() * 5) + 'px';
+    sparkle.style.top = (Math.random() * 100) + 'vh';
+    sparkle.style.left = (Math.random() * 100) + 'vw';
+    sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+    sparkle.style.animationDelay = (Math.random() * 3) + 's';
+    sparkleContainer.appendChild(sparkle);
+  }
 
-    // Overlay & audio
-    const overlay = document.getElementById('overlay');
-    const mainContent = document.getElementById('mainContent');
-    const audioContainer = document.getElementById('audioContainer');
-    const hoverSound = document.getElementById('hoverSound');
-    const clickSound = document.getElementById('clickSound');
-    const bgMusic = document.getElementById('bgMusic');
-    let soundsEnabled = false;
+  // Overlay & audio
+  const overlay = document.getElementById('overlay');
+  const mainContent = document.getElementById('mainContent');
+  const hoverSound = document.getElementById('hoverSound');
+  const clickSound = document.getElementById('clickSound');
+  const bgMusic = document.getElementById('bgMusic');
+  const audioContainer = document.getElementById('audioContainer');
+  let soundsEnabled = false;
 
-    overlay.addEventListener('click', () => {
-      if(!soundsEnabled){
-        hoverSound.play().catch(()=>{});
-        clickSound.play().catch(()=>{});
-        bgMusic.volume = 0.05;
-        bgMusic.play().catch(()=>{});
-        soundsEnabled = true;
-      }
-      overlay.style.opacity='0';
-      setTimeout(()=>{
-        overlay.style.display='none';
-        mainContent.hidden = false;
-        audioContainer.style.display='flex';
-        // reveal panels when ready
-        revealOnView();
-      }, 500);
-    }, {passive:true});
+  overlay.addEventListener('click', () => {
+    if(!soundsEnabled){
+      hoverSound.play().catch(()=>{});
+      clickSound.play().catch(()=>{});
+      bgMusic.volume = 0.05;
+      bgMusic.play().catch(()=>{});
+      soundsEnabled = true;
+    }
+    overlay.style.opacity='0';
+    setTimeout(()=>{ overlay.style.display='none'; mainContent.style.display='block'; audioContainer.style.display='flex'; },600);
+  });
 
-    // Hover/click sfx
-    function wireSFX(){
-      document.querySelectorAll('a, button').forEach(el=>{
-        el.addEventListener('mouseenter', ()=>{ if(soundsEnabled){ hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } }, {passive:true});
-        el.addEventListener('click', ()=>{ if(soundsEnabled){ clickSound.currentTime=0; clickSound.play().catch(()=>{}); } }, {passive:true});
-      });
-    }
-    wireSFX();
+  document.querySelectorAll('a, button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ if(soundsEnabled){ hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } });
+    el.addEventListener('click',()=>{ if(soundsEnabled){ clickSound.currentTime=0; clickSound.play().catch(()=>{}); } });
+  });
+</script>
 
-    // Intersection Observer: reveal panels & subtle pop for avatars
-    function revealOnView(){
-      const io = new IntersectionObserver((entries, obs)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            e.target.classList.add('show');
-            obs.unobserve(e.target);
-          }
-        });
-      }, {threshold: 0.12});
-      document.querySelectorAll('.panel').forEach(el=>io.observe(el));
-
-      const avatarObs = new IntersectionObserver((entries, obs)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            e.target.style.transform='scale(1)';
-            e.target.style.opacity='1';
-            obs.unobserve(e.target);
-          }
-        });
-      }, {threshold: 0.2});
-      document.querySelectorAll('.avatar').forEach(a=>{
-        a.style.transform='scale(.96)'; a.style.opacity='.0'; a.style.transition='transform .45s ease, opacity .45s ease';
-        avatarObs.observe(a);
-      });
-    }
-
-    // Respect reduced motion users by skipping reveal animations
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(reduceMotion){
-      document.querySelectorAll('.panel').forEach(p=>p.classList.add('show'));
-      document.querySelectorAll('.avatar').forEach(a=>{ a.style.transform='none'; a.style.opacity='1'; a.style.transition='none'; });
-    }
-
-    // Accessibility: allow Enter to dismiss overlay
-    overlay.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter' || e.key === ' '){ overlay.click(); }
-    });
-
-  </script>
 </body>
 </html>
