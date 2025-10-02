@@ -1,0 +1,41 @@
+// Load dynamic data into the page
+function renderSite(data) {
+  // Social Links
+  const social = document.getElementById("socialLinks");
+  data.socialLinks.forEach(link => {
+    const a = document.createElement("a");
+    a.href = link.url;
+    a.textContent = link.name;
+    a.setAttribute("data-tooltip", link.tooltip);
+    social.appendChild(a);
+  });
+
+  // About
+  const about = document.getElementById("about");
+  about.innerHTML = `<h2>${data.about.title}</h2>
+    <p>${data.about.text}</p>
+    <ul>${data.about.games.map(g=>`<li>${g}</li>`).join("")}</ul>`;
+
+  // Avatars
+  const avatars = document.getElementById("avatars");
+  avatars.innerHTML = `<h2>My Avatars</h2>
+    <ul>${data.avatars.map(a=>`
+      <li><a href="${a.url}" target="_blank"><img src="${a.img}" alt="${a.name}" class="avatar-thumb"></a></li>
+    `).join("")}</ul>`;
+
+  // Contact
+  const contact = document.getElementById("contact");
+  contact.innerHTML = `
+    <p><strong>Discord:</strong> ${data.contact.discord}</p>
+    <p><strong>Steam Friend Code:</strong> ${data.contact.steam}</p>
+    <p><strong>Xbox:</strong> ${data.contact.xbox}</p>`;
+
+  // Background music
+  const bgMusic = document.getElementById("bgMusic");
+  bgMusic.src = data.musicURL;
+}
+
+// Call render
+renderSite(siteData);
+
+// Existing interaction logic (overlay, sparkles, sounds) goes here…
